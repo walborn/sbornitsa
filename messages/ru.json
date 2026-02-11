@@ -1,0 +1,28 @@
+{
+  "navigation": {
+    "profile": "Профиль",
+    "transactions": "Транзакции",
+    "users": "Пользователи",
+    "families": "Семьи"
+  },
+  "shared": {
+    "phone": "телефон",
+    "name": "имя",
+    "message": "сообщение",
+    "balance": "баланс"
+  },
+  "pages": {
+    "profile": {
+      "title": "Профиль",
+      "description": "Мой профиль"
+    },
+    "transactions": {
+      "title": "Транзакции",
+      "description": "Мои транзакции"
+    },
+    "users": {
+      "title": "Пользователи",
+      "description": "Мои пользователи"
+    }
+  }
+}

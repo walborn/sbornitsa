@@ -1,0 +1,28 @@
+{
+  "navigation": {
+    "profile": "Profile",
+    "transactions": "Transactions",
+    "users": "Users",
+    "families": "Families"
+  },
+  "shared": {
+    "phone": "phone",
+    "name": "name",
+    "message": "message",
+    "balance": "balance"
+  },
+  "pages": {
+    "profile": {
+      "title": "Profile",
+      "description": "My Profile"
+    },
+    "transactions": {
+      "title": "Transactions",
+      "description": "My Transactions"
+    },
+    "users": {
+      "title": "Users",
+      "description": "My Users"
+    }
+  }
+}

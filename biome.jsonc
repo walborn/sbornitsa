@@ -1,0 +1,145 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.3.14/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "ignoreUnknown": false,
+    "includes": ["**", "!node_modules", "!.next", "!dist", "!build"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              ["react", "react/**"],
+              ":BLANK_LINE:",
+              ["next", "next/**"],
+              ":BLANK_LINE:",
+              ":PACKAGE:", // e.g. "zustand/**", "date-fns/**"
+              ":BLANK_LINE:",
+              ":ALIAS:", // e.g. "@/components/**", "@/utils/**"
+              ":BLANK_LINE:",
+              ":PATH:", // relative paths
+              ":BLANK_LINE:"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+
+      // 🛡️ Качество и безопасность кода
+      "suspicious": {
+        "noConsole": {
+          "level": "warn",
+          "options": {
+            "allow": ["assert", "error", "info", "warn"]
+          }
+        },
+        "noShadowRestrictedNames": "warn",
+        "noImplicitAnyLet": "error",
+        "noAssignInExpressions": "error",
+        "noDoubleEquals": "error",
+        "noExplicitAny": "warn"
+      },
+
+      // 🎨 Современный JavaScript
+      "complexity": {
+        "noBannedTypes": "error",
+        "noUselessThisAlias": "error",
+        "useArrowFunction": "error",
+        "noForEach": "warn",
+        "useOptionalChain": "error",
+        "useSimplifiedLogicExpression": "error"
+      },
+
+      // 🧹 Чистота кода
+      "style": {
+        "noUselessElse": "error",
+        "noYodaExpression": "error",
+        "useConst": "error",
+        "useExponentiationOperator": "error",
+        "useTemplate": "error",
+        "useSelfClosingElements": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useDefaultParameterLast": "error",
+        "noRestrictedGlobals": "error",
+        "useImportType": "error"
+      },
+
+      // 📦 Правила для импортов
+      "correctness": {
+        "noUnusedVariables": "error",
+        "noUnusedImports": "error",
+        "noUnusedLabels": "error",
+        "noUnusedPrivateClassMembers": "error"
+      },
+
+      // ⚛️ React правила
+      "a11y": {
+        "useAltText": "warn",
+        "useButtonType": "warn",
+        "useHtmlLang": "warn",
+        "useIframeTitle": "warn"
+      }
+    },
+    "domains": {
+      "next": "recommended",
+      "react": "recommended"
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "indentWidth": 2,
+      "semicolons": "asNeeded",
+      "trailingCommas": "es5",
+      "arrowParentheses": "asNeeded",
+      "bracketSpacing": true,
+      "bracketSameLine": false,
+      "quoteProperties": "asNeeded",
+      "attributePosition": "multiline"
+    },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["src/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noUnusedTemplateLiteral": "off"
+          }
+        }
+      },
+      "javascript": {
+        "formatter": {
+          "jsxQuoteStyle": "double",
+          "quoteStyle": "single"
+        }
+      }
+    }
+  ]
+}
