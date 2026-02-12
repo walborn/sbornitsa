@@ -1,0 +1,203 @@
+[
+  {
+    "id": "cherny",
+    "name": {
+      "ru": "Черный",
+      "en": "Cherny"
+    },
+    "mother": "anastasia.chernaya",
+    "children": [
+      "vitya.cherny",
+      "nina.chernaya"
+    ],
+    "password": "7bdbe2eaf569840e170c9e97fbdc6b5b5c5d9eba7b453b9216417bc34537468a",
+    "avatar": "/avatars/anastasia.chernaya.webp",
+    "value": 0
+  },
+  {
+    "id": "eremeev",
+    "name": {
+      "ru": "Еремеевы",
+      "en": "Eremeevs"
+    },
+    "mother": "svetlana.eremeeva",
+    "children": [
+      "vanya.eremeev",
+      "vera.eremeeva"
+    ],
+    "password": "bd9bafc0713c39509fcd972c76f9be197ad8bfc5e1046ed6ac118cb475e9c78e",
+    "avatar": "/avatars/svetlana.eremeeva.webp",
+    "value": 0
+  },
+  {
+    "id": "yuzhakov",
+    "name": {
+      "ru": "Южаковы",
+      "en": "Yuzhakovs"
+    },
+    "mother": "ornella.zubkova",
+    "father": "boris.yuzhakov",
+    "children": [
+      "meera.yuzhakova"
+    ],
+    "password": "3cc849279ba298b587a34cabaeffc5ecb3a044bbf97c516fab7ede9d1af77cfa",
+    "avatar": "/families/yuzhakovs.webp",
+    "value": 0
+  },
+  {
+    "id": "legoshin",
+    "name": {
+      "ru": "Легошины",
+      "en": "Legoshins"
+    },
+    "mother": "maria.legoshina",
+    "children": [
+      "mila.legoshina"
+    ],
+    "password": "608bf10d4d879acf43d996e5d023551c5019941fc7eb4d0d37e978921529b0d2",
+    "avatar": "/avatars/maria.legoshina.webp",
+    "value": 0
+  },
+  {
+    "id": "novitskiy",
+    "name": {
+      "ru": "Новицкие",
+      "en": "Novitsky"
+    },
+    "mother": "natasha.novitskaya",
+    "children": [
+      "misha.novitskiy",
+      "anna.novitskaya"
+    ],
+    "password": "97fb8186eece9979fd4559ef91f13918efe4af54dd6a0b28e09a1303deddcac3",
+    "avatar": "/avatars/natasha.novitskaya.webp",
+    "value": 0
+  },
+  {
+    "id": "skvortsov",
+    "name": {
+      "ru": "Скворцовы",
+      "en": "Skvortsovs"
+    },
+    "mother": "olga.skvortsova",
+    "children": [
+      "kirill.skvortsov"
+    ],
+    "password": "3a814b22839847f9ad26678c4e81ecce8cd54fb8e7ed62fecea5300148afb040",
+    "avatar": "/avatars/olga.skvortsova.webp",
+    "value": 0
+  },
+  {
+    "id": "gerber",
+    "name": {
+      "ru": "Гербер",
+      "en": "Gerbers"
+    },
+    "mother": "sofya-gerber",
+    "children": [
+      "agata.gerber",
+      "platon.gerber"
+    ],
+    "password": "3fd72611b659dada38b45d102bc2c12cb3dd703af25a964399f9795b2b1e7a74",
+    "avatar": "/avatars/sofya.gerber.webp",
+    "value": 0
+  },
+  {
+    "id": "usarov",
+    "name": {
+      "ru": "Усаровы",
+      "en": "Usarows"
+    },
+    "mother": "maria.usarova",
+    "children": [
+      "emik.usarov"
+    ],
+    "password": "26317f7bdc59aa3b9517d9f88bb53cab2c2ee5210b9d3cc9a84c65096a00627b",
+    "avatar": "/avatars/maria.usarova.webp",
+    "value": 0
+  },
+  {
+    "id": "fadeev",
+    "name": {
+      "ru": "Фадеевы",
+      "en": "Fadeevs"
+    },
+    "mother": "nadezhda.fadeeva",
+    "password": "608bf10d4d879acf43d996e5d023551c5019941fc7eb4d0d37e978921529b0d2",
+    "children": [
+      "avrora.fadeeva"
+    ],
+    "avatar": "/avatars/nadezhda.fadeeva.webp",
+    "value": 0
+  },
+  {
+    "id": "marshev",
+    "name": {
+      "ru": "Маршевы",
+      "en": "Marshevs"
+    },
+    "mother": "anastasia.marsheva",
+    "children": [
+      "igor.marshev"
+    ],
+    "password": "94ffeec199a954ee16244d44179ac2b0692533bee2aa49750c4835270b46c525",
+    "avatar": "/avatars/anastasia.marsheva.webp",
+    "value": 0
+  },
+  {
+    "id": "petrov",
+    "name": {
+      "ru": "Петровы",
+      "en": "Petrovs"
+    },
+    "mother": "ksenya.petrova",
+    "children": [
+      "varya.petrova"
+    ],
+    "password": "874a9672b6f20b431dcd2bf832de73359441867d1431a495b898d54298b3b821",
+    "avatar": "/avatars/ksenya.petrova.webp",
+    "value": 0
+  },
+  {
+    "id": "leonenko",
+    "name": {
+      "ru": "Леоненко",
+      "en": "Leonenko"
+    },
+    "mother": "polina.leonenko",
+    "children": [
+      "aellita.leonenko"
+    ],
+    "password": "97fb8186eece9979fd4559ef91f13918efe4af54dd6a0b28e09a1303deddcac3",
+    "avatar": "/avatars/polina.leonenko.webp",
+    "value": 0
+  },
+  {
+    "id": "pimenov",
+    "name": {
+      "ru": "Пименовы",
+      "en": "Pimenovs"
+    },
+    "mother": "alexandra.pimenova",
+    "children": [
+      "emma.pimenova"
+    ],
+    "password": "7bdbe2eaf569840e170c9e97fbdc6b5b5c5d9eba7b453b9216417bc34537468a",
+    "avatar": "/avatars/alexandra.pimenova.webp",
+    "value": 0
+  },
+  {
+    "id": "kirillov",
+    "name": {
+      "ru": "Кирилловы",
+      "en": "Kirillovs"
+    },
+    "mother": "olga.kirillova",
+    "children": [
+      "emma.kirillova"
+    ],
+    "password": "36a48e21c28d08a3915b9dfa71768cc838f6d8ba8fab630a478af4eacc22de37",
+    "avatar": "/avatars/olga.kirillova.webp",
+    "value": 0
+  }
+]

@@ -1,5 +1,7 @@
 export const FAMILY_KEY = 'sbornitsa-family'
 
+import CryptoJS from 'crypto-js'
+
 import { familiesDic } from '@/lib/data'
 
 import type { Family } from './definitions'
@@ -7,7 +9,9 @@ import type { Family } from './definitions'
 export const login = (username: string, password: string): boolean => {
   const family: Family = familiesDic[username as Family['id']]
 
-  if (family?.password !== password) return false
+  const hashedPassword = CryptoJS.SHA256(password).toString()
+
+  if (family?.password !== hashedPassword) return false
 
   if (typeof window !== 'undefined') {
     localStorage.setItem(FAMILY_KEY, JSON.stringify(family))
