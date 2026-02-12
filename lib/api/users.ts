@@ -21,6 +21,10 @@ export async function fetchUserById(id: User['id']) {
   return users?.find(user => user.id === id)
 }
 
+export function getUserById(id: User['id']) {
+  return users?.find(user => user.id === id)
+}
+
 export async function fetchFamilies() {
   // try {
   //   return await sql<User[]>`SELECT * FROM users`

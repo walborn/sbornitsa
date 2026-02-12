@@ -3,6 +3,7 @@
 import Link from 'next/link'
 
 import { ChevronsUpDownIcon } from 'lucide-react'
+import { useLocale } from 'next-intl'
 
 import { useAuth } from '@/components/providers/auth-provider'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -18,15 +19,16 @@ import {
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { SidebarMenuButton } from '@/components/ui/sidebar'
 import { usersDic } from '@/lib/data'
-import { useLocale } from 'next-intl'
+
+type Locale = 'ru' | 'en'
 
 export function AppSidebarFooter() {
-  const locale = useLocale()
-  const { user, logout } = useAuth()
+  const locale = useLocale() as Locale
+  const { family, logout } = useAuth()
 
-  if (!user) return null
+  if (!family) return null
 
-  const mother = usersDic[user.mother]
+  const mother = usersDic[family.mother]
 
   return (
     <DropdownMenu>
@@ -37,14 +39,14 @@ export function AppSidebarFooter() {
         >
           <Avatar>
             <AvatarImage
-              src={mother?.avatar}
-              alt={mother?.id}
+              src={family.avatar}
+              alt={family.id}
             />
-            <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+            <AvatarFallback className="rounded-lg">{family.id[0]}</AvatarFallback>
           </Avatar>
           <div className="grid flex-1 text-left text-sm leading-tight">
-            <span className="truncate font-medium">{mother?.name}</span>
-            <span className="truncate text-xs">{user?.id}</span>
+            <span className="truncate font-medium">{family.name[locale]}</span>
+            <span className="truncate text-xs">{family.id}</span>
           </div>
           <ChevronsUpDownIcon />
         </SidebarMenuButton>
@@ -56,15 +58,15 @@ export function AppSidebarFooter() {
               <ItemMedia>
                 <Avatar>
                   <AvatarImage
-                    src={mother?.avatar}
-                    alt={mother?.id}
+                    src={family.avatar}
+                    alt={family.id}
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
               </ItemMedia>
               <ItemContent>
-                <ItemTitle>{usersDic[user?.mother]?.name}</ItemTitle>
-                <ItemDescription> {user?.mother}</ItemDescription>
+                <ItemTitle>{family.name[locale]}</ItemTitle>
+                <ItemDescription> {family.id}</ItemDescription>
               </ItemContent>
             </Item>
           </DropdownMenuLabel>

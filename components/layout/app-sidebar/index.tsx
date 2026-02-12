@@ -1,4 +1,5 @@
-import { User, Wallet2 } from 'lucide-react'
+import Image from 'next/image'
+
 import { getLocale, getTranslations } from 'next-intl/server'
 
 import { AppSidebarHeader } from '@/components/layout/app-sidebar/header'
@@ -13,6 +14,9 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
+import transactionsIcon from '@/public/categories/transactions.svg'
+import familiesIcon from '@/public/categories/tree3.svg'
+import usersIcon from '@/public/categories/users4.svg'
 
 import { AppSidebarFooter } from './footer'
 
@@ -21,7 +25,13 @@ const getItems = (t: (key: string) => string): Item[] => [
     href: '/transactions',
     children: (
       <>
-        <Wallet2 />
+        <Image
+          priority
+          src={transactionsIcon}
+          width={24}
+          height={24}
+          alt="transactions"
+        />
         {t('transactions')}
       </>
     ),
@@ -30,8 +40,29 @@ const getItems = (t: (key: string) => string): Item[] => [
     href: '/users',
     children: (
       <>
-        <User />
+        <Image
+          priority
+          src={usersIcon}
+          width={24}
+          height={24}
+          alt="users"
+        />
         {t('users')}
+      </>
+    ),
+  },
+  {
+    href: '/families',
+    children: (
+      <>
+        <Image
+          priority
+          src={familiesIcon}
+          width={24}
+          height={24}
+          alt="families"
+        />
+        {t('families')}
       </>
     ),
   },

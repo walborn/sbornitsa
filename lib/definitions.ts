@@ -2,25 +2,25 @@ import type { CalcFn } from './tools/calc'
 
 type UserId =
   // mothers
-  | 'alexandra-pimenova'
-  | 'svetlana-eremeeva'
-  | 'maria-legoshina'
-  | 'anastasia-marsheva'
-  | 'ksenya-petrova'
-  | 'nadezhda-fadeeva'
-  | 'natasha-novitskaya'
+  | 'alexandra.pimenova'
+  | 'svetlana.eremeeva'
+  | 'maria.legoshina'
+  | 'anastasia.marsheva'
+  | 'ksenya.petrova'
+  | 'nadezhda.fadeeva'
+  | 'natasha.novitskaya'
   | 'sofya-gerber'
-  | 'olga-skvortsova'
-  | 'olga-kirillova'
-  | 'maria-usarova'
-  | 'anastasia-chernaya'
-  | 'ornella-zubkova'
-  | 'boris-yuzhakov'
-  | 'polina-leonenko'
+  | 'olga.skvortsova'
+  | 'olga.kirillova'
+  | 'maria.usarova'
+  | 'anastasia.chernaya'
+  | 'ornella.zubkova'
+  | 'boris.yuzhakov'
+  | 'polina.leonenko'
   // teachers
-  | 'amira-h'
-  | 'veronika-zolotareva'
-  | 'natalya-m'
+  | 'veronika.zolotareva'
+  | 'amira.h'
+  | 'natalya.m'
   // children
   | 'nina.chernaya'
   | 'vitya.cherny'
@@ -37,14 +37,43 @@ type UserId =
   | 'avrora.fadeeva'
   | 'varya.petrova'
   | 'igor.marshev'
+  | 'emma.pimenova'
   | 'emma.kirillova'
-  | 'aellita.polina'
+  | 'aellita.leonenko'
 
+export type UserTag =
+  | 'teachers'
+  // parents
+  | 'parents'
+  | 'mothers'
+  | 'fathers'
+  // children
+  | 'children'
+  | 'daughters'
+  | 'sons'
+
+type UniqueArray<T extends readonly unknown[]> = T extends readonly [infer First, ...infer Rest]
+  ? First extends Rest[number]
+    ? never
+    : readonly [First, ...UniqueArray<Rest>]
+  : T
+
+export const createTags = <T extends readonly UserTag[]>(a: T & UniqueArray<T>): Set<UserTag> =>
+  new Set(a)
+
+export type Contacts = {
+  phone: string
+  telegram: string
+}
 export type User = {
   id: UserId // name-surname
   name: string // для отображения имени пользователя
+  family?: FamilyId // для определения семьи
   birthdate: Date // для календаря дней рождения
   avatar: string // для отображения аватарки
+  contacts?: Partial<Contacts>
+  role: 'user' | 'manager' | 'admin'
+  tags: Set<UserTag>
 }
 
 type FamilyId =
@@ -61,13 +90,17 @@ type FamilyId =
   | 'usarov'
   | 'cherny'
   | 'yuzhakov'
-  | 'polina-family'
+  | 'leonenko'
 
 export type Family = {
   id: FamilyId
+  name: {
+    ru: string
+    en: string
+  }
   mother: User['id']
   father?: User['id']
-  children: string[]
+  children: User['id'][]
   value: number // баланс пользователя
   password: string // пароль для входа
   avatar?: string // для отображения аватарки
@@ -106,13 +139,6 @@ export type Transaction = {
   target?: TransactionTarget
   source?: TransactionSource
 }
-
-// export type UserTransaction = {
-//   id: string // transaction.id + user.id
-//   transaction: string // transaction.id
-//   user: string // user.id
-//   value: number // изменение баланса пользователя в рамках этой транзакции
-// }
 
 export type FamilyTransaction = {
   // id: string

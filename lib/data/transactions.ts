@@ -1,4 +1,4 @@
-// Эмма Кириллова (olga-kirillova)
+// Эмма Кириллова (olga.kirillova)
 // появилась 17.09.2025 - до этого ее не нужно учитывать в тратах (исключать из all-users)
 // ходит только на музыку
 
@@ -34,7 +34,7 @@ const english = (transaction: Partial<RawTransaction> = {}): RawTransaction => (
   value: -2000,
   name: 'English',
   description: 'Оплата занятий по английскому',
-  teacher: 'natalya-m',
+  teacher: 'natalya.m',
   time: '11:00',
   families: families.all(),
   calc: relativeFn,
@@ -53,7 +53,7 @@ const music = (transaction: Partial<RawTransaction> = {}): RawTransaction => ({
   value: -2000,
   name: 'Music',
   description: 'Оплата занятий по музыке',
-  teacher: 'amira-h',
+  teacher: 'amira.h',
   time: '11:00',
   families: families.all(),
   calc: relativeFn,
@@ -718,29 +718,29 @@ const rawTransactions: [string, RawTransaction][] = [
       families: families.except(['kirillov']),
     }),
   ],
-  // - 04.09.2025: music (без olga-kirillova)
+  // - 04.09.2025: music (без olga.kirillova)
   //   - users:
-  //     - natasha-novitskaya <!-- 273 -->
+  //     - natasha.novitskaya <!-- 273 -->
   //       - Миша
   //       - Аня
-  //     - svetlana-eremeeva <!-- 273 -->
+  //     - svetlana.eremeeva <!-- 273 -->
   //       - Вера
   //       - Ваня
   //     - sofya-gerber <!-- 182 -->
   //       - Агата
-  //     - ksenya-petrova <!-- 182 -->
+  //     - ksenya.petrova <!-- 182 -->
   //       - Варя
-  //     - maria-legoshina <!-- 182 -->
+  //     - maria.legoshina <!-- 182 -->
   //       - Мила
-  //     - maria-usarova <!-- 182 -->
+  //     - maria.usarova <!-- 182 -->
   //       - Нина
-  //     - olga-skvortsova <!-- 182 -->
+  //     - olga.skvortsova <!-- 182 -->
   //       - Кирилл
-  //     - ornella-zubkova <!-- 182 -->
+  //     - ornella.zubkova <!-- 182 -->
   //       - Мира
-  //     - polina-leonenko <!-- 182 -->
+  //     - polina.leonenko <!-- 182 -->
   //       - Аэлита
-  //     - anastasia-marsheva <!-- 182 -->
+  //     - anastasia.marsheva <!-- 182 -->
   //       - Игорь
   [
     '04.09.2025',

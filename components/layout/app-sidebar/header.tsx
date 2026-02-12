@@ -23,11 +23,11 @@ export function AppSidebarHeader() {
             size="lg"
             asChild
           >
-            <Link href={`/${locale}`}>
-              <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md p-2">
+            <Link href={`/${locale}/profile`}>
+              <div className="bg-sidebar-accent flex aspect-square size-8 items-center justify-center rounded-md p-2 border">
                 <Image
-                  // className="invsert"
-                  src="/metadata/apple-touch-icon.png"
+                  // className="invert"
+                  src="/metadata/favicon.svg"
                   alt="Logo image"
                   width={24}
                   height={24}

@@ -9,7 +9,8 @@
     "phone": "телефон",
     "name": "имя",
     "message": "сообщение",
-    "balance": "баланс"
+    "balance": "баланс",
+    "family": "семья"
   },
   "pages": {
     "profile": {
@@ -23,6 +24,10 @@
     "users": {
       "title": "Пользователи",
       "description": "Мои пользователи"
+    },
+    "families": {
+      "title": "Семьи",
+      "description": "Мои семьи"
     }
   }
 }

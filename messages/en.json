@@ -9,7 +9,8 @@
     "phone": "phone",
     "name": "name",
     "message": "message",
-    "balance": "balance"
+    "balance": "balance",
+    "family": "family"
   },
   "pages": {
     "profile": {
@@ -23,6 +24,10 @@
     "users": {
       "title": "Users",
       "description": "My Users"
+    },
+    "families": {
+      "title": "Families",
+      "description": "My Families"
     }
   }
 }
