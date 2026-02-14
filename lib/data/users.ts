@@ -24,6 +24,11 @@ import { familyTransactions } from './transactions'
 //   'Аэлита', // Полина
 // ]
 
+// 12 july
+// • Платон - 15 января (25 лет)
+// • Вероника - 4 мая (25 лет)
+// • Левон - 10 июня (7 лет)
+
 // посчитаем баланс каждого пользователя, чтоб актуализировать для пользователй
 const values: Record<string, number> = {}
 
@@ -53,6 +58,10 @@ export const users: User[] = [
     birthdate: new Date(1900, 1, 1),
     role: 'user',
     tags: createTags(['parents', 'mothers'] as const),
+    contacts: {
+      phone: '+79165320136',
+      telegram: '@svetlana_vl_eremeeva',
+    },
   },
   {
     id: 'ornella.zubkova',
@@ -62,6 +71,10 @@ export const users: User[] = [
     birthdate: new Date(1987, 2, 16),
     role: 'user',
     tags: createTags(['parents', 'mothers'] as const),
+    contacts: {
+      phone: '+79057417608',
+      telegram: '@OrnellaZubkova',
+    },
   },
   {
     id: 'boris.yuzhakov',
@@ -71,6 +84,10 @@ export const users: User[] = [
     birthdate: new Date(1986, 9, 29),
     role: 'admin',
     tags: createTags(['parents', 'mothers'] as const),
+    contacts: {
+      phone: '+79250579756',
+      telegram: '@codebor',
+    },
   },
   {
     id: 'maria.legoshina',
@@ -99,12 +116,12 @@ export const users: User[] = [
     name: 'Ольга Скворцова',
     family: 'skvortsov',
     avatar: '/users/olga.skvortsova.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(1900, 0, 1),
     role: 'user',
     tags: createTags(['parents', 'mothers'] as const),
   },
   {
-    id: 'sofya-gerber',
+    id: 'sofya.gerber',
     name: 'Софья Гербер',
     family: 'gerber',
     avatar: '/users/sofya.gerber.webp',
@@ -156,7 +173,7 @@ export const users: User[] = [
     id: 'polina.leonenko',
     name: 'Полина Леоненко',
     family: 'leonenko',
-    avatar: '/users/polina.webp',
+    avatar: '/users/polina.leonenko.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
     tags: createTags(['parents', 'mothers'] as const),
@@ -199,7 +216,7 @@ export const users: User[] = [
     id: 'veronika.zolotareva',
     name: 'Вероника Золотарёва',
     avatar: '/users/veronika.zolotareva.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(1900, 4, 4),
     role: 'user',
     tags: createTags(['parents', 'mothers'] as const),
   },
@@ -211,7 +228,7 @@ const children: User[] = [
     name: 'Нина',
     family: 'cherny',
     avatar: '/users/nina.chernaya.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2020, 7, 18),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
@@ -220,151 +237,160 @@ const children: User[] = [
     name: 'Витя',
     family: 'cherny',
     avatar: '/users/vitya.cherny.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2018, 4, 29),
     role: 'user',
     tags: createTags(['children', 'sons'] as const),
   },
   {
-    id: 'vanya.eremeev',
-    name: 'Ваня',
+    id: 'ivan.eremeev',
+    name: 'Иван Еремеев', // Еремеев Иван Владиславович
     family: 'eremeev',
-    avatar: '/users/vanya.eremeev.webp',
-    birthdate: new Date(1900, 1, 1),
+    avatar: '/users/ivan.eremeev.webp',
+    birthdate: new Date(2018, 10, 26),
     role: 'user',
     tags: createTags(['children', 'sons'] as const),
   },
   {
     id: 'vera.eremeeva',
-    name: 'Вера',
+    name: 'Вера Еремеева', // Еремеева Вера Владиславовна
     family: 'eremeev',
     avatar: '/users/vera.eremeeva.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2021, 5, 5),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'meera.yuzhakova',
-    name: 'Мира',
+    name: 'Мира Южакова',
     family: 'yuzhakov',
     avatar: '/users/meera.yuzhakova.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2020, 10, 6),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'mila.legoshina',
-    name: 'Мила',
+    name: 'Мила Легошина', // Легошина Мила Дмитриевна
     family: 'legoshin',
     avatar: '/users/mila.legoshina.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2020, 7, 19),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'misha.novitskiy',
-    name: 'Миша',
+    name: 'Михаил Новицкий', // Новицкий Михаил Валерьевич
     family: 'novitskiy',
     avatar: '/users/misha.novitskiy.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2020, 9, 20),
     role: 'user',
     tags: createTags(['children', 'sons'] as const),
   },
   {
     id: 'anna.novitskaya',
-    name: 'Анна',
+    name: 'Анна Новицкая', // Новицкая Анна Валерьевна
     family: 'novitskiy',
     avatar: '/users/anna.novitskaya.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2017, 9, 22),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'kirill.skvortsov',
-    name: 'Кирилл',
+    name: 'Кирилл Скворцов', // Скворцов Кирилл Алексеевич
     family: 'skvortsov',
     avatar: '/users/kirill.skvortsov.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2021, 5, 13),
     role: 'user',
     tags: createTags(['children', 'sons'] as const),
   },
   {
     id: 'agata.gerber',
-    name: 'Агата',
+    name: 'Агата Гербер', // Гербер Агата Денисовна
     family: 'gerber',
     avatar: '/users/agata.gerber.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2019, 5, 20),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'platon.gerber',
-    name: 'Платон',
+    name: 'Платон Гербер', // Гербер Платон Денисович
     family: 'gerber',
     avatar: '/users/platon.gerber.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(201, 11, 2),
     role: 'user',
     tags: createTags(['children', 'sons'] as const),
   },
   {
-    id: 'emik.usarov',
-    name: 'Эмик',
+    id: 'emil.usarov',
+    name: 'Эмиль Усаров', // Усаров Эмиль Джамалович
     family: 'usarov',
-    avatar: '/users/emik.usarov.webp',
-    birthdate: new Date(1900, 1, 1),
+    avatar: '/users/emil.usarov.webp',
+    birthdate: new Date(2018, 11, 8),
+    role: 'user',
+    tags: createTags(['children', 'sons'] as const),
+  },
+  {
+    id: 'aurora.fadeeva',
+    name: 'Аврора Фадеева', // Фадеева Аврора Геннадьевна
+    family: 'fadeev',
+    avatar: '/users/aurora.fadeeva.webp',
+    birthdate: new Date(2021, 5, 19),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
-    id: 'avrora.fadeeva',
-    name: 'Аврора',
+    id: 'marusya.fadeeva',
+    name: 'Маруся',
     family: 'fadeev',
-    avatar: '/users/avrora.fadeeva.webp',
+    avatar: '/users/marusya.fadeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'varya.petrova',
-    name: 'Варя',
+    name: 'Варвара', // Петрова Варвара Денисовна
     family: 'petrov',
     avatar: '/users/varya.petrova.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2019, 5, 26),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'igor.marshev',
-    name: 'Игорь',
+    name: 'Игорь Маршев', // Маршев Игорь Евгеньевич
     family: 'marshev',
     avatar: '/users/igor.marshev.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2021, 1, 2),
     role: 'user',
     tags: createTags(['children', 'sons'] as const),
   },
   {
-    id: 'emma.pimenova',
-    name: 'Эмма',
+    id: 'emilia.pimenova',
+    name: 'Эмилия Пименова', // Пименова Эмилия Данииловна
     family: 'pimenov',
-    avatar: '/users/emma.pimenova.webp',
-    birthdate: new Date(1900, 1, 1),
+    avatar: '/users/emilia.pimenova.webp',
+    birthdate: new Date(2020, 10, 16),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'emma.kirillova',
-    name: 'Эмма',
+    name: 'Эмма Кириллова', // Кириллова Эмма Павловна
     family: 'kirillov',
     avatar: '/users/emma.kirillova.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2021, 0, 31),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },
   {
     id: 'aellita.leonenko',
-    name: 'Аэлита',
+    name: 'Аэлита Леоненко', // Леоненко Аэлита Вадимовна
     family: 'leonenko',
     avatar: '/users/aellita.leonenko.webp',
-    birthdate: new Date(1900, 1, 1),
+    birthdate: new Date(2021, 11, 31),
     role: 'user',
     tags: createTags(['children', 'daughters'] as const),
   },

@@ -1,21 +1,36 @@
 // Эмма Кириллова (olga.kirillova)
 // появилась 17.09.2025 - до этого ее не нужно учитывать в тратах (исключать из all-users)
 // ходит только на музыку
-
+// biome
 import type {
   Category,
+  Cherny,
+  Eremeevs,
+  Fadeevs,
+  FamiliesIncomes,
   Family,
   FamilyTransaction,
+  Gerbers,
+  Kirillovs,
+  Legoshins,
+  Leonenkos,
+  Marshevs,
+  Novitsky,
+  Petrovs,
+  Pimenovs,
+  Skvortsovs,
   Transaction,
   TransactionSource,
   TransactionTarget,
+  Usaros,
   User,
+  Yuzhakovs,
 } from '@/lib/definitions'
-import { type CalcFn, childrenFn, familiesFn, relativeFn } from '@/lib/tools/calc'
 
-import { Families } from './families'
-
-const families = new Families()
+const cnst = <T extends string[]>(...args: T) => 2 // 2, 2, 2, 2
+const fade = <T extends string[]>(...args: T) => args.length + 1 // 2, 3, 4, 5
+const line = <T extends string[]>(...args: T) => args.length * 2 // 2, 4, 6, 8
+const none = <T extends string[]>(...args: T) => 0
 
 type RawTransaction = {
   name: string
@@ -24,39 +39,52 @@ type RawTransaction = {
   category: Category['id']
   teacher?: User['id']
   time: string
-  calc?: CalcFn
-  families: Family['id'][]
+  families: FamiliesIncomes
+  children?: string[][]
   target?: TransactionTarget
   source?: TransactionSource
 }
 
-const english = (transaction: Partial<RawTransaction> = {}): RawTransaction => ({
+type EnglishTransaction = Omit<
+  RawTransaction,
+  'name' | 'description' | 'value' | 'category' | 'teacher' | 'time'
+> & {
+  value?: number
+}
+const english = (transaction: EnglishTransaction): RawTransaction => ({
   value: -2000,
-  name: 'English',
-  description: 'Оплата занятий по английскому',
-  teacher: 'natalya.m',
-  time: '11:00',
-  families: families.all(),
-  calc: relativeFn,
   target: {
     bank: 'Sber',
     name: 'Наталья М.',
+    user: 'natalya.m',
   },
   // верхние можно перезаписать
   ...transaction,
   // эти свойства нельзя перезаписывать
+  name: 'English',
+  description: 'Оплата занятий по английскому',
+  time: '11:00',
   category: 'english',
 })
 
-const music = (transaction: Partial<RawTransaction> = {}): RawTransaction => ({
+type MusicTransaction = Omit<
+  RawTransaction,
+  'name' | 'description' | 'value' | 'category' | 'teacher' | 'time'
+> & {
+  name?: string
+  description?: string
+  value?: number
+  category?: Category['id']
+  teacher?: User['id']
+  time?: string
+}
+const music = (transaction: MusicTransaction): RawTransaction => ({
   // эти свойства можно перезаписать
   value: -2000,
   name: 'Music',
   description: 'Оплата занятий по музыке',
   teacher: 'amira.h',
   time: '11:00',
-  families: families.all(),
-  calc: relativeFn,
   target: {
     bank: 'Sber',
     name: 'Амира Х.',
@@ -67,62 +95,114 @@ const music = (transaction: Partial<RawTransaction> = {}): RawTransaction => ({
   category: 'music',
 })
 
-const transfers = (
-  trasaction: Omit<RawTransaction, 'description' | 'category' | 'calc'> & {
-    description?: string
-    calc?: CalcFn
-  }
-): RawTransaction => {
-  if (trasaction.families.length !== 1) {
-    throw new Error('Транзакция должна быть только у одной семьи')
-  }
-  const family = families.getById(trasaction.families[0])
-  if (!family) {
-    throw new Error('Семья не найдена')
-  }
-  return {
-    description: `Пополнение кошелька: ${family.id}`,
-    calc: familiesFn,
-    ...trasaction,
-    category: 'transfers',
-  }
+type TransferTransaction = Omit<RawTransaction, 'description' | 'category' | 'families'> & {
+  description?: string
+  family: Family['id']
 }
 
-const gifts = (
-  trasaction: Omit<RawTransaction, 'category' | 'families' | 'calc'> & {
-    families?: Family['id'][]
-    calc?: CalcFn
-  }
-): RawTransaction => {
-  return {
-    families: families.all(),
-    calc: relativeFn,
-    ...trasaction,
-    category: 'gifts',
-  }
+const transfers = ({ family, ...trasaction }: TransferTransaction): RawTransaction => ({
+  description: `Пополнение кошелька: ${family}`,
+  families: {
+    cherny: 0,
+    eremeev: 0,
+    fadeev: 0,
+    gerber: 0,
+    kirillov: 0,
+    legoshin: 0,
+    leonenko: 0,
+    marshev: 0,
+    novitskiy: 0,
+    petrov: 0,
+    pimenov: 0,
+    skvortsov: 0,
+    usarov: 0,
+    yuzhakov: 0,
+    [family]: 1,
+  },
+  ...trasaction,
+  category: 'transfers',
+})
+
+type GiftsTransaction = Omit<RawTransaction, 'families' | 'category'> & {
+  families?: FamiliesIncomes
 }
 
-const supermarkets = (
-  trasaction: Omit<RawTransaction, 'category' | 'families' | 'calc'> & {
-    families?: Family['id'][]
-    calc?: CalcFn
-  }
-): RawTransaction => {
-  return {
-    families: families.all(),
-    calc: childrenFn,
-    ...trasaction,
-    category: 'supermarkets',
-  }
-}
+const gifts = (trasaction: GiftsTransaction): RawTransaction => ({
+  families: {
+    cherny: none<Cherny>(), // ушла
+    eremeev: cnst<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+    fadeev: cnst<Fadeevs>('aurora.fadeeva'),
+    gerber: cnst<Gerbers>('agata.gerber', 'platon.gerber'),
+    kirillov: cnst<Kirillovs>('emma.kirillova'),
+    legoshin: cnst<Legoshins>('mila.legoshina'),
+    leonenko: cnst<Leonenkos>('aellita.leonenko'),
+    marshev: cnst<Marshevs>('igor.marshev'),
+    novitskiy: cnst<Novitsky>('anna.novitskaya'),
+    petrov: cnst<Petrovs>('varya.petrova'),
+    pimenov: cnst<Pimenovs>('emilia.pimenova'),
+    skvortsov: cnst<Skvortsovs>('kirill.skvortsov'),
+    usarov: cnst<Usaros>('emil.usarov'),
+    yuzhakov: cnst<Yuzhakovs>('meera.yuzhakova'),
+  },
+  ...trasaction,
+  category: 'gifts',
+})
+
+type SupermarketsTransaction = Omit<RawTransaction, 'category'>
+const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
+  ...trasaction,
+  category: 'supermarkets',
+})
 
 const rawTransactions: [string, RawTransaction][] = [
+  [
+    '13.02.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '11.02.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '04.02.2026',
     transfers({
       name: 'Софья Г.',
       value: 5000,
-      families: ['gerber'],
+      family: 'gerber',
       time: '21:34',
       source: {
         bank: 'Sber',
@@ -130,14 +210,54 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['30.01.2026', english()],
-  ['28.01.2026', english()],
+  [
+    '30.01.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '28.01.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '27.01.2026',
     transfers({
       value: 8000,
       name: 'Светлана Е.',
-      families: ['eremeev'],
+      family: 'eremeev',
       time: '11:45',
       source: {
         bank: 'Alfa',
@@ -150,7 +270,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       name: 'Надежда Ф.',
       value: 5000,
-      families: ['fadeev'],
+      family: 'fadeev',
       time: '14:05',
       source: {
         bank: 'Sber',
@@ -159,15 +279,75 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['23.01.2026', english()],
-  ['21.01.2026', english()],
-  ['16.01.2026', english()],
+  [
+    '23.01.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '21.01.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '16.01.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '16.01.2026',
     transfers({
       value: 10000,
       name: 'Ксения Д.',
-      families: ['petrov'],
+      family: 'petrov',
       time: '13:06',
       source: {
         bank: 'VTB',
@@ -175,15 +355,74 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['14.01.2026', english()],
-  ['26.12.2025', english()],
+  [
+    '14.01.2026',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '26.12.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+
+  // Дарим подарки Наташе и Амире.
+  // Распредели пожалуйста между всеми 9000.
+  // Только у Вани коэффициент 1, у Веры 0.5
   [
     '26.12.2025',
     gifts({
       value: -9000,
       name: 'Подарки: Музыка и Английский',
       time: '21:51',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
       description: 'Новогодние подарки Амире и Наташе',
       target: {
         bank: 'Tbank',
@@ -191,14 +430,64 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['23.12.2025', music()],
+  [
+    '23.12.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+
+  // Борис, привет привет. Пишу лете ещё наши расходы по новому году и кому что перевести
+  // 2800 Наташе Новицкой (на Т-Банк)
+  // 3521 Наде (маме Авроры) (на Т-Банк)
+  // 7000 мне (на Т-Банк)
+
+  // Как распределить между детьми напишу позже
+
+  // Борис, распределить всё нужно так:
+  // Миру не включаем
+  // Между остальными распредели ровно, кроме меня Нади и Наташи
+  // По нам на Ваню коэффициент 1
+  // На Веру 0.5
+  // На Наташу на Мишу коэффициент 1.5 (если Аня не в списке уже)
+  // На Аврору коэффициент 1.5 (была на празднике Маруся)
   [
     '23.12.2025',
     gifts({
       value: -3521,
       name: 'Новогодние расходы',
       time: '6:17',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva', 'marusya.fadeeva'), // была на празднике Маруся
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: none<Yuzhakovs>(),
+      },
       description: 'Новогодние расходы (Надежда Фадеева)',
       target: {
         bank: 'Tbank',
@@ -212,7 +501,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Дмитрий Л.',
-      families: ['legoshin'],
+      family: 'legoshin',
       time: '23:03',
       source: {
         bank: 'Tbank',
@@ -226,7 +515,22 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -2800,
       name: 'Новогодние расходы',
       time: '21:00',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva', 'marusya.fadeeva'), // была на празднике Маруся
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: none<Yuzhakovs>(), // в Индии
+      },
       description: 'Новогодние расходы (Наташа Новицкая)',
       target: {
         bank: 'Tbank',
@@ -241,7 +545,22 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -7000,
       name: 'Новогодние расходы',
       time: '20:53',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva', 'marusya.fadeeva'), // была на празднике Маруся
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: none<Yuzhakovs>(), // в Индии
+      },
       description: 'Новогодние расходы (Светлана Еремеева)',
       target: {
         bank: 'Tbank',
@@ -256,7 +575,22 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -7268,
       name: 'Новогодние расходы',
       time: '17:51',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva', 'marusya.fadeeva'), // была на празднике Маруся
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: none<Yuzhakovs>(), // в Индии
+      },
       description: 'Еда для новогоднего квеста (Софья Гербер)',
       target: {
         bank: 'Sber',
@@ -270,7 +604,22 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -1700,
       name: 'Новогодние расходы',
       time: '17:57',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva', 'marusya.fadeeva'), // была на празднике Маруся
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: none<Yuzhakovs>(), // в Индии
+      },
       description: 'Фотографии для НГ квеста (Софья Гербер)',
       target: {
         bank: 'Sber',
@@ -283,7 +632,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Софья Г.',
-      families: ['gerber'],
+      family: 'gerber',
       time: '17:57',
       source: {
         bank: 'Tbank',
@@ -291,7 +640,27 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['19.12.2025', english()],
+  [
+    '19.12.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '18.12.2025',
     gifts({
@@ -299,20 +668,76 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Подарок Веронике',
       time: '16:15',
       description: '1к с семьи',
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: cnst<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: cnst<Fadeevs>('aurora.fadeeva'),
+        gerber: cnst<Gerbers>('agata.gerber'),
+        kirillov: cnst<Kirillovs>('emma.kirillova'),
+        legoshin: cnst<Legoshins>('mila.legoshina'),
+        leonenko: cnst<Leonenkos>('aellita.leonenko'),
+        marshev: cnst<Marshevs>('igor.marshev'),
+        novitskiy: cnst<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: cnst<Petrovs>('varya.petrova'),
+        pimenov: cnst<Pimenovs>('emilia.pimenova'),
+        skvortsov: cnst<Skvortsovs>('kirill.skvortsov'),
+        usarov: cnst<Usaros>('emil.usarov'),
+        yuzhakov: cnst<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Tbank',
         name: 'Светлана Е.',
       },
     }),
   ],
-  ['17.12.2025', english()],
-  ['15.12.2025', music()],
+  [
+    '17.12.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '15.12.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '14.12.2025',
     transfers({
       value: 5000,
       name: 'Ольга С.',
-      families: ['skvortsov'],
+      family: 'skvortsov',
       time: '14:57',
       source: {
         bank: 'Raiffeisen',
@@ -320,16 +745,91 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['12.12.2025', english()],
-  ['11.12.2025', music()],
-  ['10.12.2025', english()],
+  [
+    '12.12.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '11.12.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '10.12.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '08.12.2025',
     supermarkets({
       value: -1400,
       time: '13:47',
       name: 'Расходники',
-      families: families.except(['yuzhakov']),
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: none<Yuzhakovs>(), // в Индии
+      },
       description: 'Украшение на ёлку и в квартиру (Вероника Золотарёва)',
       target: {
         bank: 'Tbank',
@@ -342,7 +842,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Надежда Ф.',
-      families: ['fadeev'],
+      family: 'fadeev',
       time: '10:30',
       source: {
         bank: 'Tbank',
@@ -355,7 +855,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 10000,
       name: 'Наталья Н.',
-      families: ['novitskiy'],
+      family: 'novitskiy',
       time: '13:35',
       source: {
         bank: 'Tbank',
@@ -368,7 +868,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 10000,
       name: 'Анастасия М.',
-      families: ['marshev'],
+      family: 'marshev',
       time: '13:33',
       source: {
         bank: 'Tbank',
@@ -381,7 +881,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Ольга К.',
-      families: ['kirillov'],
+      family: 'kirillov',
       time: '16:02',
       source: {
         bank: 'Sber',
@@ -394,7 +894,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Денис П.',
-      families: ['petrov'],
+      family: 'petrov',
       time: '15:28',
       source: {
         bank: 'Tbank',
@@ -407,7 +907,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 8000,
       name: 'Светлана Е.',
-      families: ['eremeev'],
+      family: 'eremeev',
       time: '11:55',
       source: {
         bank: 'Sber',
@@ -421,7 +921,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Мария И.',
-      families: ['usarov'],
+      family: 'usarov',
       time: '10:31',
       source: {
         bank: 'Sber',
@@ -429,17 +929,153 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['04.12.2025', music()],
-  ['03.12.2025', english()],
-  ['02.12.2025', music()],
-  ['28.11.2025', english()],
-  ['26.11.2025', english()],
-  ['25.11.2025', music()],
+  [
+    '04.12.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '03.12.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '02.12.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '28.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '26.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '25.11.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '21.11.2025',
     supermarkets({
       value: -2391,
       name: 'Праздник гномиков',
+      families: {
+        cherny: none<Cherny>(), // ушла
+        eremeev: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: line<Fadeevs>('aurora.fadeeva'),
+        gerber: line<Gerbers>('agata.gerber'),
+        kirillov: line<Kirillovs>('emma.kirillova'),
+        legoshin: line<Legoshins>('mila.legoshina'),
+        leonenko: line<Leonenkos>('aellita.leonenko'),
+        marshev: line<Marshevs>('igor.marshev'),
+        novitskiy: line<Novitsky>('anna.novitskaya'),
+        petrov: line<Petrovs>('varya.petrova'),
+        pimenov: line<Pimenovs>('emilia.pimenova'),
+        skvortsov: line<Skvortsovs>('kirill.skvortsov'),
+        usarov: line<Usaros>('emil.usarov'),
+        yuzhakov: line<Yuzhakovs>('meera.yuzhakova'),
+      },
       time: '18:30',
       description: 'Еда для праздника гномиков (Софья Гербер)',
       target: {
@@ -448,17 +1084,119 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['21.11.2025', english()],
-  ['20.11.2025', music()],
-  ['19.11.2025', english()],
+  // Привет. Вчера было занятие с Амирой. И сегодня она тоже будет на празднике, как занятие
+  [
+    '21.11.2025',
+    music({
+      description: 'Участие Амиры в празднике гномиков (музыкальное сопровождение)',
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '21.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '20.11.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '19.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  // Переведи пожалуйста Веронике 1600 рублей. Мне 3635 рублей.
+  // И спиши с каждого ребёнка с депозита 349 рублей (с Миши получается 349*2 тк за Аню ещё).
+  // Это за праздник гномиков за подарки детям и реквизит.
+  // I have counted 243 + 107
   [
     '18.11.2025',
     gifts({
       value: -3635,
       name: 'Праздник гномиков',
-      // tag: 'gnoms',
       time: '02:45',
       description: 'Праздник гномиков (Светлана Еремеева)',
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: line<Fadeevs>('aurora.fadeeva'),
+        gerber: line<Gerbers>('agata.gerber'),
+        kirillov: line<Kirillovs>('emma.kirillova'),
+        legoshin: line<Legoshins>('mila.legoshina'),
+        leonenko: line<Leonenkos>('aellita.leonenko'),
+        marshev: line<Marshevs>('igor.marshev'),
+        novitskiy: line<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: line<Petrovs>('varya.petrova'),
+        pimenov: line<Pimenovs>('emilia.pimenova'),
+        skvortsov: line<Skvortsovs>('kirill.skvortsov'),
+        usarov: line<Usaros>('emil.usarov'),
+        yuzhakov: line<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Tbank',
         name: 'Светлана Еремеева',
@@ -472,25 +1210,181 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Праздник гномиков',
       time: '02:44',
       description: 'Праздник гномиков (Вероника Золотарёва)',
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: line<Fadeevs>('aurora.fadeeva'),
+        gerber: line<Gerbers>('agata.gerber'),
+        kirillov: line<Kirillovs>('emma.kirillova'),
+        legoshin: line<Legoshins>('mila.legoshina'),
+        leonenko: line<Leonenkos>('aellita.leonenko'),
+        marshev: line<Marshevs>('igor.marshev'),
+        novitskiy: line<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: line<Petrovs>('varya.petrova'),
+        pimenov: line<Pimenovs>('emilia.pimenova'),
+        skvortsov: line<Skvortsovs>('kirill.skvortsov'),
+        usarov: line<Usaros>('emil.usarov'),
+        yuzhakov: line<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Alfa',
         name: 'Вероника Золотарёва',
       },
     }),
   ],
-  ['14.11.2025', english()],
-  ['12.11.2025', english()],
-  ['11.11.2025', music()],
-  ['10.11.2025', music()],
-  ['07.11.2025', english()],
-  ['06.11.2025', music()],
-  ['05.11.2025', english()],
+  [
+    '14.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '12.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '11.11.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '10.11.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '07.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(), // left the group
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '06.11.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '05.11.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '25.10.2025',
     transfers({
       value: -5795,
       name: 'Анастасия Ч.',
-      families: ['cherny'],
+      family: 'cherny',
       time: '19:23',
       description: 'Возврат остатка Анастасии Черной',
     }),
@@ -500,7 +1394,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 1555,
       name: 'Дмитрий Л.',
-      families: ['legoshin'],
+      family: 'legoshin',
       time: '18:54',
       description: 'Пополнение кошелька Марии Легошиной',
       source: {
@@ -515,6 +1409,22 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -2929,
       name: 'Расходники',
       time: '20:33',
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
       description: 'Пирамидки для занятий и пастель (Светлана Еремеева)',
       target: {
         bank: 'Tbank',
@@ -522,10 +1432,91 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['17.10.2025', english()],
-  ['15.10.2025', english()],
-  ['09.10.2025', english()],
-  ['07.10.2025', music()],
+  [
+    '17.10.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '15.10.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '09.10.2025',
+    english({
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '07.10.2025',
+    music({
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  // anastasia.chernaya left the group
   [
     '06.10.2025',
     gifts({
@@ -533,6 +1524,22 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'День учителя',
       time: '20:28',
       description: 'Амире М. ко Дню учителя',
+      families: {
+        cherny: fade<Cherny>('nina.chernaya', 'vitya.cherny'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber', 'platon.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Tbank',
         name: 'Светлана Е.',
@@ -546,6 +1553,22 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'День учителя',
       time: '20:28',
       description: 'Наташе М. ко Дню учителя',
+      families: {
+        cherny: fade<Cherny>('nina.chernaya', 'vitya.cherny'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'),
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Tbank',
         name: 'Светлана Е.',
@@ -559,15 +1582,70 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Еда',
       time: '14:33',
       description: 'Овощи и стаканы',
-      // tag: 'food',
+      families: {
+        cherny: line<Cherny>('nina.chernaya', 'vitya.cherny'),
+        eremeev: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: line<Fadeevs>('aurora.fadeeva'),
+        gerber: line<Gerbers>('agata.gerber', 'platon.gerber'),
+        kirillov: line<Kirillovs>('emma.kirillova'),
+        legoshin: line<Legoshins>('mila.legoshina'),
+        leonenko: line<Leonenkos>('aellita.leonenko'),
+        marshev: line<Marshevs>('igor.marshev'),
+        novitskiy: line<Novitsky>('anna.novitskaya'),
+        petrov: line<Petrovs>('varya.petrova'),
+        pimenov: line<Pimenovs>('emilia.pimenova'),
+        skvortsov: line<Skvortsovs>('kirill.skvortsov'),
+        usarov: line<Usaros>('emil.usarov'),
+        yuzhakov: line<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Tbank',
         name: 'Платон Г.',
       },
     }),
   ],
-  ['01.10.2025', english()],
-  ['30.09.2025', music()],
+  [
+    '01.10.2025',
+    english({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '30.09.2025',
+    music({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '27.09.2025',
     gifts({
@@ -575,6 +1653,22 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'День воспитателя',
       time: '12:21',
       description: 'Поздравление Вероники с днем воспитателя',
+      families: {
+        cherny: 500, // fade<Cherny>('vitya.cherny', 'nina.chernaya'), // Ходила только Нина
+        eremeev: 2000, // fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: 1000, // fade<Fadeevs>('aurora.fadeeva'),
+        gerber: 1000, // fade<Gerbers>('agata.gerber', 'platon.gerber'),
+        kirillov: 1000, // fade<Kirillovs>('emma.kirillova'),
+        legoshin: 1000, // fade<Legoshins>('mila.legoshina'),
+        leonenko: 1000, // fade<Leonenkos>('aellita.leonenko'),
+        marshev: 2000, // fade<Marshevs>('igor.marshev'),
+        novitskiy: 1000, // fade<Novitsky>('anna.novitskaya'),
+        petrov: 1000, // fade<Petrovs>('varya.petrova'),
+        pimenov: 1, // fade<Pimenovs>('emilia.pimenova'), - кажется она специально не скидывалась
+        skvortsov: 1000, // fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: 1000, // fade<Usaros>('emil.usarov'),
+        yuzhakov: 1500, // fade<Yuzhakovs>('meera.yuzhakova'),
+      },
       target: {
         bank: 'Alfa',
         name: 'Вероника Золотарёва',
@@ -586,7 +1680,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Софья Г.',
-      families: ['gerber'],
+      family: 'gerber',
       time: '14:34',
       target: {
         bank: 'Sovcombank',
@@ -600,6 +1694,22 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -425,
       time: '12:21',
       name: 'Расходники',
+      families: {
+        cherny: line<Cherny>('vitya.cherny', 'nina.chernaya'),
+        eremeev: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: line<Fadeevs>('aurora.fadeeva'),
+        gerber: line<Gerbers>('agata.gerber'),
+        kirillov: line<Kirillovs>('emma.kirillova'),
+        legoshin: line<Legoshins>('mila.legoshina'),
+        leonenko: line<Leonenkos>('aellita.leonenko'),
+        marshev: line<Marshevs>('igor.marshev'),
+        novitskiy: line<Novitsky>('anna.novitskaya'),
+        petrov: line<Petrovs>('varya.petrova'),
+        pimenov: line<Pimenovs>('emilia.pimenova'),
+        skvortsov: line<Skvortsovs>('kirill.skvortsov'),
+        usarov: line<Usaros>('emil.usarov'),
+        yuzhakov: line<Yuzhakovs>('meera.yuzhakova'),
+      },
       description: 'Канцелярские товары',
       target: {
         bank: 'Tbank',
@@ -607,15 +1717,75 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['24.09.2025', english()],
-  ['22.09.2025', music()],
-  ['19.09.2025', english()],
+  [
+    '24.09.2025',
+    english({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '22.09.2025',
+    music({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: fade<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '19.09.2025',
+    english({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '18.09.2025',
     transfers({
       value: 2000,
       name: 'Светлана Е.',
-      families: ['eremeev'],
+      family: 'eremeev',
       time: '16:55',
       source: {
         bank: 'Alfa',
@@ -630,7 +1800,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 1000,
       name: 'Ольга С.',
-      families: ['skvortsov'],
+      family: 'skvortsov',
       time: '14:57',
       source: {
         bank: 'Alfa',
@@ -639,30 +1809,63 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['18.09.2025', english()],
+  [
+    '18.09.2025',
+    english({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   // Федя (Ольга Скворцова)
   // Ваня (Светлана Еремеева)
   // Вари (Ксения Петрова)
   // Агата (Софья Гербер)
   // Платон (Софья Гербер)
   // Аня (Наташа Новицкая)
-  // Эмик (Мария И.)
+  // emil.usarov (Мария И.)
   [
     '18.09.2025',
     supermarkets({
       value: -7000,
       time: '13:26',
       name: 'Расходники',
-      // calc simple
-      families: [
-        'skvortsov', // Федя
-        'eremeev', // Ваня
-        'petrov', // Варя
-        'gerber', // Агата
-        'gerber', // Платон
-        'novitskiy', // Аня
-        'usarov', // Эмик
-      ],
+      // 1. 'eremeev' -> Ваня
+      // 2. 'skvortsov' -> Федя
+      // 3. 'petrov' -> Варя
+      // 4. 'gerber' -> Агата
+      // 5. 'gerber' -> Платон
+      // 6. 'novitskiy' -> Аня
+      // 7. 'usarov' -> Эмик
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: line<Eremeevs>('ivan.eremeev'), // Только Ваня
+        fadeev: none<Fadeevs>(),
+        gerber: line<Gerbers>('agata.gerber', 'platon.gerber'), // Агата, Платон
+        kirillov: none<Kirillovs>(),
+        legoshin: none<Legoshins>(),
+        leonenko: none<Leonenkos>(),
+        marshev: none<Marshevs>(),
+        novitskiy: line<Novitsky>('anna.novitskaya'), // Только Aня
+        petrov: line<Petrovs>('varya.petrova'), // Варя
+        pimenov: none<Pimenovs>(),
+        skvortsov: line<Skvortsovs>('kirill.skvortsov'), // Федя
+        usarov: line<Usaros>('emil.usarov'), // Эмик
+        yuzhakov: none<Yuzhakovs>(),
+      },
       description: '7 тетрадей по 1к',
       target: {
         category: 'Books - МСС 2741',
@@ -670,12 +1873,35 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
+
+  // [+] pimenov join the group
+
+  // Привет. Тебе сегодня должна перевести общак ещё одна мама. И добавляется в наш список детей ещё один ребёнок Эмма Климова.
+  // Она будет ходить пока только на музыку
+
+  // сентябрь
+  //                 Музыка.     Английский.
+  // 1 Нина          1           1
+  // 2 Ваня + Вера   1.5         1.5
+  // 3 Аврора        1           1
+  // 4 Агата         1           1
+  // 5 Эмма К.       1           1
+  // 6 Мила          0.5         0.5
+  // 7 Аэлита        1           0
+  // 8 Игорь         1           1
+  // 9 Миша + Аня    1           1.5
+  // 10 Варя         1           1
+  // 11 Эмма П.      1           0
+  // 11 Кирилл       1           1
+  // 12 Эмик         0.5         1
+  // 13 Мира         1           1
+
   [
     '17.09.2025',
     transfers({
       value: 5000,
       name: 'Ольга К.',
-      families: ['kirillov'],
+      family: 'kirillov',
       time: '21:10',
       description: 'Пополнение кошелька Ольги Кирилловой',
       source: {
@@ -685,17 +1911,67 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  ['15.09.2025', music()],
+  [
+    '15.09.2025',
+    music({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov') / 2,
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '12.09.2025',
     english({
-      families: families.except(['kirillov']),
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
     }),
   ],
   [
     '10.09.2025',
     english({
-      families: families.except(['kirillov']),
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
     }),
   ],
   [
@@ -703,7 +1979,42 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 10000,
       name: 'Анастасия М.',
-      families: ['marshev'],
+      family: 'marshev',
+      time: '22:28',
+      description: 'Пополнение кошелька Анастасии Маршевой',
+      source: {
+        bank: 'Tbank',
+        name: 'Анастасия М.',
+      },
+    }),
+  ],
+  [
+    '10.09.2025',
+    english({
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '09.09.2025',
+    transfers({
+      value: 10000,
+      name: 'Анастасия М.',
+      family: 'marshev',
       time: '22:28',
       description: 'Пополнение кошелька Анастасии Маршевой',
       source: {
@@ -715,59 +2026,68 @@ const rawTransactions: [string, RawTransaction][] = [
   [
     '05.09.2025',
     english({
-      families: families.except(['kirillov']),
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
     }),
   ],
-  // - 04.09.2025: music (без olga.kirillova)
-  //   - users:
-  //     - natasha.novitskaya <!-- 273 -->
-  //       - Миша
-  //       - Аня
-  //     - svetlana.eremeeva <!-- 273 -->
-  //       - Вера
-  //       - Ваня
-  //     - sofya-gerber <!-- 182 -->
-  //       - Агата
-  //     - ksenya.petrova <!-- 182 -->
-  //       - Варя
-  //     - maria.legoshina <!-- 182 -->
-  //       - Мила
-  //     - maria.usarova <!-- 182 -->
-  //       - Нина
-  //     - olga.skvortsova <!-- 182 -->
-  //       - Кирилл
-  //     - ornella.zubkova <!-- 182 -->
-  //       - Мира
-  //     - polina.leonenko <!-- 182 -->
-  //       - Аэлита
-  //     - anastasia.marsheva <!-- 182 -->
-  //       - Игорь
   [
     '04.09.2025',
     music({
-      families: families.except(['kirillov']),
+      // Должно получиться 182
+      families: {
+        cherny: none<Cherny>(),
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), // 273
+        fadeev: none<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'), // 182
+        kirillov: none<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina'), // 182
+        leonenko: fade<Leonenkos>('aellita.leonenko'), // 182
+        marshev: fade<Marshevs>('igor.marshev'), // 182
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'), // 273+
+        petrov: fade<Petrovs>('varya.petrova'), // 182
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'), // 182
+        usarov: fade<Usaros>('emil.usarov'), // 182
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'), // 182
+      },
     }),
   ],
   [
     '03.09.2025',
     english({
-      families: families.except(['kirillov']),
-    }),
-  ],
-  [
-    '03.09.2025',
-    transfers({
-      value: 6000,
-      name: 'Светлана Е.',
-      families: ['eremeev'],
-      time: '16:40',
-      description: 'Пополнение кошелька Светланы Еремеевой',
-      source: {
-        bank: 'Alfa',
-        name: 'Светлана Е.',
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // Ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeev: fade<Fadeevs>('aurora.fadeeva'),
+        gerber: fade<Gerbers>('agata.gerber'),
+        kirillov: fade<Kirillovs>('emma.kirillova'),
+        legoshin: fade<Legoshins>('mila.legoshina') / 2,
+        leonenko: fade<Leonenkos>('aellita.leonenko'),
+        marshev: fade<Marshevs>('igor.marshev'),
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'),
+        petrov: fade<Petrovs>('varya.petrova'),
+        pimenov: none<Pimenovs>('emilia.pimenova'),
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov'),
+        usarov: fade<Usaros>('emil.usarov'),
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'),
       },
     }),
   ],
+
   // На сентябрь у нас будет так:
   // Всего детей 14
 
@@ -780,12 +2100,42 @@ const rawTransactions: [string, RawTransaction][] = [
 
   // Все дети ходят два раза, один ребёнок (Мила) ходит один раз.
   // Аня и Миша считаются с коэффициентом 1.5. Цена за Аню ложится на Мишу в учёте.
+
+  // сентябрь
+  //                 Музыка.     Английский.
+  // 1 Нина          1           1
+  // 2 Ваня + Вера   1.5         1.5
+  // 3 Аврора        1           1
+  // 4 Агата         1           1
+  // 5 Эмма К.       1           1
+  // 6 Мила          0.5         0.5
+  // 7 Аэлита        1           0
+  // 8 Игорь         1           1
+  // 9 Миша + Аня    1           1.5
+  // 10 Варя         1           1
+  // 11 Кирилл       1           1
+  // 12 Эмик         0.5         1
+  // 13 Мира         1           1
+  [
+    '03.09.2025',
+    transfers({
+      value: 6000,
+      name: 'Светлана Е.',
+      family: 'eremeev',
+      time: '16:40',
+      description: 'Пополнение кошелька Светланы Еремеевой',
+      source: {
+        bank: 'Alfa',
+        name: 'Светлана Е.',
+      },
+    }),
+  ],
   [
     '01.09.2025',
     transfers({
       value: 10000,
       name: 'Дмитрий Л.',
-      families: ['legoshin'],
+      family: 'legoshin',
       time: '15:00',
       description: 'Пополнение кошелька Марии Легошиной',
       source: {
@@ -799,7 +2149,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 10000,
       name: 'Ольга С.',
-      families: ['skvortsov'],
+      family: 'skvortsov',
       time: '15:47',
       description: 'Пополнение кошелька Ольги Скворцовой',
       source: {
@@ -814,7 +2164,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 15000,
       name: 'Наталия Н.',
-      families: ['novitskiy'],
+      family: 'novitskiy',
       time: '13:59',
       description: 'Пополнение кошелька Наташи Новицкой',
       source: {
@@ -828,7 +2178,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 3000,
       name: 'Надежда Ф.',
-      families: ['fadeev'],
+      family: 'fadeev',
       time: '12:30',
       description: 'Пополнение кошелька Надежды Фадеевой',
       source: {
@@ -842,7 +2192,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 10000,
       name: 'Дмитрий П.',
-      families: ['petrov'],
+      family: 'petrov',
       time: '14:57',
       description: 'Пополнение кошелька Ксении Петровой',
       source: {
@@ -856,7 +2206,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 10000,
       name: 'Анастасия Ч.',
-      families: ['cherny'],
+      family: 'cherny',
       time: '15:00',
       description: 'Пополнение кошелька Анастасии Черной',
       source: {
@@ -865,12 +2215,29 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-  // - 28.08.2025: music
-  //   note: перевел Светлане Еремеевой 1300, так как она платила из своего кармана. Для простоты спишу со всех, кто ходит на музыку по обычному тарифу
+  // 28.08.2025: music
+  // Перевел Светлане Еремеевой 1300, так как она платила из своего кармана.
+  // Должно получиться 104 (1300 / 12.5) - сумма за одного ребенка
   [
     '28.08.2025',
     music({
-      families: families.except(['kirillov']),
+      value: -(1300 - 208), // еще были Евгения Т, Влада Р
+      families: {
+        cherny: fade<Cherny>('nina.chernaya'), // 104, ходила только Нина
+        eremeev: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), // 156
+        fadeev: none<Fadeevs>('aurora.fadeeva'), // 104, Аврора
+        gerber: fade<Gerbers>('agata.gerber'), // 104, 'platon.gerber' уже в школе
+        kirillov: none<Kirillovs>(), // еще не пришла
+        legoshin: none<Legoshins>('mila.legoshina'), // 104, видимо, тут не была
+        leonenko: fade<Leonenkos>('aellita.leonenko'), // 104,
+        marshev: fade<Marshevs>('igor.marshev'), // 104
+        novitskiy: fade<Novitsky>('anna.novitskaya', 'misha.novitskiy'), // 156
+        petrov: fade<Petrovs>('varya.petrova'), // 104,
+        pimenov: none<Pimenovs>('emilia.pimenova'), //
+        skvortsov: fade<Skvortsovs>('kirill.skvortsov', 'kirill.skvortsov'), // 156, был еще кто-то от него
+        usarov: none<Usaros>('emil.usarov'), // 104, видимо, тут не было
+        yuzhakov: fade<Yuzhakovs>('meera.yuzhakova'), // 104,
+      },
     }),
   ],
 ]
@@ -898,21 +2265,22 @@ export const familyTransactions: FamilyTransaction[] = []
 
 // разбиваем транзакции по юзерам
 for (const transaction of transactions) {
-  const transactionFamilies = transaction.families.map(f => families.getById(f)!)
-  const values = (transaction.calc || relativeFn)?.(transaction.value, transactionFamilies)
+  const totalIncome = Object.values(transaction.families).reduce((r, i) => r + i, 0)
 
-  for (const family of transaction.families) {
-    familyTransactions.push({
-      // id: crypto.randomUUID(),
-      family,
-      transaction: transaction.id,
-      // timestamp: transaction.timestamp,
-      // description: transaction.description,
-      value: values?.[family] ?? 0,
-      // category: transaction.category,
-      // teacher: transaction.teacher,
-      // target: transaction.target,
-      // source: transaction.source,
-    })
+  const families = Object.keys(transaction.families) as Family['id'][]
+  for (const family of families) {
+    if (transaction.families[family])
+      familyTransactions.push({
+        // id: crypto.randomUUID(),
+        family,
+        transaction: transaction.id,
+        // timestamp: transaction.timestamp,
+        // description: transaction.description,
+        value: Math.floor(transaction.value * (transaction.families[family] / totalIncome)),
+        // category: transaction.category,
+        // teacher: transaction.teacher,
+        // target: transaction.target,
+        // source: transaction.source,
+      })
   }
 }

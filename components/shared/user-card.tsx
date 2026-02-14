@@ -8,6 +8,7 @@ import type { Family, User } from '@/lib/definitions'
 import { Card } from '../ui/card'
 import { fetchTranslations } from '../utils/fetch-translations'
 import UserContacts from './user-contacts'
+import { format } from '@/lib/tools/time'
 
 export default async function UserCard({ locale, value }: { locale: 'ru' | 'en'; value: User }) {
   const t = await fetchTranslations({
@@ -21,7 +22,7 @@ export default async function UserCard({ locale, value }: { locale: 'ru' | 'en';
 
   return (
     <>
-      <Card>
+      <Card className="gap-2">
         <Avatar
           size="lg"
           className="mx-auto"
@@ -39,6 +40,9 @@ export default async function UserCard({ locale, value }: { locale: 'ru' | 'en';
         </Avatar>
         <div className="mb-2 block text-center text-sm font-medium text-foreground">
           {value.name}
+        </div>
+        <div className="mb-2 block text-center text-sm font-medium text-muted-foreground">
+          {format(value.birthdate)}
         </div>
       </Card>
       {family && (
@@ -69,7 +73,6 @@ export default async function UserCard({ locale, value }: { locale: 'ru' | 'en';
         </div>
       )}
       {value.contacts && (
-        // центрировать все
         <section className="mx-auto">
           <div className="mb-2 block text-center text-xl font-medium text-foreground">Контакты</div>
           <UserContacts value={value.contacts} />

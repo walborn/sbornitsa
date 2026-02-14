@@ -53,7 +53,6 @@ export async function fetchFamilies() {
 //       ...user,
 //     }))
 
-//     console.log(user) // User is an empty array []
 //     return user[0]
 //   } catch (error) {
 //     console.error('Database Error:', error)

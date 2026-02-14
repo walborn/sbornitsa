@@ -9,7 +9,7 @@ type UserId =
   | 'ksenya.petrova'
   | 'nadezhda.fadeeva'
   | 'natasha.novitskaya'
-  | 'sofya-gerber'
+  | 'sofya.gerber'
   | 'olga.skvortsova'
   | 'olga.kirillova'
   | 'maria.usarova'
@@ -24,7 +24,7 @@ type UserId =
   // children
   | 'nina.chernaya'
   | 'vitya.cherny'
-  | 'vanya.eremeev'
+  | 'ivan.eremeev'
   | 'vera.eremeeva'
   | 'meera.yuzhakova'
   | 'mila.legoshina'
@@ -33,11 +33,12 @@ type UserId =
   | 'kirill.skvortsov'
   | 'agata.gerber'
   | 'platon.gerber'
-  | 'emik.usarov'
-  | 'avrora.fadeeva'
+  | 'emil.usarov'
+  | 'aurora.fadeeva'
+  | 'marusya.fadeeva'
   | 'varya.petrova'
   | 'igor.marshev'
-  | 'emma.pimenova'
+  | 'emilia.pimenova'
   | 'emma.kirillova'
   | 'aellita.leonenko'
 
@@ -106,6 +107,21 @@ export type Family = {
   avatar?: string // для отображения аватарки
 }
 
+export type Eremeevs = Extract<User['id'], 'ivan.eremeev' | 'vera.eremeeva'>[]
+export type Pimenovs = Extract<User['id'], 'emilia.pimenova'>[]
+export type Cherny = Extract<User['id'], 'nina.chernaya' | 'vitya.cherny'>[]
+export type Novitsky = Extract<User['id'], 'anna.novitskaya' | 'misha.novitskiy'>[]
+export type Legoshins = Extract<User['id'], 'mila.legoshina'>[]
+export type Marshevs = Extract<User['id'], 'igor.marshev'>[]
+export type Petrovs = Extract<User['id'], 'varya.petrova'>[]
+export type Yuzhakovs = Extract<User['id'], 'meera.yuzhakova'>[]
+export type Fadeevs = Extract<User['id'], 'aurora.fadeeva' | 'marusya.fadeeva'>[]
+export type Gerbers = Extract<User['id'], 'agata.gerber' | 'platon.gerber'>[]
+export type Skvortsovs = Extract<User['id'], 'kirill.skvortsov'>[]
+export type Kirillovs = Extract<User['id'], 'emma.kirillova'>[]
+export type Usaros = Extract<User['id'], 'emil.usarov'>[]
+export type Leonenkos = Extract<User['id'], 'aellita.leonenko'>[]
+
 export type Category = {
   id: 'music' | 'english' | 'transfers' | 'supermarkets' | 'gifts'
   name: string
@@ -118,6 +134,7 @@ export type TransactionTarget = {
   name?: string
   message?: string
   category?: string
+  user?: User['id']
 }
 
 export type TransactionSource = {
@@ -126,13 +143,15 @@ export type TransactionSource = {
   message?: string
 }
 
+export type FamiliesIncomes = Record<Family['id'], number>
+
 export type Transaction = {
   id: string
   name: string
   description: string
   value: number
   category: Category['id']
-  families: Family['id'][]
+  families: FamiliesIncomes
   timestamp: Date
   calc?: CalcFn
   teacher?: User['id']

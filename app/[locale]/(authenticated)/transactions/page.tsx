@@ -47,7 +47,7 @@ export default async function TransactionsPage({ params }: Props) {
     <>
       <AppHeader>{t.navigation('transactions')}</AppHeader>
 
-      <Balance />
+      <Balance familyTransactions={familyTransactions} />
       <section className="flex flex-col gap-4">
         <TransactionsList
           transactions={transactions}

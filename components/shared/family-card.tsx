@@ -1,5 +1,7 @@
 import Link from 'next/link'
 
+import { useTranslations } from 'next-intl'
+
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar'
 import { fetchFamilies, getUserById } from '@/lib/api/users'
 import type { Family, User } from '@/lib/definitions'
@@ -20,11 +22,15 @@ export default function FamilyCard({ locale, value }: Props) {
     .map(getUserById)
     .filter((child): child is User => child !== undefined)
 
+  const t = useTranslations('shared')
+
   return (
     <>
       {mother && (
         <section className="mb-10">
-          <div className="mb-4 block text-center text-xl font-medium text-foreground">Мама</div>
+          <div className="mb-4 block text-center text-xl font-medium text-foreground capitalize">
+            {t('mother')}
+          </div>
           <Link href={`/${locale}/users/${mother.id}`}>
             <Avatar
               size="lg"
@@ -49,7 +55,9 @@ export default function FamilyCard({ locale, value }: Props) {
       )}
       {father && (
         <section className="mb-10">
-          <div className="mb-4 block text-center text-xl font-medium text-foreground">Папа</div>
+          <div className="mb-4 block text-center text-xl font-medium text-foreground capitalize">
+            {t('father')}
+          </div>
 
           <Link href={`/${locale}/users/${father.id}`}>
             <Avatar
@@ -74,7 +82,9 @@ export default function FamilyCard({ locale, value }: Props) {
         </section>
       )}
       <section className="mb-10">
-        <div className="mb-4 block text-center text-xl font-medium text-foreground">Дети</div>
+        <div className="mb-4 block text-center text-xl font-medium text-foreground capitalize">
+          {t('children')}
+        </div>
         {/* аватарки должны отображаться по центру */}
         <div className="mb-2 mx-auto flex items-center justify-center">
           <AvatarGroup className="grayscale-25">

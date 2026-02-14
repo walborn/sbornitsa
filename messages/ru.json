@@ -10,7 +10,21 @@
     "name": "имя",
     "message": "сообщение",
     "balance": "баланс",
-    "family": "семья"
+    "family": "семья",
+    "birthdate": "дата рождения",
+    "contacts": "контакты",
+    "parents": "родители",
+    "mothers": "мамы",
+    "fathers": "папы",
+    "children": "дети",
+    "sons": "сыновья",
+    "daughters": "дочери",
+    "mother": "мама",
+    "father": "папа",
+    "son": "сын",
+    "daughter": "дочь",
+    "teacher": "учитель",
+    "teachers": "учителя"
   },
   "pages": {
     "profile": {

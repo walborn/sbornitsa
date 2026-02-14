@@ -10,7 +10,21 @@
     "name": "name",
     "message": "message",
     "balance": "balance",
-    "family": "family"
+    "family": "family",
+    "birthdate": "birthdate",
+    "contacts": "contacts",
+    "parents": "parents",
+    "mothers": "mothers",
+    "fathers": "fathers",
+    "children": "children",
+    "sons": "sons",
+    "daughters": "daughters",
+    "mother": "mother",
+    "father": "father",
+    "son": "son",
+    "daughter": "daughter",
+    "teacher": "teacher",
+    "teachers": "teachers"
   },
   "pages": {
     "profile": {
