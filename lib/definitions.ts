@@ -152,8 +152,7 @@ export type Transaction = {
   value: number
   category: Category['id']
   families: FamiliesIncomes
-  timestamp: Date
-  calc?: CalcFn
+  timestamp: number // ms from 1900
   teacher?: User['id']
   target?: TransactionTarget
   source?: TransactionSource
@@ -163,7 +162,6 @@ export type FamilyTransaction = {
   // id: string
   family: Family['id']
   transaction: Transaction['id']
-  // timestamp: Date
   // description: string
   value: number
   // category: Category['id']

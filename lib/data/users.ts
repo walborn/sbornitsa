@@ -131,7 +131,7 @@ export const users: User[] = [
   },
   {
     id: 'maria.usarova',
-    name: 'Мария И. Усарова',
+    name: 'Мария Усарова (Исакова)',
     family: 'usarov',
     avatar: '/users/maria.usarova.webp',
     birthdate: new Date(1900, 1, 1),

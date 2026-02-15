@@ -153,10 +153,10 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
-    '15.02.2026',
+    '14.02.2026',
     transfers({
       value: 5000,
-      name: 'Мария 13.02.2026',
+      name: 'Мария Исакова',
       family: 'usarov',
       timestamp: 1771101780000,
       time: '23:43:47', // msk
@@ -2256,14 +2256,14 @@ const rawTransactions: [string, RawTransaction][] = [
 export const transactions: Transaction[] = rawTransactions.map(([date, transaction]) => {
   const [day, month, year] = date.split('.').map(Number)
   const [hours, minutes] = transaction.time.split(':').map(Number)
-  const timestamp = new Date(year, month - 1, day, hours ?? 12, minutes ?? 0)
+  const timestamp = new Date(year, month - 1, day, hours ?? 12, minutes ?? 0).getTime()
 
   return {
     id: crypto.randomUUID(),
     name: transaction.name,
     description: transaction.description,
     value: transaction.value,
-    timestamp,
+    timestamp: transaction.timestamp ?? timestamp,
     category: transaction.category,
     families: transaction.families,
     teacher: transaction.teacher,
@@ -2285,7 +2285,6 @@ for (const transaction of transactions) {
         // id: crypto.randomUUID(),
         family,
         transaction: transaction.id,
-        // timestamp: transaction.timestamp,
         // description: transaction.description,
         value: Math.floor(transaction.value * (transaction.families[family] / totalIncome)),
         // category: transaction.category,

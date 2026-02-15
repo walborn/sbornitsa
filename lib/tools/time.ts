@@ -4,4 +4,4 @@ const formatter = new Intl.DateTimeFormat('ru', {
   year: 'numeric',
 })
 
-export const format = (date: Date) => formatter.format(date)
+export const format = (timestamp: number) => formatter.format(new Date(timestamp))

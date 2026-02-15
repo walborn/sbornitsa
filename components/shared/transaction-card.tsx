@@ -9,7 +9,7 @@ interface Props {
   description: string
   category: string
   value: number
-  timestamp: Date
+  timestamp: number
 }
 
 export const TransactionCard = ({ icon, name, description, category, timestamp, value }: Props) => {
@@ -28,12 +28,7 @@ export const TransactionCard = ({ icon, name, description, category, timestamp, 
         <div className="text-gray-500 text-xs pb-2">{category}</div>
         <div className="text-gray-500 text-xs">{format(timestamp)}</div>
       </div>
-      <div
-        className={cn(
-          'font-normal whitespace-nowrap',
-          value > 0 && 'text-green-500',
-        )}
-      >
+      <div className={cn('font-normal whitespace-nowrap', value > 0 && 'text-green-500')}>
         {value > 0 ? `+${value}` : value}
       </div>
     </div>
