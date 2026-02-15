@@ -103,9 +103,10 @@
       "en": "Fadeevs"
     },
     "mother": "nadezhda.fadeeva",
+    "father": "gennady.fadeev",
     "password": "608bf10d4d879acf43d996e5d023551c5019941fc7eb4d0d37e978921529b0d2",
     "children": ["aurora.fadeeva", "marusya.fadeeva"],
-    "avatar": "/families/nadezhda.fadeeva.webp",
+    "avatar": "/families/fadeevs.webp",
     "value": 0
   },
   {
@@ -127,6 +128,7 @@
       "en": "Petrovs"
     },
     "mother": "ksenya.petrova",
+    "father": "denis.petrov",
     "children": ["varya.petrova"],
     "password": "874a9672b6f20b431dcd2bf832de73359441867d1431a495b898d54298b3b821",
     "avatar": "/families/ksenya.petrova.webp",

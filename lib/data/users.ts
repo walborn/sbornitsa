@@ -148,6 +148,15 @@ export const users: User[] = [
     tags: createTags(['parents', 'mothers'] as const),
   },
   {
+    id: 'gennady.fadeev',
+    name: 'Геннадий Фадеев',
+    family: 'fadeev',
+    avatar: '/users/gennady.fadeev.webp',
+    birthdate: new Date(1900, 1, 1),
+    role: 'user',
+    tags: createTags(['parents', 'fathers'] as const),
+  },
+  {
     id: 'anastasia.marsheva',
     name: 'Анастасия Маршева',
     family: 'marshev',
@@ -168,6 +177,19 @@ export const users: User[] = [
     },
     role: 'user',
     tags: createTags(['parents', 'mothers'] as const),
+  },
+  {
+    id: 'denis.petrov',
+    name: 'Денис Петров',
+    family: 'petrov',
+    avatar: '/users/denis.petrov.webp',
+    birthdate: new Date(1900, 4, 13),
+    contacts: {
+      phone: '+79169418739',
+      telegram: '@petroff_denis',
+    },
+    role: 'user',
+    tags: createTags(['parents', 'fathers'] as const),
   },
   {
     id: 'polina.leonenko',
