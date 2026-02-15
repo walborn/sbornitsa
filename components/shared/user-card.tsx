@@ -42,7 +42,7 @@ export default async function UserCard({ locale, value }: { locale: 'ru' | 'en';
           {value.name}
         </div>
         <div className="mb-2 block text-center text-sm font-medium text-muted-foreground">
-          {format(value.birthdate)}
+          {format(value.birthdate.getTime())}
         </div>
       </Card>
       {family && (
