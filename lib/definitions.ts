@@ -119,7 +119,7 @@ export type Fadeevs = Extract<User['id'], 'aurora.fadeeva' | 'marusya.fadeeva'>[
 export type Gerbers = Extract<User['id'], 'agata.gerber' | 'platon.gerber'>[]
 export type Skvortsovs = Extract<User['id'], 'kirill.skvortsov'>[]
 export type Kirillovs = Extract<User['id'], 'emma.kirillova'>[]
-export type Usaros = Extract<User['id'], 'emil.usarov'>[]
+export type Usarovs = Extract<User['id'], 'emil.usarov'>[]
 export type Leonenkos = Extract<User['id'], 'aellita.leonenko'>[]
 
 export type Category = {
