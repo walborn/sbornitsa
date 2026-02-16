@@ -1,5 +1,5 @@
-import type { User } from '@/lib/definitions'
 import { createTags } from '@/lib/definitions'
+import type { User } from '@/lib/schemas'
 
 import { Families } from './families'
 import { familyTransactions } from './transactions'

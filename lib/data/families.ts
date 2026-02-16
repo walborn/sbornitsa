@@ -1,4 +1,4 @@
-import type { Family } from '@/lib/definitions'
+import type { Family } from '@/lib/schemas'
 import { arrayToObjectById } from '@/lib/utils'
 
 import familiesData from './families-generated.json'

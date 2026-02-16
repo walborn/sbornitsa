@@ -1,11 +1,7 @@
 import type {
-  Category,
   Cherny,
   Eremeevs,
   Fadeevs,
-  FamiliesIncomes,
-  Family,
-  FamilyTransaction,
   Gerbers,
   Kirillovs,
   Legoshins,
@@ -15,13 +11,19 @@ import type {
   Petrovs,
   Pimenovs,
   Skvortsovs,
+  Usarovs,
+  Yuzhakovs,
+} from '@/lib/definitions'
+import type {
+  Category,
+  FamiliesIncomes,
+  Family,
+  FamilyTransaction,
   Transaction,
   TransactionSource,
   TransactionTarget,
-  Usarovs,
   User,
-  Yuzhakovs,
-} from '@/lib/definitions'
+} from '@/lib/schemas'
 
 const cnst = <T extends string[]>(...args: T) => 2 // 2, 2, 2, 2
 const fade = <T extends string[]>(...args: T) => args.length + 1 // 2, 3, 4, 5
