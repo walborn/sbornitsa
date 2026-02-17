@@ -1,8 +1,11 @@
+import { Suspense } from 'react'
+
 import { notFound } from 'next/navigation'
 
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import Balance from '@/components/shared/balance'
+import { BalanceSkeleton, TransactionsSkeleton } from '@/components/shared/skeletons/transactions'
 import TransactionsList from '@/components/shared/transactions-list'
 import { AppHeader } from '@/components/utils/app-header'
 import { fetchTranslations } from '@/components/utils/fetch-translations'
@@ -39,21 +42,31 @@ export default async function TransactionsPage({ params }: Props) {
 
   if (!t) return notFound()
 
-  const transactions = arrayToObjectById(await fetchTransactions())
-  const familyTransactions = await fetchFamilyTransactions()
-  const categories = arrayToObjectById(await fetchCategories())
+  // Use Promise.all to start fetching, but we pass promises to components!
+  // Actually, we can just pass the fetch promises directly if we transform them.
+  // But arrayToObjectById is synchronous transformation.
+  // We can wrap it in a promise.
+
+  const transactionsPromise = fetchTransactions().then(arrayToObjectById)
+  const familyTransactionsPromise = fetchFamilyTransactions()
+  const categoriesPromise = fetchCategories().then(arrayToObjectById)
 
   return (
     <>
       <AppHeader>{t.navigation('transactions')}</AppHeader>
 
-      <Balance familyTransactions={familyTransactions} />
-      <section className="flex flex-col gap-4">
-        <TransactionsList
-          transactions={transactions}
-          familyTransactions={familyTransactions}
-          categories={categories}
-        />
+      <Suspense fallback={<BalanceSkeleton />}>
+        <Balance familyTransactionsPromise={familyTransactionsPromise} />
+      </Suspense>
+
+      <section className="flex flex-col gap-4 mt-4">
+        <Suspense fallback={<TransactionsSkeleton />}>
+          <TransactionsList
+            transactionsPromise={transactionsPromise}
+            familyTransactionsPromise={familyTransactionsPromise}
+            categoriesPromise={categoriesPromise}
+          />
+        </Suspense>
       </section>
     </>
   )

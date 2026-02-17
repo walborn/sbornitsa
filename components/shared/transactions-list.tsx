@@ -1,18 +1,27 @@
 'use client'
 
+import { use } from 'react'
+
 import { TransactionCard } from '@/components/shared/transaction-card'
 import { Card, CardContent } from '@/components/ui/card'
-import { getFamily } from '@/lib/auth'
 import type { Category, FamilyTransaction, Transaction } from '@/lib/definitions'
+import { useFamily } from '@/lib/store/auth.store'
 
 interface Props {
-  transactions: Record<Transaction['id'], Transaction>
-  familyTransactions: FamilyTransaction[]
-  categories: Record<string, Category>
+  transactionsPromise: Promise<Record<Transaction['id'], Transaction>>
+  familyTransactionsPromise: Promise<FamilyTransaction[]>
+  categoriesPromise: Promise<Record<string, Category>>
 }
 
-export default function TransactionsList({ transactions, familyTransactions, categories }: Props) {
-  const family = getFamily()
+export default function TransactionsList({
+  transactionsPromise,
+  familyTransactionsPromise,
+  categoriesPromise,
+}: Props) {
+  const family = useFamily()
+  const transactions = use(transactionsPromise)
+  const familyTransactions = use(familyTransactionsPromise)
+  const categories = use(categoriesPromise)
 
   if (!family) return null
 
@@ -23,7 +32,10 @@ export default function TransactionsList({ transactions, familyTransactions, cat
   return values.map(({ id, name, category: categoryId, description, timestamp, value }) => {
     const category = categories[categoryId]
     return (
-      <Card key={id}>
+      <Card
+        key={id}
+        className="border-none shadow-none"
+      >
         <CardContent>
           <TransactionCard
             icon={{ src: category.icon, alt: category.name }}

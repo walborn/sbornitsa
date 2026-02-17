@@ -1,81 +1,76 @@
-import Link from 'next/link'
+import { Suspense } from 'react'
+
 import { notFound } from 'next/navigation'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { fetchFamilyById } from '@/lib/api'
-import type { Family, User } from '@/lib/definitions'
+import { Skeleton } from '@/components/ui/skeleton'
+import type { User } from '@/lib/schemas' // Use schemas directly!
+import { format } from '@/lib/tools/time'
 
 import { Card } from '../ui/card'
 import { fetchTranslations } from '../utils/fetch-translations'
 import UserContacts from './user-contacts'
-import { format } from '@/lib/tools/time'
+import UserFamily from './user-family'
 
-export default async function UserCard({ locale, value }: { locale: 'ru' | 'en'; value: User }) {
+export default async function UserCard({
+  locale,
+  userPromise,
+}: {
+  locale: 'ru' | 'en'
+  userPromise: Promise<User | undefined>
+}) {
+  const user = await userPromise
+
+  // Parallel fetch translations while waiting for user?
+  // Ideally we could Promise.all() here if we want to be super fast,
+  // but translations are fast usually.
   const t = await fetchTranslations({
     navigation: 'navigation',
     shared: 'shared',
   })
 
   if (!t) return notFound()
-  let family: Family | undefined
-  if (value.family) family = await fetchFamilyById(value.family)
+  if (!user) return notFound() // Handle undefined user
 
   return (
     <>
-      <Card className="gap-2">
+      <Card className="gap-2 p-4">
         <Avatar
           size="lg"
-          className="mx-auto"
+          className="mx-auto select-none pointer-events-none"
         >
           <AvatarImage
-            src={value.avatar}
-            alt={`Avatar of ${value.name}`}
+            src={user.avatar}
+            alt={`Avatar of ${user.name}`}
           />
           <AvatarFallback>
-            {value.name
+            {user.name
               .split(' ')
               .map(name => name[0].toUpperCase())
               .join('')}
           </AvatarFallback>
         </Avatar>
         <div className="mb-2 block text-center text-sm font-medium text-foreground">
-          {value.name}
+          {user.name}
         </div>
         <div className="mb-2 block text-center text-sm font-medium text-muted-foreground">
-          {format(value.birthdate.getTime())}
+          {format(user.birthdate.getTime())}
         </div>
       </Card>
-      {family && (
-        <div className="mb-2 block text-center text-sm font-medium text-foreground mx-auto">
-          <div className="mb-2 block text-center text-xl font-medium text-foreground capitalize">
-            {t.shared('family')}
-          </div>
 
-          <Link href={`/${locale}/families/${family.id}`}>
-            <div className="flex items-center justify-between cursor-pointer">
-              <div className="flex items-center gap-2">
-                <Avatar
-                  size="lg"
-                  className="mb-2 mx-auto"
-                >
-                  <AvatarImage
-                    src={family.avatar}
-                    alt={`Avatar of ${family.id}`}
-                  />
-                  <AvatarFallback>{family.name[locale][0].toUpperCase()}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-sm font-medium whitespace-nowrap">{family.name[locale]}</p>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
+      {user.family && (
+        <Suspense fallback={<Skeleton className="h-16 w-full rounded-lg my-2" />}>
+          <UserFamily
+            familyId={user.family}
+            locale={locale}
+          />
+        </Suspense>
       )}
-      {value.contacts && (
-        <section className="mx-auto">
+
+      {user.contacts && (
+        <section className="mx-auto mt-4">
           <div className="mb-2 block text-center text-xl font-medium text-foreground">Контакты</div>
-          <UserContacts value={value.contacts} />
+          <UserContacts value={user.contacts} />
         </section>
       )}
     </>

@@ -1,53 +1,94 @@
+/**
+ * Authentication Module
+ *
+ * Теперь основан на Zustand store для реактивности
+ * Сохраняем обратную совместимость со старым API
+ */
+
 export const FAMILY_KEY = 'sbornitsa-family'
 
-import CryptoJS from 'crypto-js'
+// Re-export Zustand hooks для использования в Client Components
+export { useAuthStore, useFamily, useIsAuthenticated } from '@/lib/store/auth.store'
 
-import { familiesDic } from '@/lib/data'
+// import type { Family, FamilyId } from '@/lib/schemas'
 
-import type { Family } from './definitions'
+/**
+ * Server-side утилиты для аутентификации
+ * Эти функции НЕ реактивные и используются только на сервере
+ */
 
-export const login = (username: string, password: string): boolean => {
-  const family: Family = familiesDic[username as Family['id']]
+/**
+ * Получить семью из localStorage (server-side)
+ * ⚠️ НЕ РЕАКТИВНО! Используйте useFamily() в компонентах
+ */
+// export const getFamily = (): Family | null => {
+//   if (typeof window === 'undefined') return null
 
-  const hashedPassword = CryptoJS.SHA256(password).toString()
+//   const familyStr = localStorage.getItem(FAMILY_KEY)
+//   if (typeof familyStr !== 'string') return null
 
-  if (family?.password !== hashedPassword) return false
+//   try {
+//     const parsed = JSON.parse(familyStr)
 
-  if (typeof window !== 'undefined') {
-    localStorage.setItem(FAMILY_KEY, JSON.stringify(family))
-  }
-  return true
-}
+//     // Поддержка старого формата
+//     if (parsed.id && !parsed.state) {
+//       return parsed as Family
+//     }
 
-export const logout = (): void => {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem(FAMILY_KEY)
-  }
-}
+//     // Новый формат Zustand
+//     return parsed.state?.family ?? null
+//   } catch {
+//     return null
+//   }
+// }
 
-export const getFamily = (): Family => {
-  if (typeof window === 'undefined') return {} as Family
+/**
+ * Проверить аутентификацию (server-side)
+ * ⚠️ НЕ РЕАКТИВНО! Используйте useIsAuthenticated() в компонентах
+ */
+// export const isAuthenticated = (): boolean => {
+//   if (typeof window === 'undefined') return false
 
-  const familyStr = localStorage.getItem(FAMILY_KEY)
-  if (typeof familyStr !== 'string') return {} as Family
+//   const familyStr = localStorage.getItem(FAMILY_KEY)
+//   if (typeof familyStr !== 'string') return false
 
-  try {
-    return JSON.parse(familyStr) as Family
-  } catch {
-    return {} as Family
-  }
-}
+//   try {
+//     const parsed = JSON.parse(familyStr)
 
-export const isAuthenticated = (): boolean => {
-  if (typeof window === 'undefined') return false
+//     // Старый формат
+//     if (parsed.id && !parsed.state) {
+//       return Boolean(parsed.id)
+//     }
 
-  const familyStr = localStorage.getItem(FAMILY_KEY)
-  if (typeof familyStr !== 'string') return false
+//     // Новый формат
+//     return parsed.state?.isAuthenticated ?? false
+//   } catch {
+//     return false
+//   }
+// }
 
-  try {
-    const { id, password } = JSON.parse(familyStr) as { id: Family['id']; password: string }
-    return id && familiesDic[id]?.password === password
-  } catch {
-    return false
-  }
-}
+/**
+ * Вход в систему (server-side)
+ * ⚠️ НЕ РЕАКТИВНО! Используйте useAuthStore().login() в компонентах
+ *
+ * Эта функция сохранена для обратной совместимости
+ * но рекомендуется использовать хук useAuthStore()
+ */
+// export const login = (username: FamilyId, password: string): boolean => {
+//   if (typeof window === 'undefined') return false
+
+//   // Используем store напрямую
+//   const { useAuthStore } = require('@/lib/store/auth.store')
+//   return useAuthStore.getState().login(username, password)
+// }
+
+/**
+ * Выход из системы (server-side)
+ * ⚠️ НЕ РЕАКТИВНО! Используйте useAuthStore().logout() в компонентах
+ */
+// export const logout = (): void => {
+//   if (typeof window === 'undefined') return
+
+//   const { useAuthStore } = require('@/lib/store/auth.store')
+//   useAuthStore.getState().logout()
+// }

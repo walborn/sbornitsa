@@ -1,21 +1,27 @@
 'use client'
 
+import { use } from 'react'
+
 import { useTranslations } from 'next-intl'
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { getFamily } from '@/lib/auth'
-import type { Family, FamilyTransaction } from '@/lib/definitions'
+import type { FamilyTransaction } from '@/lib/definitions'
+import { useFamily } from '@/lib/store/auth.store'
 
 interface Props {
-  familyTransactions: FamilyTransaction[]
+  familyTransactionsPromise: Promise<FamilyTransaction[]>
 }
 
-export default function Balance({ familyTransactions }: Props) {
-  const family: Family = getFamily()
+export default function Balance({ familyTransactionsPromise }: Props) {
+  const family = useFamily()
+  const t = useTranslations('shared')
+  const familyTransactions = use(familyTransactionsPromise)
+
+  if (!family) return null
+
   const balance = familyTransactions
     .filter(({ family: familyId }) => familyId === family.id)
     .reduce((acc, { value }) => acc + value, 0)
-  const t = useTranslations('shared')
 
   return (
     <Card>

@@ -1,15 +1,16 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { ArrowRightIcon } from '@heroicons/react/20/solid'
 import { AtSymbolIcon, ExclamationCircleIcon, KeyIcon } from '@heroicons/react/24/outline'
+import { useLocale } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
-import { login } from '@/lib/auth'
-import { useLocale } from 'next-intl'
+import type { FamilyId } from '@/lib/schemas'
+import { migrateOldAuthData, useAuthStore } from '@/lib/store/auth.store'
 
 export default function LoginForm() {
   const locale = useLocale()
@@ -19,15 +20,24 @@ export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [isPending, startTransition] = useTransition()
 
+  // Используем Zustand store для аутентификации
+  const login = useAuthStore(state => state.login)
+
+  // Миграция со старого формата при монтировании
+  useEffect(() => {
+    migrateOldAuthData()
+  }, [])
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setErrorMessage(undefined)
 
     const formData = new FormData(event.currentTarget)
-    const username = formData.get('username') as string
+    const username = formData.get('username') as FamilyId
     const password = formData.get('password') as string
 
     startTransition(() => {
+      // Используем реактивный метод login из store
       if (login(username, password)) {
         router.push(callbackUrl)
       } else {

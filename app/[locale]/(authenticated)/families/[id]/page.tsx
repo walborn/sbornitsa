@@ -1,3 +1,5 @@
+import { Suspense } from 'react'
+
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -51,14 +53,18 @@ export default async function FamilyPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const family = await fetchFamilyById(props.id as Family['id'])
+  const familyPromise = fetchFamilyById(props.id as Family['id'])
 
   const t = await fetchTranslations({
     navigation: 'navigation',
   })
 
   if (!t) return notFound()
-  if (!family) notFound()
+
+  // We don't await family here to avoid blocking
+  // But we need to handle 404 if family doesn't exist?
+  // UserCard pattern handled it inside component or let it render null.
+  // We can also just let Suspense handle it or await it inside component.
 
   return (
     <>
@@ -70,15 +76,24 @@ export default async function FamilyPage({ params }: Props) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{family.id}</BreadcrumbPage>
+              <BreadcrumbPage>{props.id}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </AppHeader>
-      <FamilyCard
-        locale={locale}
-        value={family}
-      />
+      <Suspense
+        fallback={
+          <div className="animate-pulse space-y-4">
+            <div className="h-40 bg-gray-200 rounded-lg" />
+            <div className="h-40 bg-gray-200 rounded-lg" />
+          </div>
+        }
+      >
+        <FamilyCard
+          locale={locale}
+          familyPromise={familyPromise}
+        />
+      </Suspense>
     </>
   )
 }

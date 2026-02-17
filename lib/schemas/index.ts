@@ -147,12 +147,10 @@ const TelegramSchema = z.string().regex(/^@[a-zA-Z0-9_]+$/, {
   message: 'Telegram should start with @',
 })
 
-export const ContactsSchema = z
-  .object({
-    phone: PhoneSchema.optional(),
-    telegram: TelegramSchema.optional(),
-  })
-  .optional()
+export const ContactsSchema = z.object({
+  phone: PhoneSchema.optional(),
+  telegram: TelegramSchema.optional(),
+})
 
 /**
  * Schema для User
@@ -165,7 +163,7 @@ export const UserSchema = z.object({
   family: FamilyIdSchema.optional(),
   birthdate: z.date(),
   avatar: z.string().url('Avatar must be a valid URL'),
-  contacts: ContactsSchema,
+  contacts: ContactsSchema.optional(),
   role: UserRoleSchema,
   tags: z.set(UserTagSchema),
 })

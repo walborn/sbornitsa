@@ -1,8 +1,11 @@
+import { Suspense } from 'react'
+
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
+import { UserCardSkeleton } from '@/components/shared/skeletons'
 import UserCard from '@/components/shared/user-card'
 import {
   Breadcrumb,
@@ -51,14 +54,14 @@ export default async function UserPage({ params }: Props) {
   const { locale } = await params
   setRequestLocale(locale)
 
-  const user = await fetchUserById(props.id as User['id'])
+  const userPromise = fetchUserById(props.id as User['id'])
 
   const t = await fetchTranslations({
     navigation: 'navigation',
   })
 
   if (!t) return notFound()
-  if (!user) notFound()
+  // User checking moved to UserCard to allow async rendering
 
   return (
     <>
@@ -70,15 +73,17 @@ export default async function UserPage({ params }: Props) {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{user.id}</BreadcrumbPage>
+              <BreadcrumbPage>{props.id}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
       </AppHeader>
-      <UserCard
-        locale={locale}
-        value={user}
-      />
+      <Suspense fallback={<UserCardSkeleton />}>
+        <UserCard
+          locale={locale}
+          userPromise={userPromise}
+        />
+      </Suspense>
     </>
   )
 }

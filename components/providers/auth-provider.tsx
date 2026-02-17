@@ -1,52 +1,60 @@
+/**
+ * Auth Provider
+ *
+ * Теперь использует Zustand внутри для state management
+ * но сохраняет React Context API для обратной совместимости
+ */
+
 'use client'
 
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect } from 'react'
 
 import { useRouter } from 'next/navigation'
 
 import { useLocale } from 'next-intl'
 
-import { login as authLogin, logout as authLogout, getFamily } from '@/lib/auth'
-import type { Family } from '@/lib/definitions'
+import type { Family, FamilyId } from '@/lib/schemas'
+import { migrateOldAuthData, useAuthStore, useFamily } from '@/lib/store/auth.store'
 
 interface AuthContextType {
   family: Family | null
-  login: (username: string, family: string) => boolean
+  login: (username: FamilyId, password: string) => boolean
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [family, setFamily] = useState<Family | null>(null)
   const router = useRouter()
   const locale = useLocale()
 
+  // Используем Zustand store напрямую
+  const family = useFamily()
+  const zustandLogin = useAuthStore(state => state.login)
+  const zustandLogout = useAuthStore(state => state.logout)
+
+  // Миграция при монтировании
   useEffect(() => {
-    // Initialize state from localStorage on mount
-    const family = getFamily()
-    if (family?.id) {
-      setFamily(family)
-    }
+    migrateOldAuthData()
   }, [])
 
-  const login = (username: string, password: string) => {
-    const success = authLogin(username, password)
-    if (success) {
-      setFamily(getFamily())
-    }
-    return success
+  const login = (username: FamilyId, password: string) => {
+    return zustandLogin(username, password)
   }
 
   const logout = () => {
-    authLogout()
-    setFamily(null)
+    zustandLogout()
     router.replace(`/${locale}/login`)
   }
 
   return <AuthContext.Provider value={{ family, login, logout }}>{children}</AuthContext.Provider>
 }
 
+/**
+ * Hook для использования auth context
+ *
+ * @deprecated Используйте useAuthStore() напрямую для лучшей производительности
+ */
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {

@@ -6,13 +6,14 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { useLocale } from 'next-intl'
 
-import { isAuthenticated } from '@/lib/auth'
+import { useIsAuthenticated } from '@/lib/auth'
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const pathname = usePathname()
   const [authorized, setAuthorized] = useState(false)
   const locale = useLocale()
+  const isAuthenticated = useIsAuthenticated()
 
   useEffect(() => {
     // Check if we are on the login page or any other public page if needed
@@ -21,13 +22,13 @@ export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
       return
     }
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       router.push(`/${locale}/login`)
       setAuthorized(false)
     } else {
       setAuthorized(true)
     }
-  }, [pathname, router, locale])
+  }, [pathname, router, locale, isAuthenticated])
 
   if (!authorized) {
     // You can return a loading spinner here

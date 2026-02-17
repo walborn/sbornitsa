@@ -1,3 +1,5 @@
+import { use } from 'react'
+
 import Link from 'next/link'
 
 import { useTranslations } from 'next-intl'
@@ -12,17 +14,21 @@ export async function generateStaticParams() {
 
 interface Props {
   locale: string
-  value: Family
+  familyPromise: Promise<Family | undefined>
 }
 
-export default function FamilyCard({ locale, value }: Props) {
-  const mother = getUserById(value.mother)
-  const father = value.father && getUserById(value.father)
-  const children = value.children
+export default function FamilyCard({ locale, familyPromise }: Props) {
+  const family = use(familyPromise)
+  const t = useTranslations('shared')
+
+  if (!family) return null
+
+  // Sync data access (fast, in-memory)
+  const mother = getUserById(family.mother)
+  const father = family.father && getUserById(family.father)
+  const children = family.children
     .map(getUserById)
     .filter((child): child is User => child !== undefined)
-
-  const t = useTranslations('shared')
 
   return (
     <>
@@ -85,7 +91,6 @@ export default function FamilyCard({ locale, value }: Props) {
         <div className="mb-4 block text-center text-xl font-medium text-foreground capitalize">
           {t('children')}
         </div>
-        {/* аватарки должны отображаться по центру */}
         <div className="mb-2 mx-auto flex items-center justify-center">
           <AvatarGroup className="grayscale-25">
             {children.map(child => {
@@ -114,7 +119,7 @@ export default function FamilyCard({ locale, value }: Props) {
           </AvatarGroup>
         </div>
         <div className="mb-2 block text-center text-sm font-medium text-foreground">
-          {children.map(child => child.name).join(', ')}
+          {children.map(child => child.name.split(' ')[0]).join(', ')}
         </div>
       </section>
     </>

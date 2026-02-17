@@ -54,36 +54,46 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
 
 **Реализация**:
 - Данные семьи (ID, пароль) хранятся в `lib/data/families-generated.json`
-- При логине данные шифруются и сохраняются в localStorage
-- Приватный ключ для шифрования хранится в GitHub Secrets
+- При логине данные сохраняются в `zustand` store (с персистенцией в localStorage)
+- Используется `useAuthStore` для управления состоянием
 
 **API функции**:
 ```typescript
-// lib/auth.ts
-login(username: string, password: string): boolean
-logout(): void
-getCurrentUser(): User | null
-getFamily(): Family | null
+// lib/auth.ts (re-exports from store)
+useAuthStore()
+useFamily()
+useIsAuthenticated()
 ```
 
 **Важно**: Не предлагайте JWT, cookies, или серверную аутентификацию - они не подходят для статического сайта.
 
 ### 3. Система типов
 
-**Централизация**: Все типы в `lib/definitions.ts`
+**Централизация**: 
+- Типы в `lib/definitions.ts`
+- Схемы валидации в `lib/schemas/index.ts`
+- Branded types в `lib/types/branded.ts`
 
-**Строгая типизация ID**:
+**Строгая типизация с Branded Types**:
 ```typescript
-// UserId - строгий union type всех пользователей
-type UserId = 'anastasia.chernaya' | 'boris.yuzhakov' | ...
+// Compile-time защита от смешивания ID
+export type UserId = Brand<string, 'UserId'>
+export type FamilyId = Brand<string, 'FamilyId'>
 
-// FamilyId - строгий union type всех семей
-type FamilyId = 'pimenov' | 'eremeev' | ...
+// Zod schemas для runtime валидации
+export const FamilySchema = z.object({
+  id: FamilyIdSchema,
+  mother: UserIdSchema,
+  // ...
+})
 ```
 
-**Почему**: Автодополнение, проверка на этапе компиляции, предотвращение опечаток.
+**Почему**: 
+- Runtime validation (Zod)
+- Compile-time safety (Branded types)
+- Автодополнение и предотвращение ошибок
 
-**Правило для ИИ**: При добавлении новых пользователей/семей ВСЕГДА обновляйте union типы в `lib/definitions.ts`.
+**Правило для ИИ**: При работе с данными всегда используйте Zod schemas для валидации и Branded types для аргументов функций.
 
 ### 4. Структура данных
 
@@ -97,20 +107,20 @@ lib/data/
 └── families-generated.json  # Автогенерируемый файл (НЕ РЕДАКТИРОВАТЬ ВРУЧНУЮ)
 ```
 
-**Паттерн словарей**:
-```typescript
-// Для быстрого доступа создаём словари
-const usersDic = users.reduce((acc, user) => {
-  acc[user.id] = user
-  return acc
-}, {} as Record<string, User>)
+**Паттерн Репозитория**:
+Доступ к данным осуществляется через типизированные репозитории:
 
-export { users, usersDic }
+```typescript
+import { usersRepo, familiesRepo, transactionsRepo } from '@/lib/repositories.instance'
+
+// Быстрый доступ O(1)
+const user = usersRepo.findById(userId)
+const family = familiesRepo.findById(familyId)
 ```
 
 **Правило для ИИ**: 
-- Основные данные редактируйте в `.ts` файлах
-- Словари создавайте через `reduce()`
+- Не импортируйте массивы данных напрямую (кроме скриптов сборки)
+- Используйте методы репозиториев для поиска и фильтрации
 - JSON файлы генерируются автоматически через build скрипт
 
 ---
@@ -139,10 +149,38 @@ export default function LoginForm() {
 }
 ```
 
-**Правило для ИИ**: Используйте Server Components по умолчанию. Добавляйте `'use client'` только если нужны:
-- Хуки React (useState, useEffect, etc.)
-- Браузерные API (localStorage, window)
-- Event handlers (onClick, onChange)
+#### React 19 Patterns (RSC + Suspense)
+
+```tsx
+// ✅ Server Component с Streaming
+export default function UserPage({ params }: Props) {
+  // 1. Start fetching early (non-blocking)
+  const userPromise = fetchUser(params.id)
+  
+  // 2. Pass promise to child
+  return (
+    <Suspense fallback={<UserSkeleton />}>
+      <UserCard userPromise={userPromise} />
+    </Suspense>
+  )
+}
+
+// ✅ Client Component с use()
+'use client'
+import { use } from 'react'
+
+export default function UserCard({ userPromise }: Props) {
+  // 3. Unwrap promise in render
+  const user = use(userPromise)
+  return <div>{user.name}</div>
+}
+```
+
+**Правило для ИИ**: 
+- Используйте паттерн "Pass Promise to Child"
+- Оборачивайте асинхронные части в `<Suspense>`
+- Используйте хук `use()` для получения данных из промисов
+- Избегайте `await` на верхнем уровне page.tsx для критического пути (блокирует рендеринг всей страницы)
 
 #### Типизация Props
 

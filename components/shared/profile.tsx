@@ -1,16 +1,17 @@
 'use client'
 
 import FamilyCard from '@/components/shared/family-card'
-import { getFamily } from '@/lib/auth'
-import type { Family } from '@/lib/definitions'
+import { useFamily } from '@/lib/store/auth.store'
 
 export default function Profile({ locale }: { locale: string }) {
-  const family: Family = getFamily()
+  const family = useFamily()
+
+  if (!family) return null
 
   return (
     <FamilyCard
       locale={locale}
-      value={family}
+      familyPromise={Promise.resolve(family)}
     />
   )
 }

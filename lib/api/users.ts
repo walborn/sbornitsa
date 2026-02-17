@@ -1,6 +1,7 @@
 // import type { User } from '@/lib/definitions'
 import { families, users } from '@/lib/data'
 import type { User } from '@/lib/definitions'
+
 export async function fetchUsers() {
   // try {
   //   return await sql<User[]>`SELECT * FROM users`

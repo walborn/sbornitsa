@@ -304,6 +304,22 @@ export type UserId = string
 export type Timestamp = number
 ```
 
+### Работа с данными (Repository Pattern)
+
+Используйте типизированные репозитории для доступа к данным:
+
+```typescript
+import { usersRepo, familiesRepo } from '@/lib/repositories.instance'
+
+// ✅ ХОРОШО: O(1) доступ
+const user = usersRepo.findById(userId)
+const familyTxs = familyTransactionsRepo.findByFamily(familyId)
+
+// ❌ ПЛОХО: Прямой импорт массивов
+import { users } from '@/lib/data'
+const user = users.find(u => u.id === userId) // O(n)
+```
+
 ### Утилиты
 
 Общие утилиты в `lib/utils.ts`, специализированные в `lib/tools/`:
@@ -321,23 +337,29 @@ export const format = (timestamp: number): string => {
 ```
 
 ### Аутентификация
-
-Используйте localStorage для хранения аутентификации (статический сайт):
-
+ 
+Используйте `useAuthStore` для управления состоянием (Zustand + persist):
+ 
 ```typescript
-// lib/auth.ts
-export const login = (username: string, password: string): boolean => {
-  // проверка и сохранение в localStorage
-}
-
-export const logout = (): void => {
-  // очистка localStorage
-}
-
-export const getCurrentUser = (): User | null => {
-  // получение текущего пользователя из localStorage
-}
+// lib/store/auth.store.ts
+const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: null,
+      family: null,
+      isAuthenticated: false,
+      login: async (username, password) => { ... },
+      logout: () => { ... }
+    }),
+    { name: 'auth-storage' }
+  )
+)
 ```
+ 
+**Важно**: 
+- Не используйте `localStorage` напрямую в компонентах (проблемы с гидратацией)
+- Используйте `useFamily()` для доступа к текущей семье
+- Используйте `isUserId` и `isFamilyId` type guards для проверки типов
 
 ### SEO
 
