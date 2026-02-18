@@ -66,20 +66,20 @@ const USER_IDS = [
  * ВАЖНО: При добавлении новой семьи, добавьте ID сюда!
  */
 const FAMILY_IDS = [
-  'pimenov',
-  'eremeev',
-  'legoshin',
-  'marshev',
-  'petrov',
-  'fadeev',
-  'novitskiy',
-  'gerber',
-  'skvortsov',
-  'kirillov',
-  'usarov',
-  'cherny',
-  'yuzhakov',
-  'leonenko',
+  'pimenovs',
+  'eremeevs',
+  'legoshins',
+  'marshevs',
+  'petrovs',
+  'fadeevs',
+  'novitskys',
+  'gerbers',
+  'skvortsovs',
+  'kirillovs',
+  'usarovs',
+  'chernys',
+  'yuzhakovs',
+  'leonenkos',
 ] as const
 
 /**
@@ -277,6 +277,21 @@ export type TransactionId = z.infer<typeof TransactionIdSchema>
 export type Transaction = z.infer<typeof TransactionSchema>
 export type FamilyTransaction = z.infer<typeof FamilyTransactionSchema>
 
+export type Eremeevs = UserId[]
+export type Pimenovs = UserId[]
+export type Chernys = UserId[]
+export type Novitskys = UserId[]
+export type Legoshins = UserId[]
+export type Marshevs = UserId[]
+export type Petrovs = UserId[]
+export type Yuzhakovs = UserId[]
+export type Fadeevs = UserId[]
+export type Gerbers = UserId[]
+export type Skvortsovs = UserId[]
+export type Kirillovs = UserId[]
+export type Usarovs = UserId[]
+export type Leonenkos = UserId[]
+
 // ============================================================================
 // VALIDATION HELPERS
 // ============================================================================
@@ -328,3 +343,15 @@ export function parseFamilies(data: unknown): Family[] {
 export function parseTransactions(data: unknown): Transaction[] {
   return z.array(TransactionSchema).parse(data)
 }
+
+/**
+ * Утилита для создания Set тегов с проверкой уникальности
+ */
+type UniqueArray<T extends readonly unknown[]> = T extends readonly [infer First, ...infer Rest]
+  ? First extends Rest[number]
+    ? never
+    : readonly [First, ...UniqueArray<Rest>]
+  : T
+
+export const createTags = <T extends readonly UserTag[]>(a: T & UniqueArray<T>): Set<UserTag> =>
+  new Set(a)

@@ -1,11 +1,11 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { ChevronsUpDownIcon } from 'lucide-react'
 import { useLocale } from 'next-intl'
 
-import { useAuth } from '@/components/providers/auth-provider'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -18,17 +18,22 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Item, ItemContent, ItemDescription, ItemMedia, ItemTitle } from '@/components/ui/item'
 import { SidebarMenuButton } from '@/components/ui/sidebar'
-import { usersDic } from '@/lib/data'
+import { useAuthStore, useFamily } from '@/lib/store/auth.store'
 
-type Locale = 'ru' | 'en'
+type Locale = 'ru' | 'en' // может вынести это к другим типам?
 
 export function AppSidebarFooter() {
+  const router = useRouter()
   const locale = useLocale() as Locale
-  const { family, logout } = useAuth()
+  const family = useFamily()
+  const logout = useAuthStore(state => state.logout)
+
+  const handleLogout = () => {
+    logout()
+    router.replace(`/${locale}/login`)
+  }
 
   if (!family) return null
-
-  const mother = usersDic[family.mother]
 
   return (
     <DropdownMenu>
@@ -79,7 +84,7 @@ export function AppSidebarFooter() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={logout}>Log out</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

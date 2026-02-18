@@ -23,6 +23,8 @@ interface AuthState {
   login: (username: FamilyId, password: string) => boolean
   logout: () => void
   getFamily: () => Family | null
+  hydrated: boolean
+  setHydrated: (state: boolean) => void
 }
 
 /**
@@ -88,45 +90,21 @@ export const useAuthStore = create<AuthState>()(
       getFamily: () => {
         return get().family
       },
+
+      // Hydration state
+      hydrated: false,
+      setHydrated: (state: boolean) => {
+        set({ hydrated: state })
+      },
     }),
     {
       name: FAMILY_KEY,
-      // Используем стандартный localStorage
-      // Для миграции со старого формата см. migrateOldAuthData()
+      onRehydrateStorage: () => (state) => {
+        state?.setHydrated(true)
+      },
     }
   )
 )
-
-/**
- * Миграция со старого формата на новый
- * Вызывается один раз при первом рендере
- */
-export const migrateOldAuthData = () => {
-  if (typeof window === 'undefined') return
-
-  try {
-    const oldData = localStorage.getItem(FAMILY_KEY)
-    if (!oldData) return
-
-    const parsed = JSON.parse(oldData)
-
-    // Если это старый формат (прямо Family объект без state)
-    if (parsed.id && !parsed.state) {
-      console.log('Migrating old auth data to Zustand format...')
-
-      // Удаляем старые данные
-      localStorage.removeItem(FAMILY_KEY)
-
-      // Устанавливаем через store
-      useAuthStore.setState({
-        family: parsed,
-        isAuthenticated: true,
-      })
-    }
-  } catch (error) {
-    console.error('Failed to migrate old auth data:', error)
-  }
-}
 
 /**
  * Хук для получения только семьи (оптимизация)

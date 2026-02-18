@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { Contacts } from '@/lib/definitions'
+import type { Contacts } from '@/lib/schemas'
 
 export default async function UserContacts({ value }: { value: Partial<Contacts> }) {
   return (

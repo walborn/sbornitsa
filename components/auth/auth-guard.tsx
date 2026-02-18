@@ -6,34 +6,47 @@ import { usePathname, useRouter } from 'next/navigation'
 
 import { useLocale } from 'next-intl'
 
-import { useIsAuthenticated } from '@/lib/auth'
+import { useAuthStore } from '@/lib/store/auth.store'
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   const pathname = usePathname()
-  const [authorized, setAuthorized] = useState(false)
   const locale = useLocale()
-  const isAuthenticated = useIsAuthenticated()
+  
+  // Use store directly to get both auth state and hydration status
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated)
+  const hydrated = useAuthStore(state => state.hydrated)
+
+  const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    // Check if we are on the login page or any other public page if needed
-    if (pathname?.includes(`/${locale}/login`)) {
-      setAuthorized(true)
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    // Only proceed once mounted and store is hydrated
+    if (!isMounted || !hydrated) return
+
+    const isLoginPage = pathname?.includes(`/${locale}/login`)
+
+    if (isLoginPage) {
+      if (isAuthenticated) {
+        router.push(`/${locale}/profile`)
+      }
       return
     }
 
     if (!isAuthenticated) {
       router.push(`/${locale}/login`)
-      setAuthorized(false)
-    } else {
-      setAuthorized(true)
     }
-  }, [pathname, router, locale, isAuthenticated])
+  }, [pathname, router, locale, isAuthenticated, hydrated, isMounted])
 
-  if (!authorized) {
-    // You can return a loading spinner here
-    return null
-  }
+  // Show nothing while checking or if not authenticated (and not on login page)
+  const isLoginPage = pathname?.includes(`/${locale}/login`)
+  
+  if (!isMounted || !hydrated) return null 
+  
+  if (!isAuthenticated && !isLoginPage) return null
 
   return <>{children}</>
 }

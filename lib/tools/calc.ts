@@ -1,4 +1,4 @@
-import type { Family } from '@/lib/definitions'
+import type { Family } from '@/lib/schemas'
 
 export type CalcFn = (value: number, families: Family[]) => Record<Family['id'], number>
 

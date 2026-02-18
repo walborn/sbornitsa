@@ -60,7 +60,8 @@ sbornitsa/
 │   ├── seo/                  # SEO утилиты
 │   ├── tools/                # Вспомогательные инструменты
 │   ├── auth.ts               # Аутентификация
-│   ├── definitions.ts        # TypeScript определения
+│   ├── auth.ts               # Аутентификация
+│   ├── schemas/              # Zod схемы и типы (Single Source of Truth)
 │   └── utils.ts              # Общие утилиты
 ├── hooks/                    # Custom React хуки
 ├── i18n/                     # Настройки интернационализации
@@ -101,7 +102,7 @@ const getUser = (id) => {
 ```typescript
 // ✅ ХОРОШО
 import type { NextConfig } from 'next'
-import type { User } from '@/lib/definitions'
+import type { User } from '@/lib/schemas'
 
 // ❌ ПЛОХО
 import { NextConfig } from 'next'
@@ -290,18 +291,17 @@ import { Button } from '../../components/ui/button'
 
 ### Определения типов
 
-Храните типы и интерфейсы в `lib/definitions.ts`:
+Храните типы и интерфейсы в `lib/schemas/index.ts` (генерируются из Zod схем):
 
 ```typescript
-// lib/definitions.ts
-export interface User {
-  id: string
-  name: string
-  email: string
-}
+// lib/schemas/index.ts
+export const UserSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string(),
+})
 
-export type UserId = string
-export type Timestamp = number
+export type User = z.infer<typeof UserSchema>
 ```
 
 ### Работа с данными (Repository Pattern)

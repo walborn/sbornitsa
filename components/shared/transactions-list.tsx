@@ -4,7 +4,7 @@ import { use } from 'react'
 
 import { TransactionCard } from '@/components/shared/transaction-card'
 import { Card, CardContent } from '@/components/ui/card'
-import type { Category, FamilyTransaction, Transaction } from '@/lib/definitions'
+import type { Category, FamilyTransaction, Transaction } from '@/lib/schemas'
 import { useFamily } from '@/lib/store/auth.store'
 
 interface Props {

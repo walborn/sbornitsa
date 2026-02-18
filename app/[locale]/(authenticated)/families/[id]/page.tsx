@@ -16,7 +16,7 @@ import {
 import { AppHeader } from '@/components/utils/app-header'
 import { fetchTranslations } from '@/components/utils/fetch-translations'
 import { fetchFamilies, fetchFamilyById } from '@/lib/api'
-import type { Family } from '@/lib/definitions'
+import type { Family } from '@/lib/schemas'
 import { absoluteUrl } from '@/lib/seo/config'
 import { createMetadata } from '@/lib/seo/metadata'
 

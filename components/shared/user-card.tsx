@@ -19,15 +19,13 @@ export default async function UserCard({
   locale: 'ru' | 'en'
   userPromise: Promise<User | undefined>
 }) {
-  const user = await userPromise
-
-  // Parallel fetch translations while waiting for user?
-  // Ideally we could Promise.all() here if we want to be super fast,
-  // but translations are fast usually.
-  const t = await fetchTranslations({
-    navigation: 'navigation',
-    shared: 'shared',
-  })
+  const [user, t] = await Promise.all([
+    userPromise,
+    fetchTranslations({
+      navigation: 'navigation',
+      shared: 'shared',
+    }),
+  ])
 
   if (!t) return notFound()
   if (!user) return notFound() // Handle undefined user

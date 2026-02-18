@@ -6,16 +6,9 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
 import { AuthGuard } from '@/components/auth/auth-guard'
-import { AppHeader } from '@/components/layout/app-header'
-import { AppHeaderProvider } from '@/components/layout/app-header-provider'
-import { AppSidebar } from '@/components/layout/app-sidebar'
 import { ThemeProvider } from '@/components/layout/theme-provider'
 import { AuthProvider } from '@/components/providers/auth-provider'
 import { SchemaScript } from '@/components/seo/schema-script'
-import { LocaleToggle } from '@/components/shared/locale-toggle'
-import { ThemeToggle } from '@/components/shared/theme-toggle'
-import { Separator } from '@/components/ui/separator'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { routing } from '@/i18n/routing'
 import { absoluteUrl } from '@/lib/seo/config'
 import { createOrganizationSchema, createWebsiteSchema } from '@/lib/seo/schema'
@@ -137,27 +130,11 @@ export default async function RootLayout({ children, params }: Props) {
           disableTransitionOnChange
         >
           <NextIntlClientProvider messages={messages}>
-            {/* <AuthProvider> */}
-            {/* <AuthGuard> */}
-            {/* <AppHeaderProvider> */}
-            {/* <SidebarProvider> */}
-            {/* <AppSidebar /> */}
-            {/* <SidebarInset> */}
-            {/* <header className="flex h-16 shrink-0 items-center gap-2 border-b pl-4 pr-[10px] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12"> */}
-            {/* <SidebarTrigger className="-ml-1" /> */}
-            {/* <Separator
-                      orientation="vertical"
-                      className="mr-2 h-4"
-                    /> */}
-            {/* <AppHeader /> */}
-
-            {/* </header> */}
-            {children}
-            {/* </SidebarInset> */}
-            {/* </SidebarProvider> */}
-            {/* </AppHeaderProvider> */}
-            {/* </AuthGuard> */}
-            {/* </AuthProvider> */}
+            <AuthProvider>
+              <AuthGuard>
+                {children}
+              </AuthGuard>
+            </AuthProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

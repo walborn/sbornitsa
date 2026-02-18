@@ -1,5 +1,4 @@
-import { createTags } from '@/lib/definitions'
-import type { User } from '@/lib/schemas'
+import { createTags, type User } from '@/lib/schemas'
 
 import { Families } from './families'
 import { familyTransactions } from './transactions'
@@ -40,7 +39,7 @@ export const users: User[] = [
   {
     id: 'anastasia.chernaya',
     name: 'Анастасия Черная',
-    family: 'cherny',
+    family: 'chernys',
     avatar: '/users/anastasia.chernaya.webp',
     birthdate: new Date(1900, 8, 14),
     contacts: {
@@ -53,7 +52,7 @@ export const users: User[] = [
   {
     id: 'svetlana.eremeeva',
     name: 'Светлана Еремеева',
-    family: 'eremeev',
+    family: 'eremeevs',
     avatar: '/users/svetlana.eremeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -66,7 +65,7 @@ export const users: User[] = [
   {
     id: 'ornella.zubkova',
     name: 'Орнелла Зубкова',
-    family: 'yuzhakov',
+    family: 'yuzhakovs',
     avatar: '/users/ornella.zubkova.webp',
     birthdate: new Date(1987, 2, 16),
     role: 'user',
@@ -79,7 +78,7 @@ export const users: User[] = [
   {
     id: 'boris.yuzhakov',
     name: 'Борис Южаков',
-    family: 'yuzhakov',
+    family: 'yuzhakovs',
     avatar: '/users/boris.yuzhakov.webp',
     birthdate: new Date(1986, 9, 29),
     role: 'admin',
@@ -92,7 +91,7 @@ export const users: User[] = [
   {
     id: 'maria.legoshina',
     name: 'Мария Легошина',
-    family: 'legoshin',
+    family: 'legoshins',
     avatar: '/users/maria.legoshina.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -101,7 +100,7 @@ export const users: User[] = [
   {
     id: 'natasha.novitskaya',
     name: 'Наташа Новицкая',
-    family: 'novitskiy',
+    family: 'novitskys',
     contacts: {
       telegram: '@ergerda',
       phone: '+79163173224',
@@ -114,7 +113,7 @@ export const users: User[] = [
   {
     id: 'olga.skvortsova',
     name: 'Ольга Скворцова',
-    family: 'skvortsov',
+    family: 'skvortsovs',
     avatar: '/users/olga.skvortsova.webp',
     birthdate: new Date(1900, 0, 1),
     role: 'user',
@@ -123,7 +122,7 @@ export const users: User[] = [
   {
     id: 'sofya.gerber',
     name: 'Софья Гербер',
-    family: 'gerber',
+    family: 'gerbers',
     avatar: '/users/sofya.gerber.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -132,7 +131,7 @@ export const users: User[] = [
   {
     id: 'maria.usarova',
     name: 'Мария Усарова (Исакова)',
-    family: 'usarov',
+    family: 'usarovs',
     avatar: '/users/maria.usarova.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -141,7 +140,7 @@ export const users: User[] = [
   {
     id: 'nadezhda.fadeeva',
     name: 'Надежда Фадеева',
-    family: 'fadeev',
+    family: 'fadeevs',
     avatar: '/users/nadezhda.fadeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -150,7 +149,7 @@ export const users: User[] = [
   {
     id: 'gennady.fadeev',
     name: 'Геннадий Фадеев',
-    family: 'fadeev',
+    family: 'fadeevs',
     avatar: '/users/gennady.fadeev.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -159,7 +158,7 @@ export const users: User[] = [
   {
     id: 'anastasia.marsheva',
     name: 'Анастасия Маршева',
-    family: 'marshev',
+    family: 'marshevs',
     avatar: '/users/anastasia.marsheva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -168,7 +167,7 @@ export const users: User[] = [
   {
     id: 'ksenya.petrova',
     name: 'Ксения Петрова',
-    family: 'petrov',
+    family: 'petrovs',
     avatar: '/users/ksenya.petrova.webp',
     birthdate: new Date(1900, 1, 1),
     contacts: {
@@ -181,7 +180,7 @@ export const users: User[] = [
   {
     id: 'denis.petrov',
     name: 'Денис Петров',
-    family: 'petrov',
+    family: 'petrovs',
     avatar: '/users/denis.petrov.webp',
     birthdate: new Date(1900, 4, 13),
     contacts: {
@@ -194,7 +193,7 @@ export const users: User[] = [
   {
     id: 'polina.leonenko',
     name: 'Полина Леоненко',
-    family: 'leonenko',
+    family: 'leonenkos',
     avatar: '/users/polina.leonenko.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -203,7 +202,7 @@ export const users: User[] = [
   {
     id: 'alexandra.pimenova',
     name: 'Александра Пименова',
-    family: 'pimenov',
+    family: 'pimenovs',
     avatar: '/users/aleksandra.pimenova.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -212,7 +211,7 @@ export const users: User[] = [
   {
     id: 'olga.kirillova',
     name: 'Ольга Кириллова',
-    family: 'kirillov',
+    family: 'kirillovs',
     avatar: '/users/olga.kirillova.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -248,7 +247,7 @@ const children: User[] = [
   {
     id: 'nina.chernaya',
     name: 'Нина',
-    family: 'cherny',
+    family: 'chernys',
     avatar: '/users/nina.chernaya.webp',
     birthdate: new Date(2020, 7, 18),
     role: 'user',
@@ -257,7 +256,7 @@ const children: User[] = [
   {
     id: 'vitya.cherny',
     name: 'Витя',
-    family: 'cherny',
+    family: 'chernys',
     avatar: '/users/vitya.cherny.webp',
     birthdate: new Date(2018, 4, 29),
     role: 'user',
@@ -266,7 +265,7 @@ const children: User[] = [
   {
     id: 'ivan.eremeev',
     name: 'Иван Еремеев', // Еремеев Иван Владиславович
-    family: 'eremeev',
+    family: 'eremeevs',
     avatar: '/users/ivan.eremeev.webp',
     birthdate: new Date(2018, 10, 26),
     role: 'user',
@@ -275,7 +274,7 @@ const children: User[] = [
   {
     id: 'vera.eremeeva',
     name: 'Вера Еремеева', // Еремеева Вера Владиславовна
-    family: 'eremeev',
+    family: 'eremeevs',
     avatar: '/users/vera.eremeeva.webp',
     birthdate: new Date(2021, 5, 5),
     role: 'user',
@@ -284,7 +283,7 @@ const children: User[] = [
   {
     id: 'meera.yuzhakova',
     name: 'Мира Южакова',
-    family: 'yuzhakov',
+    family: 'yuzhakovs',
     avatar: '/users/meera.yuzhakova.webp',
     birthdate: new Date(2020, 10, 6),
     role: 'user',
@@ -293,7 +292,7 @@ const children: User[] = [
   {
     id: 'mila.legoshina',
     name: 'Мила Легошина', // Легошина Мила Дмитриевна
-    family: 'legoshin',
+    family: 'legoshins',
     avatar: '/users/mila.legoshina.webp',
     birthdate: new Date(2020, 7, 19),
     role: 'user',
@@ -302,7 +301,7 @@ const children: User[] = [
   {
     id: 'misha.novitskiy',
     name: 'Михаил Новицкий', // Новицкий Михаил Валерьевич
-    family: 'novitskiy',
+    family: 'novitskys',
     avatar: '/users/misha.novitskiy.webp',
     birthdate: new Date(2020, 9, 20),
     role: 'user',
@@ -311,7 +310,7 @@ const children: User[] = [
   {
     id: 'anna.novitskaya',
     name: 'Анна Новицкая', // Новицкая Анна Валерьевна
-    family: 'novitskiy',
+    family: 'novitskys',
     avatar: '/users/anna.novitskaya.webp',
     birthdate: new Date(2017, 9, 22),
     role: 'user',
@@ -320,7 +319,7 @@ const children: User[] = [
   {
     id: 'kirill.skvortsov',
     name: 'Кирилл Скворцов', // Скворцов Кирилл Алексеевич
-    family: 'skvortsov',
+    family: 'skvortsovs',
     avatar: '/users/kirill.skvortsov.webp',
     birthdate: new Date(2021, 5, 13),
     role: 'user',
@@ -329,7 +328,7 @@ const children: User[] = [
   {
     id: 'agata.gerber',
     name: 'Агата Гербер', // Гербер Агата Денисовна
-    family: 'gerber',
+    family: 'gerbers',
     avatar: '/users/agata.gerber.webp',
     birthdate: new Date(2019, 5, 20),
     role: 'user',
@@ -338,7 +337,7 @@ const children: User[] = [
   {
     id: 'platon.gerber',
     name: 'Платон Гербер', // Гербер Платон Денисович
-    family: 'gerber',
+    family: 'gerbers',
     avatar: '/users/platon.gerber.webp',
     birthdate: new Date(201, 11, 2),
     role: 'user',
@@ -347,7 +346,7 @@ const children: User[] = [
   {
     id: 'emil.usarov',
     name: 'Эмиль Усаров', // Усаров Эмиль Джамалович
-    family: 'usarov',
+    family: 'usarovs',
     avatar: '/users/emil.usarov.webp',
     birthdate: new Date(2018, 11, 8),
     role: 'user',
@@ -356,7 +355,7 @@ const children: User[] = [
   {
     id: 'aurora.fadeeva',
     name: 'Аврора Фадеева', // Фадеева Аврора Геннадьевна
-    family: 'fadeev',
+    family: 'fadeevs',
     avatar: '/users/aurora.fadeeva.webp',
     birthdate: new Date(2021, 5, 19),
     role: 'user',
@@ -365,7 +364,7 @@ const children: User[] = [
   {
     id: 'marusya.fadeeva',
     name: 'Маруся',
-    family: 'fadeev',
+    family: 'fadeevs',
     avatar: '/users/marusya.fadeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
@@ -374,7 +373,7 @@ const children: User[] = [
   {
     id: 'varya.petrova',
     name: 'Варвара', // Петрова Варвара Денисовна
-    family: 'petrov',
+    family: 'petrovs',
     avatar: '/users/varya.petrova.webp',
     birthdate: new Date(2019, 5, 26),
     role: 'user',
@@ -383,7 +382,7 @@ const children: User[] = [
   {
     id: 'igor.marshev',
     name: 'Игорь Маршев', // Маршев Игорь Евгеньевич
-    family: 'marshev',
+    family: 'marshevs',
     avatar: '/users/igor.marshev.webp',
     birthdate: new Date(2021, 1, 2),
     role: 'user',
@@ -392,7 +391,7 @@ const children: User[] = [
   {
     id: 'emilia.pimenova',
     name: 'Эмилия Пименова', // Пименова Эмилия Данииловна
-    family: 'pimenov',
+    family: 'pimenovs',
     avatar: '/users/emilia.pimenova.webp',
     birthdate: new Date(2020, 10, 16),
     role: 'user',
@@ -401,7 +400,7 @@ const children: User[] = [
   {
     id: 'emma.kirillova',
     name: 'Эмма Кириллова', // Кириллова Эмма Павловна
-    family: 'kirillov',
+    family: 'kirillovs',
     avatar: '/users/emma.kirillova.webp',
     birthdate: new Date(2021, 0, 31),
     role: 'user',
@@ -410,7 +409,7 @@ const children: User[] = [
   {
     id: 'aellita.leonenko',
     name: 'Аэлита Леоненко', // Леоненко Аэлита Вадимовна
-    family: 'leonenko',
+    family: 'leonenkos',
     avatar: '/users/aellita.leonenko.webp',
     birthdate: new Date(2021, 11, 31),
     role: 'user',

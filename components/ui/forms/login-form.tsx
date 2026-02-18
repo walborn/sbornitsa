@@ -10,7 +10,7 @@ import { useLocale } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
 import type { FamilyId } from '@/lib/schemas'
-import { migrateOldAuthData, useAuthStore } from '@/lib/store/auth.store'
+import { useAuthStore } from '@/lib/store/auth.store'
 
 export default function LoginForm() {
   const locale = useLocale()
@@ -22,11 +22,6 @@ export default function LoginForm() {
 
   // Используем Zustand store для аутентификации
   const login = useAuthStore(state => state.login)
-
-  // Миграция со старого формата при монтировании
-  useEffect(() => {
-    migrateOldAuthData()
-  }, [])
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

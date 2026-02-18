@@ -15,7 +15,7 @@
     "value": 0
   },
   {
-    "id": "eremeev",
+    "id": "eremeevs",
     "name": {
       "ru": "Еремеевы",
       "en": "Eremeevs"
@@ -45,7 +45,7 @@
     "value": 0
   },
   {
-    "id": "legoshin",
+    "id": "legoshins",
     "name": {
       "ru": "Легошины",
       "en": "Legoshins"
@@ -59,10 +59,10 @@
     "value": 0
   },
   {
-    "id": "novitskiy",
+    "id": "novitskys",
     "name": {
       "ru": "Новицкие",
-      "en": "Novitsky"
+      "en": "Novitskys"
     },
     "mother": "natasha.novitskaya",
     "children": [
@@ -74,7 +74,7 @@
     "value": 0
   },
   {
-    "id": "skvortsov",
+    "id": "skvortsovs",
     "name": {
       "ru": "Скворцовы",
       "en": "Skvortsovs"
@@ -88,7 +88,7 @@
     "value": 0
   },
   {
-    "id": "gerber",
+    "id": "gerbers",
     "name": {
       "ru": "Герберы",
       "en": "Gerbers"
@@ -103,7 +103,7 @@
     "value": 0
   },
   {
-    "id": "usarov",
+    "id": "usarovs",
     "name": {
       "ru": "Усаровы",
       "en": "Usarows"
@@ -117,7 +117,7 @@
     "value": 0
   },
   {
-    "id": "fadeev",
+    "id": "fadeevs",
     "name": {
       "ru": "Фадеевы",
       "en": "Fadeevs"
@@ -133,7 +133,7 @@
     "value": 0
   },
   {
-    "id": "marshev",
+    "id": "marshevs",
     "name": {
       "ru": "Маршевы",
       "en": "Marshevs"
@@ -147,7 +147,7 @@
     "value": 0
   },
   {
-    "id": "petrov",
+    "id": "petrovs",
     "name": {
       "ru": "Петровы",
       "en": "Petrovs"
@@ -162,7 +162,7 @@
     "value": 0
   },
   {
-    "id": "leonenko",
+    "id": "leonenkos",
     "name": {
       "ru": "Леоненко",
       "en": "Leonenko"
@@ -176,7 +176,7 @@
     "value": 0
   },
   {
-    "id": "pimenov",
+    "id": "pimenovs",
     "name": {
       "ru": "Пименовы",
       "en": "Pimenovs"
@@ -190,7 +190,7 @@
     "value": 0
   },
   {
-    "id": "kirillov",
+    "id": "kirillovs",
     "name": {
       "ru": "Кирилловы",
       "en": "Kirillovs"

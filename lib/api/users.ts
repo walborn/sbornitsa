@@ -1,39 +1,20 @@
-// import type { User } from '@/lib/definitions'
-import { families, users } from '@/lib/data'
-import type { User } from '@/lib/definitions'
+import type { User } from '@/lib/schemas'
+import { familiesRepo, usersRepo } from '@/lib/repositories.instance'
 
 export async function fetchUsers() {
-  // try {
-  //   return await sql<User[]>`SELECT * FROM users`
-  // } catch (error) {
-  //   console.error('Database Error:', error)
-  //   throw new Error('Failed to fetch users.')
-  // }
-  return users
+  return usersRepo.findAll()
 }
 
 export async function fetchUserById(id: User['id']) {
-  // try {
-  //   return await sql<User[]>`SELECT * FROM users`
-  // } catch (error) {
-  //   console.error('Database Error:', error)
-  //   throw new Error('Failed to fetch users.')
-  // }
-  return users?.find(user => user.id === id)
+  return usersRepo.findById(id)
 }
 
 export function getUserById(id: User['id']) {
-  return users?.find(user => user.id === id)
+  return usersRepo.findById(id)
 }
 
 export async function fetchFamilies() {
-  // try {
-  //   return await sql<User[]>`SELECT * FROM users`
-  // } catch (error) {
-  //   console.error('Database Error:', error)
-  //   throw new Error('Failed to fetch users.')
-  // }
-  return families
+  return familiesRepo.findAll()
 }
 
 // export async function fetchUserById(id: string) {

@@ -1,8 +1,8 @@
 import { Suspense } from 'react'
 
-import LoginForm from '@/components/ui/forms/login-form'
 import { LocaleToggle } from '@/components/shared/locale-toggle'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
+import LoginForm from '@/components/ui/forms/login-form'
 
 export default function LoginPage() {
   return (

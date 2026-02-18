@@ -39,7 +39,7 @@
 - ✅ Все данные генерируются в build time через `scripts/build-data.ts`
 
 **Пример правильного подхода**:
-```typescript
+```ts
 // ❌ НЕПРАВИЛЬНО - headers() не работает в статической генерации
 import { headers } from 'next/headers'
 const host = headers().get('host')
@@ -58,7 +58,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
 - Используется `useAuthStore` для управления состоянием
 
 **API функции**:
-```typescript
+```ts
 // lib/auth.ts (re-exports from store)
 useAuthStore()
 useFamily()
@@ -75,7 +75,7 @@ useIsAuthenticated()
 - Branded types в `lib/types/branded.ts`
 
 **Строгая типизация с Branded Types**:
-```typescript
+```ts
 // Compile-time защита от смешивания ID
 export type UserId = Brand<string, 'UserId'>
 export type FamilyId = Brand<string, 'FamilyId'>
@@ -110,7 +110,7 @@ lib/data/
 **Паттерн Репозитория**:
 Доступ к данным осуществляется через типизированные репозитории:
 
-```typescript
+```ts
 import { usersRepo, familiesRepo, transactionsRepo } from '@/lib/repositories.instance'
 
 // Быстрый доступ O(1)
@@ -221,7 +221,7 @@ import { cn } from '@/lib/utils'
 
 #### Специализированные утилиты
 
-```typescript
+```ts
 // lib/tools/ - специфичные инструменты
 lib/tools/
 ├── time.ts         # format(timestamp) - форматирование времени
@@ -235,7 +235,7 @@ lib/tools/
 
 **Используйте алиас `@/*`**:
 
-```typescript
+```ts
 // ✅ ПРАВИЛЬНО
 import { Button } from '@/components/ui/button'
 import { users } from '@/lib/data/users'
@@ -246,7 +246,7 @@ import { Button } from '../../../components/ui/button'
 
 **Организация импортов** (Biome делает автоматически):
 
-```typescript
+```ts
 import { useState } from 'react'
 
 import { useRouter } from 'next/navigation'
@@ -261,7 +261,7 @@ import type { User } from './types'
 
 ### 4. SEO и метаданные
 
-```typescript
+```ts
 // ✅ ПРАВИЛЬНО - для статической генерации
 export async function generateMetadata(): Promise<Metadata> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
@@ -289,7 +289,7 @@ const host = headers().get('host')
 
 ### Шифрование данных
 
-```typescript
+```ts
 // crypto-js для шифрования
 import CryptoJS from 'crypto-js'
 
@@ -353,7 +353,7 @@ app/
 
 ### Паттерн: Вычисление балансов
 
-```typescript
+```ts
 // Вычисляем балансы из транзакций
 const values: Record<string, number> = {}
 
@@ -369,7 +369,7 @@ const families = familiesInstance.update_values(values)
 
 ### Паттерн: Фильтрация по семье
 
-```typescript
+```ts
 // В клиентском компоненте получаем текущую семью
 const family = getFamily()
 
@@ -383,7 +383,7 @@ const familyTransactions = allTransactions.filter(
 
 ### Паттерн: Работа с тегами
 
-```typescript
+```ts
 // Создание тегов с проверкой уникальности
 import { createTags } from '@/lib/definitions'
 
@@ -464,7 +464,7 @@ export default async function Component() {
 
 ### 2. Забытые обновления типов
 
-```typescript
+```ts
 // ❌ ОШИБКА: Добавили пользователя в users.ts, но забыли обновить UserId
 export const users: User[] = [
   { id: 'new.user', ... }, // TypeScript не ругается!
@@ -642,7 +642,7 @@ NEXT_PUBLIC_PRIVATE_KEY=${{ secrets.PRIVATE_KEY }}
 
 ### Пример 1: Добавление нового пользователя
 
-```typescript
+```ts
 // 1. Добавляем в lib/definitions.ts
 type UserId = 
   | 'existing.user'
@@ -713,7 +713,7 @@ export default function UsersList({ users }: Props) {
 
 ### Пример 3: Добавление новой транзакции
 
-```typescript
+```ts
 // lib/data/transactions.ts
 
 export const transactions: Transaction[] = [
@@ -737,9 +737,9 @@ export const transactions: Transaction[] = [
 // Создаём связи семья-транзакция
 export const familyTransactions: FamilyTransaction[] = [
   // ...
-  { family: 'eremeev', transaction: 'tx-new-transaction', value: -1000 },
-  { family: 'petrov', transaction: 'tx-new-transaction', value: -1500 },
-  { family: 'fadeev', transaction: 'tx-new-transaction', value: -2500 },
+  { family: 'eremeevs', transaction: 'tx-new-transaction', value: -1000 },
+  { family: 'petrovs', transaction: 'tx-new-transaction', value: -1500 },
+  { family: 'fadeevs', transaction: 'tx-new-transaction', value: -2500 },
 ]
 ```
 
@@ -749,7 +749,7 @@ export const familyTransactions: FamilyTransaction[] = [
 
 ### Структура User
 
-```typescript
+```ts
 type User = {
   id: UserId                      // Уникальный ID (name.surname)
   name: string                    // Отображаемое имя
@@ -764,7 +764,7 @@ type User = {
 
 ### Структура Family
 
-```typescript
+```ts
 type Family = {
   id: FamilyId                    // Уникальный ID
   name: { ru: string; en: string } // Локализованное имя
@@ -779,7 +779,7 @@ type Family = {
 
 ### Структура Transaction
 
-```typescript
+```ts
 type Transaction = {
   id: string                      // Уникальный ID (tx-*)
   name: string                    // Название
@@ -796,7 +796,7 @@ type Transaction = {
 
 ### Основные API функции
 
-```typescript
+```ts
 // Аутентификация (lib/auth.ts)
 login(username: string, password: string): boolean
 logout(): void

@@ -5,7 +5,7 @@ import { use } from 'react'
 import { useTranslations } from 'next-intl'
 
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import type { FamilyTransaction } from '@/lib/definitions'
+import type { FamilyTransaction } from '@/lib/schemas'
 import { useFamily } from '@/lib/store/auth.store'
 
 interface Props {

@@ -1,21 +1,9 @@
-import { familyTransactions, transactions } from '@/lib/data'
+import { familyTransactionsRepo, transactionsRepo } from '@/lib/repositories.instance'
 
 export async function fetchTransactions() {
-  // try {
-  //   return await sql<User[]>`SELECT * FROM users`
-  // } catch (error) {
-  //   console.error('Database Error:', error)
-  //   throw new Error('Failed to fetch users.')
-  // }
-  return transactions
+  return transactionsRepo.findAll()
 }
 
 export async function fetchFamilyTransactions() {
-  // try {
-  //   return await sql<User[]>`SELECT * FROM users`
-  // } catch (error) {
-  //   console.error('Database Error:', error)
-  //   throw new Error('Failed to fetch users.')
-  // }
-  return familyTransactions
+  return familyTransactionsRepo.findAll()
 }

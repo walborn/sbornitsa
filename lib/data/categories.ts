@@ -1,4 +1,4 @@
-import type { Category } from '@/lib/definitions'
+import type { Category } from '@/lib/schemas'
 
 export const categories: Category[] = [
   {

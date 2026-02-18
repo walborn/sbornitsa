@@ -17,7 +17,7 @@ import {
 import { AppHeader } from '@/components/utils/app-header'
 import { fetchTranslations } from '@/components/utils/fetch-translations'
 import { fetchUserById, fetchUsers } from '@/lib/api'
-import type { User } from '@/lib/definitions'
+import type { User } from '@/lib/schemas'
 import { absoluteUrl } from '@/lib/seo/config'
 import { createMetadata } from '@/lib/seo/metadata'
 
