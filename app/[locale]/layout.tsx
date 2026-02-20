@@ -1,28 +1,14 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import { notFound } from 'next/navigation'
 
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
-import { AuthGuard } from '@/components/auth/auth-guard'
-import { ThemeProvider } from '@/components/layout/theme-provider'
 import { AuthProvider } from '@/components/providers/auth-provider'
 import { SchemaScript } from '@/components/seo/schema-script'
 import { routing } from '@/i18n/routing'
 import { absoluteUrl } from '@/lib/seo/config'
 import { createOrganizationSchema, createWebsiteSchema } from '@/lib/seo/schema'
-import '../globals.css'
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-})
 
 export async function generateMetadata(): Promise<Metadata> {
   const url = absoluteUrl('')
@@ -91,7 +77,7 @@ interface Props {
   params: Promise<{ locale: string }>
 }
 
-export default async function RootLayout({ children, params }: Props) {
+export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params
 
   // Validate that the incoming `locale` parameter is valid
@@ -108,36 +94,18 @@ export default async function RootLayout({ children, params }: Props) {
   const websiteSchema = createWebsiteSchema(locale)
 
   return (
-    <html
-      lang={locale}
-      suppressHydrationWarning
-    >
-      <head>
-        <SchemaScript
-          id="organization-schema"
-          schema={organizationSchema}
-        />
-        <SchemaScript
-          id="website-schema"
-          schema={websiteSchema}
-        />
-      </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <NextIntlClientProvider messages={messages}>
-            <AuthProvider>
-              <AuthGuard>
-                {children}
-              </AuthGuard>
-            </AuthProvider>
-          </NextIntlClientProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+    <>
+      <SchemaScript
+        id="organization-schema"
+        schema={organizationSchema}
+      />
+      <SchemaScript
+        id="website-schema"
+        schema={websiteSchema}
+      />
+      <NextIntlClientProvider messages={messages}>
+        <AuthProvider>{children}</AuthProvider>
+      </NextIntlClientProvider>
+    </>
   )
 }

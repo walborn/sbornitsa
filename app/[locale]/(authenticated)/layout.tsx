@@ -14,7 +14,6 @@ import { routing } from '@/i18n/routing'
 import { absoluteUrl } from '@/lib/seo/config'
 import '../../globals.css'
 
-import { AuthGuard } from '@/components/auth/auth-guard'
 import { AppHeaderProvider } from '@/components/layout/app-header-provider'
 import { AuthProvider } from '@/components/providers/auth-provider'
 
@@ -98,30 +97,26 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <AuthProvider>
-      <AuthGuard>
-        <AppHeaderProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <SidebarInset>
-              <header className="flex h-16 shrink-0 items-center gap-2 border-b pl-4 pr-[10px] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-                <SidebarTrigger className="-ml-1" />
-                <Separator
-                  orientation="vertical"
-                  className="mr-2 h-4"
-                />
-                <AppHeader />
-                <div className="flex ml-auto gap-2">
-                  <LocaleToggle />
-                  <ThemeToggle />
-                </div>
-              </header>
-              <div className="flex flex-1 flex-col gap-4 p-4 w-full max-w-240 m-auto">
-                {children}
+      <AppHeaderProvider>
+        <SidebarProvider>
+          <AppSidebar />
+          <SidebarInset>
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b pl-4 pr-[10px] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+              <SidebarTrigger className="-ml-1" />
+              <Separator
+                orientation="vertical"
+                className="mr-2 h-4"
+              />
+              <AppHeader />
+              <div className="flex ml-auto gap-2">
+                <LocaleToggle />
+                <ThemeToggle />
               </div>
-            </SidebarInset>
-          </SidebarProvider>
-        </AppHeaderProvider>
-      </AuthGuard>
+            </header>
+            <div className="flex flex-1 flex-col gap-4 p-4 w-full max-w-240 m-auto">{children}</div>
+          </SidebarInset>
+        </SidebarProvider>
+      </AppHeaderProvider>
     </AuthProvider>
   )
 }

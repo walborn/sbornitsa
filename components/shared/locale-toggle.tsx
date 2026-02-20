@@ -1,11 +1,11 @@
 'use client'
 
 import Image from 'next/image'
-import { usePathname, useRouter } from 'next/navigation'
 
 import { useLocale } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
+import { usePathname, useRouter } from '@/i18n/navigation'
 
 export function LocaleToggle() {
   const locale = useLocale()
@@ -14,9 +14,9 @@ export function LocaleToggle() {
 
   const handleChange = () => {
     const newLocale = locale === 'en' ? 'ru' : 'en'
-    const newPath = pathname.replace(`/${locale}`, `/${newLocale}`)
-    router.push(newPath)
+    router.replace(pathname, { locale: newLocale })
   }
+
   return (
     <Button
       variant="outline"
