@@ -16,8 +16,11 @@ import type {
 export class TransactionsRepository {
   private readonly transactionsById: Map<TransactionId, Transaction>
   private readonly transactionsByCategory: Map<CategoryId, Transaction[]>
+  private readonly allTransactions: Transaction[]
 
   constructor(transactions: Transaction[]) {
+    this.allTransactions = transactions
+
     // Индексация по ID
     this.transactionsById = new Map(transactions.map(t => [t.id as TransactionId, t]))
 
@@ -40,9 +43,10 @@ export class TransactionsRepository {
 
   /**
    * Получить все транзакции
+   * Complexity: O(1)
    */
   findAll(): Transaction[] {
-    return Array.from(this.transactionsById.values())
+    return this.allTransactions
   }
 
   /**

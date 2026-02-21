@@ -277,21 +277,6 @@ export type TransactionId = z.infer<typeof TransactionIdSchema>
 export type Transaction = z.infer<typeof TransactionSchema>
 export type FamilyTransaction = z.infer<typeof FamilyTransactionSchema>
 
-export type Eremeevs = UserId[]
-export type Pimenovs = UserId[]
-export type Chernys = UserId[]
-export type Novitskys = UserId[]
-export type Legoshins = UserId[]
-export type Marshevs = UserId[]
-export type Petrovs = UserId[]
-export type Yuzhakovs = UserId[]
-export type Fadeevs = UserId[]
-export type Gerbers = UserId[]
-export type Skvortsovs = UserId[]
-export type Kirillovs = UserId[]
-export type Usarovs = UserId[]
-export type Leonenkos = UserId[]
-
 // ============================================================================
 // VALIDATION HELPERS
 // ============================================================================

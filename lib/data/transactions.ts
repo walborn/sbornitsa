@@ -1,4 +1,15 @@
 import type {
+  Category,
+  FamiliesIncomes,
+  Family,
+  FamilyTransaction,
+  Transaction,
+  TransactionSource,
+  TransactionTarget,
+  User,
+  UserId,
+} from '@/lib/schemas'
+import type {
   Chernys,
   Eremeevs,
   Fadeevs,
@@ -13,22 +24,12 @@ import type {
   Skvortsovs,
   Usarovs,
   Yuzhakovs,
-} from '@/lib/schemas'
-import type {
-  Category,
-  FamiliesIncomes,
-  Family,
-  FamilyTransaction,
-  Transaction,
-  TransactionSource,
-  TransactionTarget,
-  User,
-} from '@/lib/schemas'
+} from '@/lib/schemas/families'
 
-const cnst = <T extends string[]>(...args: T) => 2 // 2, 2, 2, 2
-const fade = <T extends string[]>(...args: T) => args.length + 1 // 2, 3, 4, 5
-const line = <T extends string[]>(...args: T) => args.length * 2 // 2, 4, 6, 8
-const none = <T extends string[]>(...args: T) => 0
+const cnst = <T extends UserId[]>(...args: T) => 2 // 2, 2, 2, 2
+const fade = <T extends UserId[]>(...args: T) => args.length + 1 // 2, 3, 4, 5
+const line = <T extends UserId[]>(...args: T) => args.length * 2 // 2, 4, 6, 8
+const none = <T extends UserId[]>(...args: T) => 0
 
 type RawTransaction = {
   name: string

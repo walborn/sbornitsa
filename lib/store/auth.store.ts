@@ -4,12 +4,11 @@
  * Реактивная аутентификация с автоматической персистацией в localStorage
  */
 
-'use client'
-
 import CryptoJS from 'crypto-js'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { familiesRepo } from '@/lib/repositories.instance'
 import type { Family, FamilyId } from '@/lib/schemas'
 
 const FAMILY_KEY = 'sbornitsa-family'
@@ -22,7 +21,6 @@ interface AuthState {
   isAuthenticated: boolean
   login: (username: FamilyId, password: string) => boolean
   logout: () => void
-  getFamily: () => Family | null
   hydrated: boolean
   setHydrated: (state: boolean) => void
 }
@@ -45,7 +43,7 @@ interface AuthState {
  */
 export const useAuthStore = create<AuthState>()(
   persist(
-    (set, get) => ({
+    set => ({
       // Initial state
       family: null,
       isAuthenticated: false,
@@ -55,8 +53,6 @@ export const useAuthStore = create<AuthState>()(
        * @returns true если вход успешный, false если неверные credentials
        */
       login: (username: FamilyId, password: string): boolean => {
-        // Импортируем динамически чтобы избежать circular dependencies
-        const { familiesRepo } = require('@/lib/repositories.instance')
         const family = familiesRepo.findById(username)
 
         if (!family) {
@@ -71,7 +67,6 @@ export const useAuthStore = create<AuthState>()(
           return false
         }
 
-        // Успешный вход
         set({ family, isAuthenticated: true })
         return true
       },
@@ -83,14 +78,6 @@ export const useAuthStore = create<AuthState>()(
         set({ family: null, isAuthenticated: false })
       },
 
-      /**
-       * Получить текущую семью
-       * @returns текущая семья или null если не авторизован
-       */
-      getFamily: () => {
-        return get().family
-      },
-
       // Hydration state
       hydrated: false,
       setHydrated: (state: boolean) => {
@@ -99,7 +86,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: FAMILY_KEY,
-      onRehydrateStorage: () => (state) => {
+      onRehydrateStorage: () => state => {
         state?.setHydrated(true)
       },
     }

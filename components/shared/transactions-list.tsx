@@ -3,7 +3,6 @@
 import { use } from 'react'
 
 import { TransactionCard } from '@/components/shared/transaction-card'
-import { Card, CardContent } from '@/components/ui/card'
 import type { Category, FamilyTransaction, Transaction } from '@/lib/schemas'
 import { useFamily } from '@/lib/store/auth.store'
 
@@ -32,21 +31,15 @@ export default function TransactionsList({
   return values.map(({ id, name, category: categoryId, description, timestamp, value }) => {
     const category = categories[categoryId]
     return (
-      <Card
+      <TransactionCard
         key={id}
-        className="border-none shadow-none"
-      >
-        <CardContent>
-          <TransactionCard
-            icon={{ src: category.icon, alt: category.name }}
-            name={name}
-            description={description}
-            category={category.name}
-            timestamp={timestamp}
-            value={value}
-          />
-        </CardContent>
-      </Card>
+        icon={{ src: category.icon, alt: category.name }}
+        name={name}
+        description={description}
+        category={category.name}
+        timestamp={timestamp}
+        value={value}
+      />
     )
   })
 }

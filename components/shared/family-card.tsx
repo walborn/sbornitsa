@@ -5,12 +5,8 @@ import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 
 import { Avatar, AvatarFallback, AvatarGroup, AvatarImage } from '@/components/ui/avatar'
-import { fetchFamilies, getUserById } from '@/lib/api/users'
+import { getUserById } from '@/lib/api/users'
 import type { Family, User } from '@/lib/schemas'
-
-export async function generateStaticParams() {
-  return await fetchFamilies()
-}
 
 interface Props {
   locale: string
