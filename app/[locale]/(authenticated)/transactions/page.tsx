@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: Props) {
 
 export default async function TransactionsPage({ params }: Props) {
   const { locale } = await params
+
   setRequestLocale(locale)
 
   const t = await fetchTranslations({
@@ -41,11 +42,6 @@ export default async function TransactionsPage({ params }: Props) {
   })
 
   if (!t) return notFound()
-
-  // Use Promise.all to start fetching, but we pass promises to components!
-  // Actually, we can just pass the fetch promises directly if we transform them.
-  // But arrayToObjectById is synchronous transformation.
-  // We can wrap it in a promise.
 
   const transactionsPromise = fetchTransactions().then(arrayToObjectById)
   const familyTransactionsPromise = fetchFamilyTransactions()
