@@ -111,7 +111,7 @@ lib/data/
 Доступ к данным осуществляется через типизированные репозитории:
 
 ```ts
-import { usersRepo, familiesRepo, transactionsRepo } from '@/lib/repositories.instance'
+import { usersRepo, familiesRepo, transactionsRepo } from '@/lib/repositories'
 
 // Быстрый доступ O(1)
 const user = usersRepo.findById(userId)

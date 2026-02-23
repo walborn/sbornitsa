@@ -3,7 +3,8 @@
     "profile": "Профиль",
     "transactions": "Транзакции",
     "users": "Пользователи",
-    "families": "Семьи"
+    "families": "Семьи",
+    "events": "События"
   },
   "shared": {
     "phone": "телефон",

@@ -3,7 +3,8 @@
     "profile": "Profile",
     "transactions": "Transactions",
     "users": "Users",
-    "families": "Families"
+    "families": "Families",
+    "events": "Events"
   },
   "shared": {
     "phone": "phone",

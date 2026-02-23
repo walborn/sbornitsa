@@ -1,6 +1,6 @@
-import type { Category } from '@/lib/schemas'
+import type { TransactionCategory } from '@/lib/schemas'
 
-export const categories: Category[] = [
+export const categories: TransactionCategory[] = [
   {
     id: 'english',
     name: 'english',

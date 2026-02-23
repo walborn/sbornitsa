@@ -309,7 +309,7 @@ export type User = z.infer<typeof UserSchema>
 Используйте типизированные репозитории для доступа к данным:
 
 ```typescript
-import { usersRepo, familiesRepo } from '@/lib/repositories.instance'
+import { usersRepo, familiesRepo } from '@/lib/repositories'
 
 // ✅ ХОРОШО: O(1) доступ
 const user = usersRepo.findById(userId)

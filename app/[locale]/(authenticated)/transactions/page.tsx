@@ -9,7 +9,7 @@ import { BalanceSkeleton, TransactionsSkeleton } from '@/components/shared/skele
 import TransactionsList from '@/components/shared/transactions-list'
 import { AppHeader } from '@/components/utils/app-header'
 import { fetchTranslations } from '@/components/utils/fetch-translations'
-import { fetchCategories, fetchTransactions } from '@/lib/api'
+import { fetchTransactionCategories, fetchTransactions } from '@/lib/api'
 import { fetchFamilyTransactions } from '@/lib/api/transactions'
 import { createMetadata } from '@/lib/seo/metadata'
 import { arrayToObjectById } from '@/lib/utils'
@@ -45,7 +45,7 @@ export default async function TransactionsPage({ params }: Props) {
 
   const transactionsPromise = fetchTransactions().then(arrayToObjectById)
   const familyTransactionsPromise = fetchFamilyTransactions()
-  const categoriesPromise = fetchCategories().then(arrayToObjectById)
+  const transactionCategoriesPromise = fetchTransactionCategories().then(arrayToObjectById)
 
   return (
     <>
@@ -60,7 +60,7 @@ export default async function TransactionsPage({ params }: Props) {
           <TransactionsList
             transactionsPromise={transactionsPromise}
             familyTransactionsPromise={familyTransactionsPromise}
-            categoriesPromise={categoriesPromise}
+            transactionCategoriesPromise={transactionCategoriesPromise}
           />
         </Suspense>
       </section>

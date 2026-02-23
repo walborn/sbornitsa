@@ -1,5 +1,5 @@
+import { familiesRepo, usersRepo } from '@/lib/repositories'
 import type { User } from '@/lib/schemas'
-import { familiesRepo, usersRepo } from '@/lib/repositories.instance'
 
 export async function fetchUsers() {
   return usersRepo.findAll()
@@ -16,6 +16,9 @@ export function getUserById(id: User['id']) {
 export async function fetchFamilies() {
   return familiesRepo.findAll()
 }
+
+// когда-то давным давно все лежало на серверах и запросы шли быстро и уверенно
+// но наступили тяжелые времена и стало возможно выкладывать только статические сайты
 
 // export async function fetchUserById(id: string) {
 //   try {

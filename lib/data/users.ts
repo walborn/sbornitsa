@@ -1,4 +1,4 @@
-import { createTags, type User } from '@/lib/schemas'
+import type { User } from '@/lib/schemas'
 
 import { Families } from './families'
 import { familyTransactions } from './transactions'
@@ -47,7 +47,7 @@ export const users: User[] = [
       telegram: '@ChernayaAnastasia',
     },
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'svetlana.eremeeva',
@@ -56,7 +56,7 @@ export const users: User[] = [
     avatar: '/users/svetlana.eremeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
     contacts: {
       phone: '+79165320136',
       telegram: '@svetlana_vl_eremeeva',
@@ -69,7 +69,7 @@ export const users: User[] = [
     avatar: '/users/ornella.zubkova.webp',
     birthdate: new Date(1987, 2, 16),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
     contacts: {
       phone: '+79057417608',
       telegram: '@OrnellaZubkova',
@@ -82,7 +82,7 @@ export const users: User[] = [
     avatar: '/users/boris.yuzhakov.webp',
     birthdate: new Date(1986, 9, 29),
     role: 'admin',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
     contacts: {
       phone: '+79250579756',
       telegram: '@codebor',
@@ -95,7 +95,7 @@ export const users: User[] = [
     avatar: '/users/maria.legoshina.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'natasha.novitskaya',
@@ -108,7 +108,7 @@ export const users: User[] = [
     avatar: '/users/natasha.novitskaya.webp',
     birthdate: new Date(1983, 1, 22),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'olga.skvortsova',
@@ -117,7 +117,7 @@ export const users: User[] = [
     avatar: '/users/olga.skvortsova.webp',
     birthdate: new Date(1900, 0, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'sofya.gerber',
@@ -126,7 +126,7 @@ export const users: User[] = [
     avatar: '/users/sofya.gerber.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'maria.usarova',
@@ -135,7 +135,7 @@ export const users: User[] = [
     avatar: '/users/maria.usarova.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'nadezhda.fadeeva',
@@ -144,7 +144,7 @@ export const users: User[] = [
     avatar: '/users/nadezhda.fadeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'gennady.fadeev',
@@ -153,7 +153,7 @@ export const users: User[] = [
     avatar: '/users/gennady.fadeev.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'fathers'] as const),
+    tags: new Set(['parents', 'fathers']),
   },
   {
     id: 'anastasia.marsheva',
@@ -162,7 +162,7 @@ export const users: User[] = [
     avatar: '/users/anastasia.marsheva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'ksenya.petrova',
@@ -175,7 +175,7 @@ export const users: User[] = [
       telegram: '@Ksenya_Petrova_psy',
     },
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'denis.petrov',
@@ -188,7 +188,7 @@ export const users: User[] = [
       telegram: '@petroff_denis',
     },
     role: 'user',
-    tags: createTags(['parents', 'fathers'] as const),
+    tags: new Set(['parents', 'fathers']),
   },
   {
     id: 'polina.leonenko',
@@ -197,7 +197,7 @@ export const users: User[] = [
     avatar: '/users/polina.leonenko.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'alexandra.pimenova',
@@ -206,7 +206,7 @@ export const users: User[] = [
     avatar: '/users/aleksandra.pimenova.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'olga.kirillova',
@@ -215,7 +215,7 @@ export const users: User[] = [
     avatar: '/users/olga.kirillova.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'natalya.m',
@@ -223,7 +223,7 @@ export const users: User[] = [
     avatar: '/users/natalya.m.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'amira.h',
@@ -231,7 +231,7 @@ export const users: User[] = [
     avatar: '/users/amira.h.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
   {
     id: 'veronika.zolotareva',
@@ -239,7 +239,7 @@ export const users: User[] = [
     avatar: '/users/veronika.zolotareva.webp',
     birthdate: new Date(1900, 4, 4),
     role: 'user',
-    tags: createTags(['parents', 'mothers'] as const),
+    tags: new Set(['parents', 'mothers']),
   },
 ]
 
@@ -251,7 +251,7 @@ const children: User[] = [
     avatar: '/users/nina.chernaya.webp',
     birthdate: new Date(2020, 7, 18),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'vitya.cherny',
@@ -260,7 +260,7 @@ const children: User[] = [
     avatar: '/users/vitya.cherny.webp',
     birthdate: new Date(2018, 4, 29),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'ivan.eremeev',
@@ -269,7 +269,7 @@ const children: User[] = [
     avatar: '/users/ivan.eremeev.webp',
     birthdate: new Date(2018, 10, 26),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'vera.eremeeva',
@@ -278,7 +278,7 @@ const children: User[] = [
     avatar: '/users/vera.eremeeva.webp',
     birthdate: new Date(2021, 5, 5),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'meera.yuzhakova',
@@ -287,7 +287,7 @@ const children: User[] = [
     avatar: '/users/meera.yuzhakova.webp',
     birthdate: new Date(2020, 10, 6),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'mila.legoshina',
@@ -296,7 +296,7 @@ const children: User[] = [
     avatar: '/users/mila.legoshina.webp',
     birthdate: new Date(2020, 7, 19),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'misha.novitskiy',
@@ -305,7 +305,7 @@ const children: User[] = [
     avatar: '/users/misha.novitskiy.webp',
     birthdate: new Date(2020, 9, 20),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'anna.novitskaya',
@@ -314,7 +314,7 @@ const children: User[] = [
     avatar: '/users/anna.novitskaya.webp',
     birthdate: new Date(2017, 9, 22),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'kirill.skvortsov',
@@ -323,7 +323,7 @@ const children: User[] = [
     avatar: '/users/kirill.skvortsov.webp',
     birthdate: new Date(2021, 5, 13),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'agata.gerber',
@@ -332,7 +332,7 @@ const children: User[] = [
     avatar: '/users/agata.gerber.webp',
     birthdate: new Date(2019, 5, 20),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'platon.gerber',
@@ -341,7 +341,7 @@ const children: User[] = [
     avatar: '/users/platon.gerber.webp',
     birthdate: new Date(201, 11, 2),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'emil.usarov',
@@ -350,7 +350,7 @@ const children: User[] = [
     avatar: '/users/emil.usarov.webp',
     birthdate: new Date(2018, 11, 8),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'aurora.fadeeva',
@@ -359,7 +359,7 @@ const children: User[] = [
     avatar: '/users/aurora.fadeeva.webp',
     birthdate: new Date(2021, 5, 19),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'marusya.fadeeva',
@@ -368,7 +368,7 @@ const children: User[] = [
     avatar: '/users/marusya.fadeeva.webp',
     birthdate: new Date(1900, 1, 1),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'varya.petrova',
@@ -377,7 +377,7 @@ const children: User[] = [
     avatar: '/users/varya.petrova.webp',
     birthdate: new Date(2019, 5, 26),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'igor.marshev',
@@ -386,7 +386,7 @@ const children: User[] = [
     avatar: '/users/igor.marshev.webp',
     birthdate: new Date(2021, 1, 2),
     role: 'user',
-    tags: createTags(['children', 'sons'] as const),
+    tags: new Set(['children', 'sons']),
   },
   {
     id: 'emilia.pimenova',
@@ -395,7 +395,7 @@ const children: User[] = [
     avatar: '/users/emilia.pimenova.webp',
     birthdate: new Date(2020, 10, 16),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'emma.kirillova',
@@ -404,7 +404,7 @@ const children: User[] = [
     avatar: '/users/emma.kirillova.webp',
     birthdate: new Date(2021, 0, 31),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
   {
     id: 'aellita.leonenko',
@@ -413,7 +413,7 @@ const children: User[] = [
     avatar: '/users/aellita.leonenko.webp',
     birthdate: new Date(2021, 11, 31),
     role: 'user',
-    tags: createTags(['children', 'daughters'] as const),
+    tags: new Set(['children', 'daughters']),
   },
 ]
 

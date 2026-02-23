@@ -4,25 +4,18 @@
  * Централизованный доступ к транзакциям с оптимизацией
  */
 
-import type {
-  CategoryId,
-  FamilyId,
-  FamilyTransaction,
-  Transaction,
-  TransactionId,
-  UserId,
-} from '@/lib/schemas'
+import type { Family, FamilyTransaction, Transaction, User } from '@/lib/schemas'
 
 export class TransactionsRepository {
-  private readonly transactionsById: Map<TransactionId, Transaction>
-  private readonly transactionsByCategory: Map<CategoryId, Transaction[]>
+  private readonly transactionsById: Map<Transaction['id'], Transaction>
+  private readonly transactionsByCategory: Map<Transaction['category'], Transaction[]>
   private readonly allTransactions: Transaction[]
 
   constructor(transactions: Transaction[]) {
     this.allTransactions = transactions
 
     // Индексация по ID
-    this.transactionsById = new Map(transactions.map(t => [t.id as TransactionId, t]))
+    this.transactionsById = new Map(transactions.map(t => [t.id as Transaction['id'], t]))
 
     // Индексация по категориям
     this.transactionsByCategory = new Map()
@@ -37,7 +30,7 @@ export class TransactionsRepository {
    * Получить транзакцию по ID
    * Complexity: O(1)
    */
-  findById(id: TransactionId): Transaction | undefined {
+  findById(id: Transaction['id']): Transaction | undefined {
     return this.transactionsById.get(id)
   }
 
@@ -53,14 +46,14 @@ export class TransactionsRepository {
    * Получить транзакции по категории
    * Complexity: O(1)
    */
-  findByCategory(categoryId: CategoryId): Transaction[] {
+  findByCategory(categoryId: Transaction['category']): Transaction[] {
     return this.transactionsByCategory.get(categoryId) ?? []
   }
 
   /**
    * Получить транзакции учителя
    */
-  findByTeacher(teacherId: UserId): Transaction[] {
+  findByTeacher(teacherId: User['id']): Transaction[] {
     return this.findAll().filter(t => t.teacher === teacherId)
   }
 
@@ -122,7 +115,7 @@ export class TransactionsRepository {
  */
 export class FamilyTransactionsRepository {
   private readonly transactions: FamilyTransaction[]
-  private readonly transactionsByFamily: Map<FamilyId, FamilyTransaction[]>
+  private readonly transactionsByFamily: Map<Family['id'], FamilyTransaction[]>
 
   constructor(familyTransactions: FamilyTransaction[]) {
     this.transactions = familyTransactions
@@ -140,7 +133,7 @@ export class FamilyTransactionsRepository {
    * Получить транзакции семьи
    * Complexity: O(1)
    */
-  findByFamily(familyId: FamilyId): FamilyTransaction[] {
+  findByFamily(familyId: Family['id']): FamilyTransaction[] {
     return this.transactionsByFamily.get(familyId) ?? []
   }
 
@@ -154,15 +147,15 @@ export class FamilyTransactionsRepository {
   /**
    * Вычислить баланс семьи
    */
-  calculateBalance(familyId: FamilyId): number {
+  calculateBalance(familyId: Family['id']): number {
     return this.findByFamily(familyId).reduce((sum, tx) => sum + tx.value, 0)
   }
 
   /**
    * Вычислить балансы всех семей
    */
-  calculateAllBalances(): Map<FamilyId, number> {
-    const balances = new Map<FamilyId, number>()
+  calculateAllBalances(): Map<Family['id'], number> {
+    const balances = new Map<Family['id'], number>()
 
     for (const [familyId, txs] of this.transactionsByFamily) {
       const balance = txs.reduce((sum, tx) => sum + tx.value, 0)
@@ -175,7 +168,7 @@ export class FamilyTransactionsRepository {
   /**
    * Получить количество транзакций семьи
    */
-  countByFamily(familyId: FamilyId): number {
+  countByFamily(familyId: Family['id']): number {
     return this.findByFamily(familyId).length
   }
 }

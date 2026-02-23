@@ -8,8 +8,8 @@ import CryptoJS from 'crypto-js'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { familiesRepo } from '@/lib/repositories.instance'
-import type { Family, FamilyId } from '@/lib/schemas'
+import { familiesRepo } from '@/lib/repositories'
+import type { Family } from '@/lib/schemas'
 
 const FAMILY_KEY = 'sbornitsa-family'
 
@@ -19,7 +19,7 @@ const FAMILY_KEY = 'sbornitsa-family'
 interface AuthState {
   family: Family | null
   isAuthenticated: boolean
-  login: (username: FamilyId, password: string) => boolean
+  login: (username: Family['id'], password: string) => boolean
   logout: () => void
   hydrated: boolean
   setHydrated: (state: boolean) => void
@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState>()(
        * Вход в систему
        * @returns true если вход успешный, false если неверные credentials
        */
-      login: (username: FamilyId, password: string): boolean => {
+      login: (username: Family['id'], password: string): boolean => {
         const family = familiesRepo.findById(username)
 
         if (!family) {

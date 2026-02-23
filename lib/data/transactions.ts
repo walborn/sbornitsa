@@ -1,14 +1,4 @@
-import type {
-  Category,
-  FamiliesIncomes,
-  Family,
-  FamilyTransaction,
-  Transaction,
-  TransactionSource,
-  TransactionTarget,
-  User,
-  UserId,
-} from '@/lib/schemas'
+import type { Family, FamilyTransaction, Transaction, User } from '@/lib/schemas'
 import type {
   Chernys,
   Eremeevs,
@@ -26,23 +16,23 @@ import type {
   Yuzhakovs,
 } from '@/lib/schemas/families'
 
-const cnst = <T extends UserId[]>(...args: T) => 2 // 2, 2, 2, 2
-const fade = <T extends UserId[]>(...args: T) => args.length + 1 // 2, 3, 4, 5
-const line = <T extends UserId[]>(...args: T) => args.length * 2 // 2, 4, 6, 8
-const none = <T extends UserId[]>(...args: T) => 0
+const cnst = <T extends User['id'][]>(...args: T) => 2 // 2, 2, 2, 2
+const fade = <T extends User['id'][]>(...args: T) => args.length + 1 // 2, 3, 4, 5
+const line = <T extends User['id'][]>(...args: T) => args.length * 2 // 2, 4, 6, 8
+const none = <T extends User['id'][]>(...args: T) => 0
 
 type RawTransaction = {
   name: string
   description: string
   timestamp?: number // для точного времени
   value: number
-  category: Category['id']
+  category: Transaction['category']
   teacher?: User['id']
   time: string
-  families: FamiliesIncomes
+  families: Transaction['families']
   children?: string[][]
-  target?: TransactionTarget
-  source?: TransactionSource
+  target?: Transaction['target']
+  source?: Transaction['source']
 }
 
 type EnglishTransaction = Omit<
@@ -74,7 +64,7 @@ type MusicTransaction = Omit<
   name?: string
   description?: string
   value?: number
-  category?: Category['id']
+  category?: Transaction['category']
   teacher?: User['id']
   time?: string
 }
@@ -124,7 +114,7 @@ const transfers = ({ family, ...trasaction }: TransferTransaction): RawTransacti
 })
 
 type GiftsTransaction = Omit<RawTransaction, 'families' | 'category'> & {
-  families?: FamiliesIncomes
+  families?: Transaction['families']
 }
 
 const gifts = (trasaction: GiftsTransaction): RawTransaction => ({

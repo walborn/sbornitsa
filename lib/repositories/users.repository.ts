@@ -4,11 +4,14 @@
  * Централизованный доступ к пользователям с оптимизацией через Map
  */
 
-import type { FamilyId, User, UserId, UserTag } from '@/lib/schemas'
+import type { Family, User } from '@/lib/schemas'
+import type { UnwrapSet } from '@/lib/types/utilities'
+
+type UserTag = UnwrapSet<User['tags']>
 
 export class UsersRepository {
-  private readonly usersById: Map<UserId, User>
-  private readonly usersByFamily: Map<FamilyId, User[]>
+  private readonly usersById: Map<User['id'], User>
+  private readonly usersByFamily: Map<Family['id'], User[]>
   private readonly usersByTag: Map<UserTag, User[]>
 
   constructor(users: User[]) {
@@ -40,7 +43,7 @@ export class UsersRepository {
    * Получить пользователя по ID
    * Complexity: O(1)
    */
-  findById(id: UserId): User | undefined {
+  findById(id: User['id']): User | undefined {
     return this.usersById.get(id)
   }
 
@@ -48,7 +51,7 @@ export class UsersRepository {
    * Получить всех пользователей семьи
    * Complexity: O(1)
    */
-  findByFamily(familyId: FamilyId): User[] {
+  findByFamily(familyId: Family['id']): User[] {
     return this.usersByFamily.get(familyId) ?? []
   }
 
@@ -85,7 +88,7 @@ export class UsersRepository {
   /**
    * Проверить существование пользователя
    */
-  exists(id: UserId): boolean {
+  exists(id: User['id']): boolean {
     return this.usersById.has(id)
   }
 }

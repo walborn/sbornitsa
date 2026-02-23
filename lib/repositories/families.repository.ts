@@ -4,10 +4,10 @@
  * Централизованный доступ к семьям с оптимизацией через Map
  */
 
-import type { Family, FamilyId, UserId } from '@/lib/schemas'
+import type { Family, User } from '@/lib/schemas'
 
 export class FamiliesRepository {
-  private readonly familiesById: Map<FamilyId, Family>
+  private readonly familiesById: Map<Family['id'], Family>
 
   constructor(families: Family[]) {
     this.familiesById = new Map(families.map(f => [f.id, f]))
@@ -17,7 +17,7 @@ export class FamiliesRepository {
    * Получить семью по ID
    * Complexity: O(1)
    */
-  findById(id: FamilyId): Family | undefined {
+  findById(id: Family['id']): Family | undefined {
     return this.familiesById.get(id)
   }
 
@@ -31,21 +31,21 @@ export class FamiliesRepository {
   /**
    * Получить семью по ID матери
    */
-  findByMother(motherId: UserId): Family | undefined {
+  findByMother(motherId: User['id']): Family | undefined {
     return this.findAll().find(f => f.mother === motherId)
   }
 
   /**
    * Получить семью по ID отца
    */
-  findByFather(fatherId: UserId): Family | undefined {
+  findByFather(fatherId: User['id']): Family | undefined {
     return this.findAll().find(f => f.father === fatherId)
   }
 
   /**
    * Получить семью по ID ребенка
    */
-  findByChild(childId: UserId): Family | undefined {
+  findByChild(childId: User['id']): Family | undefined {
     return this.findAll().find(f => f.children.includes(childId))
   }
 
@@ -80,7 +80,7 @@ export class FamiliesRepository {
   /**
    * Проверить существование семьи
    */
-  exists(id: FamilyId): boolean {
+  exists(id: Family['id']): boolean {
     return this.familiesById.has(id)
   }
 }

@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 import { TransactionCard } from '@/components/shared/transaction-card'
 import { Button } from '@/components/ui/button'
-import type { Category, FamilyTransaction, Transaction } from '@/lib/schemas'
+import type { FamilyTransaction, Transaction, TransactionCategory } from '@/lib/schemas'
 import { useFamily } from '@/lib/store/auth.store'
 import {
   useFilterHydrated,
@@ -17,18 +17,18 @@ import {
 interface Props {
   transactionsPromise: Promise<Record<Transaction['id'], Transaction>>
   familyTransactionsPromise: Promise<FamilyTransaction[]>
-  categoriesPromise: Promise<Record<string, Category>>
+  transactionCategoriesPromise: Promise<Record<string, TransactionCategory>>
 }
 
 export default function TransactionsList({
   transactionsPromise,
   familyTransactionsPromise,
-  categoriesPromise,
+  transactionCategoriesPromise,
 }: Props) {
   const family = useFamily()
   const transactions = use(transactionsPromise)
   const familyTransactions = use(familyTransactionsPromise)
-  const categories = use(categoriesPromise)
+  const categories = use(transactionCategoriesPromise)
 
   const selectedCategoryIds = useSelectedCategoryIds()
   const toggleCategory = useToggleCategory()

@@ -81,6 +81,7 @@ export const createFamilyId = (id: string): FamilyId => id as FamilyId
 export const createTransactionId = (id: string): TransactionId => id as TransactionId
 export const createCategoryId = (id: string): CategoryId => id as CategoryId
 export const createTimestamp = (ms: number): Timestamp => ms as Timestamp
+// export const createUserRole = (role: string): UserRole => role as UserRole
 
 /**
  * Utility types для работы с branded types
