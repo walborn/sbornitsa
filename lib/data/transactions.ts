@@ -146,6 +146,78 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '24.02.2026',
+    transfers({
+      value: 2877,
+      name: 'За счёт трат на масленницу',
+      family: 'gerbers',
+      timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
+      time: '10:00', // msk
+    }),
+  ],
+  [
+    '24.02.2026',
+    supermarkets({
+      value: -2877,
+      name: 'Масленница',
+      description: 'Продукты детям на масленницу',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: line<Fadeevs>('aurora.fadeeva'),
+        gerbers: line<Gerbers>('agata.gerber', 'platon.gerber'),
+        kirillovs: line<Kirillovs>('emma.kirillova'),
+        legoshins: none<Legoshins>('mila.legoshina'),
+        leonenkos: none<Leonenkos>('aellita.leonenko'),
+        marshevs: line<Marshevs>('igor.marshev'),
+        novitskys: none<Novitskys>('misha.novitskiy'),
+        petrovs: line<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: line<Skvortsovs>('kirill.skvortsov'),
+        usarovs: line<Usarovs>('emil.usarov'),
+        yuzhakovs: none<Yuzhakovs>('meera.yuzhakova'),
+      },
+      timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
+      time: '10:00', // msk
+    }),
+  ],
+  [
+    '23.02.2026',
+    transfers({
+      value: 3984,
+      name: 'За счёт трат на подарки 23 февраля',
+      family: 'eremeevs',
+      timestamp: new Date('2026-02-23T10:00:00+03:00').getTime(),
+      time: '10:00', // msk
+    }),
+  ],
+  [
+    '23.02.2026',
+    gifts({
+      value: -3984,
+      name: '23 февраля',
+      description: 'Подарки на 23 февраля (скидываются за девочек)',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: line<Eremeevs>('vera.eremeeva'),
+        fadeevs: line<Fadeevs>('aurora.fadeeva'),
+        gerbers: line<Gerbers>('agata.gerber'),
+        kirillovs: line<Kirillovs>('emma.kirillova'),
+        legoshins: line<Legoshins>('mila.legoshina'),
+        leonenkos: line<Leonenkos>('aellita.leonenko'),
+        marshevs: none<Marshevs>(),
+        novitskys: line<Novitskys>('anna.novitskaya'),
+        petrovs: line<Petrovs>('varya.petrova'),
+        pimenovs: line<Pimenovs>('emilia.pimenova'),
+        skvortsovs: line<Skvortsovs>('kirill.skvortsov'),
+        usarovs: none<Usarovs>(),
+        yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
+      },
+      timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
+      time: '10:00', // msk
+    }),
+  ],
+  [
     '20.02.2026',
     english({
       families: {
