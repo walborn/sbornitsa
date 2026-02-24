@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -9,7 +9,7 @@ import { AtSymbolIcon, ExclamationCircleIcon, KeyIcon } from '@heroicons/react/2
 import { useLocale } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
-import type { FamilyId } from '@/lib/schemas'
+import type { Family } from '@/lib/schemas'
 import { useAuthStore } from '@/lib/store/auth.store'
 
 export default function LoginForm() {
@@ -28,7 +28,7 @@ export default function LoginForm() {
     setErrorMessage(undefined)
 
     const formData = new FormData(event.currentTarget)
-    const username = formData.get('username') as FamilyId
+    const username = formData.get('username') as Family['id']
     const password = formData.get('password') as string
 
     startTransition(() => {

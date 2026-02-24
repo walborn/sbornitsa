@@ -3,10 +3,10 @@ import Link from 'next/link'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { fetchTranslations } from '@/components/utils/fetch-translations'
 import { fetchFamilyById } from '@/lib/api'
-import type { FamilyId } from '@/lib/schemas'
+import type { Family } from '@/lib/schemas'
 
 interface Props {
-  familyId: FamilyId
+  familyId: Family['id']
   locale: 'ru' | 'en'
 }
 
