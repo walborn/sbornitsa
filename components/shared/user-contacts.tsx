@@ -1,12 +1,12 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { Contacts } from '@/lib/schemas'
+import type { User } from '@/lib/schemas'
 
-export default async function UserContacts({ value }: { value: Partial<Contacts> }) {
+export default async function UserContacts({ value }: { value: Partial<User['contacts']> }) {
   return (
     <ul>
-      {value.phone && (
+      {value?.phone && (
         <li
           key="phone"
           className="flex items-center gap-2"
@@ -27,7 +27,7 @@ export default async function UserContacts({ value }: { value: Partial<Contacts>
           </Link>
         </li>
       )}
-      {value.telegram && (
+      {value?.telegram && (
         <li
           key="telegram"
           className="flex items-center gap-2"
