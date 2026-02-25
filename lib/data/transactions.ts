@@ -146,6 +146,21 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '25.02.2026',
+    transfers({
+      value: 5000,
+      name: 'Ольга Скворцова',
+      family: 'skvortsovs',
+      timestamp: new Date('2026-02-25T14:05:00+03:00').getTime(),
+      time: '14:05', // msk
+      source: {
+        bank: 'tbank',
+        name: 'Ольга С.',
+        message: 'За Кирилла',
+      },
+    }),
+  ],
+  [
     '24.02.2026',
     transfers({
       value: 2877,
@@ -209,7 +224,7 @@ const rawTransactions: [string, RawTransaction][] = [
         novitskys: line<Novitskys>('anna.novitskaya'),
         petrovs: line<Petrovs>('varya.petrova'),
         pimenovs: line<Pimenovs>('emilia.pimenova'),
-        skvortsovs: line<Skvortsovs>('kirill.skvortsov'),
+        skvortsovs: none<Skvortsovs>('kirill.skvortsov'),
         usarovs: none<Usarovs>(),
         yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
       },
