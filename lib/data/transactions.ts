@@ -145,6 +145,122 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 })
 
 const rawTransactions: [string, RawTransaction][] = [
+  // Ты мне должен перевести 6110 (10094 - 3984)
+  // Переведи пожалуйста 3000 (на любой банк), а остальные положи на депозит наш пожалуйста
+  // (10094 (итоговая за мальчиков и девочек) - 3984 (добавлял ранее) - 3к (на карту)
+  [
+    '08.03.2026',
+    transfers({
+      value: 3110,
+      name: 'Из общака',
+      description: 'За счёт трат на подарки (10094  - 3984 - 3к)',
+      // '10094 (итоговая за мальчиков и девочек) - 3984 (добавлял 23 фев) - 3к (на карту tbank)',
+      family: 'eremeevs',
+      timestamp: new Date('2026-03-08T01:26:00+03:00').getTime(),
+      time: '01:26', // msk
+      source: {
+        bank: 'sbornitsa',
+        name: 'Общак',
+        message: 'Остаток от 6110 (3к перевел на карту) За подарки на 23 февраля и 8 марта',
+      },
+    }),
+  ],
+  /*
+  Можешь пожалуйста со всех списать сумму 13000
+  (с меня и Наташи с коэффициентом на второго ребёнка).
+  И прислать 7000 - Наташе и 6000 - мне.
+  Это на подарки на 8 марта Веронике и Наташе
+  Перевел 8 марта в 01:37 (msk) Наташе Новицкой и Светлане Еремеевой
+*/
+  [
+    '08.03.2026',
+    gifts({
+      value: -13000,
+      name: 'Учителям на 8 марта',
+      description: 'Подарки на 8 марта Веронике и Наташе',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'), // Наташе тоже?
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), // Наташе тоже?
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+      timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
+      time: '10:00', // msk
+    }),
+  ],
+  [
+    '06.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '04.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '27.02.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '25.02.2026',
     transfers({
@@ -157,6 +273,27 @@ const rawTransactions: [string, RawTransaction][] = [
         bank: 'tbank',
         name: 'Ольга С.',
         message: 'За Кирилла',
+      },
+    }),
+  ],
+  [
+    '25.02.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
       },
     }),
   ],
@@ -196,39 +333,50 @@ const rawTransactions: [string, RawTransaction][] = [
       time: '10:00', // msk
     }),
   ],
+  // потом еще добавить, так как будут подарки на 8 марта
   [
     '23.02.2026',
     transfers({
       value: 3984,
-      name: 'За счёт трат на подарки 23 февраля',
+      name: 'Из общака',
+      description: 'За счёт трат на подарки 23 февраля',
       family: 'eremeevs',
       timestamp: new Date('2026-02-23T10:00:00+03:00').getTime(),
       time: '10:00', // msk
+      source: {
+        name: 'Общак',
+        bank: 'sbornitsa',
+      },
     }),
   ],
+  // 10094 общая сумма всех подарков
+  // Делим равные суммы по количеству детей.
+  // Количество детей было 16 тк ещё Платон был.
+  // То есть на Мишу получается сумма двойная и на Агату
   [
     '23.02.2026',
     gifts({
-      value: -3984,
-      name: '23 февраля',
-      description: 'Подарки на 23 февраля (скидываются за девочек)',
+      value: -10094,
+      name: 'Детям на 23 февраля и 8 марта',
+      description: 'Подарки на 23 февраля и 8 марта - поделили общую сумму на 16 детей',
+      // подарки Платону и другим мальчишкам
       families: {
         chernys: none<Chernys>(), // left the group
-        eremeevs: line<Eremeevs>('vera.eremeeva'),
+        eremeevs: line<Eremeevs>('vera.eremeeva', 'ivan.eremeev'),
         fadeevs: line<Fadeevs>('aurora.fadeeva'),
-        gerbers: line<Gerbers>('agata.gerber'),
+        gerbers: line<Gerbers>('agata.gerber', 'platon.gerber'),
         kirillovs: line<Kirillovs>('emma.kirillova'),
         legoshins: line<Legoshins>('mila.legoshina'),
         leonenkos: line<Leonenkos>('aellita.leonenko'),
-        marshevs: none<Marshevs>(),
-        novitskys: line<Novitskys>('anna.novitskaya'),
+        marshevs: line<Marshevs>('igor.marshev'),
+        novitskys: line<Novitskys>('anna.novitskaya', 'misha.novitskiy'),
         petrovs: line<Petrovs>('varya.petrova'),
         pimenovs: line<Pimenovs>('emilia.pimenova'),
-        skvortsovs: none<Skvortsovs>('kirill.skvortsov'),
-        usarovs: none<Usarovs>(),
+        skvortsovs: line<Skvortsovs>('kirill.skvortsov'),
+        usarovs: line<Usarovs>('emil.usarov'),
         yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
       },
-      timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
+      timestamp: new Date('2026-02-23T10:00:00+03:00').getTime(),
       time: '10:00', // msk
     }),
   ],

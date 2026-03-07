@@ -12,7 +12,12 @@ interface Props {
   icon: { src: string; alt: string }
 }
 
+// type - whole day, some days, interval
+// interval: { type: 'day', }
+// d
 export const EventCard = ({ name, description, categories, start, end, icon }: Props) => {
+  // если ровно сутки, то
+  // если целое количество дней
   if ((end - start) % (24 * 60 * 60 * 1000) === 0) {
     const days = (end - start) / (24 * 60 * 60 * 1000)
     return (
