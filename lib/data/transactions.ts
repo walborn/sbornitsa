@@ -144,7 +144,88 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
   category: 'supermarkets',
 })
 
+// const test: Test[] = [
+//   {
+//     timestamp: '08.03.2026 12:03',
+//     value: -234,
+//     name: 'За ложки',
+//     description: 'Музыкальные ложки для занятий',
+//     families: {
+//       eremeevs: [ 'ivan.eremeev', 'vera.eremeeva' ],
+//       fadeevs: [ 'aurora.fadeeva' ],
+//       // ...
+//     }
+//     // перевод из общака
+//   }
+// ]
+
 const rawTransactions: [string, RawTransaction][] = [
+  // Верни мне пожалуйста 4500. Вероника покупала музыкальные ложки детям.
+  // И спиши с каждого лично ребёнка по 300 рублей. С Миши получается 600 тк за Аню тоже. То есть всего 15 детей = ложек.
+  // Мне можешь вернуть наверное сразу 3900 лучше, и не списывать с моих
+  [
+    '11.03.2026',
+    transfers({
+      value: +600,
+      name: 'За ложки',
+      description: 'Это часть от 4500. Оставшиеся 3900 переведены на карту',
+      family: 'eremeevs',
+      timestamp: new Date('2026-03-11T11:28:00+03:00').getTime(),
+      time: '11:28', // msk
+      source: {
+        bank: 'sbornitsa',
+        name: 'Общак',
+        message: 'Это часть от 4500. Оставшиеся 3900 перевёл на карту',
+      },
+    }),
+  ],
+  [
+    '11.03.2026',
+    supermarkets({
+      value: -4500,
+      name: 'Музыкальные ложки',
+      description: 'Музыкальные ложки для занятий',
+      families: {
+        chernys: line<Chernys>(), // left the group
+        eremeevs: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: line<Fadeevs>('aurora.fadeeva'),
+        gerbers: line<Gerbers>('agata.gerber'),
+        kirillovs: line<Kirillovs>('emma.kirillova'),
+        legoshins: line<Legoshins>('mila.legoshina'),
+        leonenkos: line<Leonenkos>('aellita.leonenko'),
+        marshevs: line<Marshevs>('igor.marshev'),
+        novitskys: line<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
+        petrovs: line<Petrovs>('varya.petrova'),
+        pimenovs: line<Pimenovs>('emilia.pimenova'),
+        skvortsovs: line<Skvortsovs>('kirill.skvortsov'),
+        usarovs: line<Usarovs>('emil.usarov'),
+        yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
+      },
+      timestamp: new Date('2026-03-11T11:28:00+03:00').getTime(),
+      time: '11:28', // msk
+    }),
+  ],
+  [
+    '11.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   // Ты мне должен перевести 6110 (10094 - 3984)
   // Переведи пожалуйста 3000 (на любой банк), а остальные положи на депозит наш пожалуйста
   // (10094 (итоговая за мальчиков и девочек) - 3984 (добавлял ранее) - 3к (на карту)
