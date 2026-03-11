@@ -6,10 +6,7 @@
       "en": "Chernys"
     },
     "mother": "anastasia.chernaya",
-    "children": [
-      "vitya.cherny",
-      "nina.chernaya"
-    ],
+    "children": ["vitya.cherny", "nina.chernaya"],
     "password": "7bdbe2eaf569840e170c9e97fbdc6b5b5c5d9eba7b453b9216417bc34537468a",
     "avatar": "/families/chernys.webp",
     "value": 0
@@ -21,10 +18,7 @@
       "en": "Eremeevs"
     },
     "mother": "svetlana.eremeeva",
-    "children": [
-      "ivan.eremeev",
-      "vera.eremeeva"
-    ],
+    "children": ["ivan.eremeev", "vera.eremeeva"],
     "password": "bd9bafc0713c39509fcd972c76f9be197ad8bfc5e1046ed6ac118cb475e9c78e",
     "avatar": "/families/eremeevs.webp",
     "value": 0
@@ -37,9 +31,7 @@
     },
     "mother": "ornella.zubkova",
     "father": "boris.yuzhakov",
-    "children": [
-      "meera.yuzhakova"
-    ],
+    "children": ["meera.yuzhakova"],
     "password": "3cc849279ba298b587a34cabaeffc5ecb3a044bbf97c516fab7ede9d1af77cfa",
     "avatar": "/families/yuzhakovs.webp",
     "value": 0
@@ -51,9 +43,7 @@
       "en": "Legoshins"
     },
     "mother": "maria.legoshina",
-    "children": [
-      "mila.legoshina"
-    ],
+    "children": ["mila.legoshina"],
     "password": "608bf10d4d879acf43d996e5d023551c5019941fc7eb4d0d37e978921529b0d2",
     "avatar": "/families/legoshins.webp",
     "value": 0
@@ -65,10 +55,7 @@
       "en": "Novitskys"
     },
     "mother": "natasha.novitskaya",
-    "children": [
-      "misha.novitskiy",
-      "anna.novitskaya"
-    ],
+    "children": ["misha.novitskiy", "anna.novitskaya"],
     "password": "97fb8186eece9979fd4559ef91f13918efe4af54dd6a0b28e09a1303deddcac3",
     "avatar": "/families/novitsky.webp",
     "value": 0
@@ -80,9 +67,7 @@
       "en": "Skvortsovs"
     },
     "mother": "olga.skvortsova",
-    "children": [
-      "kirill.skvortsov"
-    ],
+    "children": ["kirill.skvortsov"],
     "password": "3a814b22839847f9ad26678c4e81ecce8cd54fb8e7ed62fecea5300148afb040",
     "avatar": "/families/skvortsovs.webp",
     "value": 0
@@ -94,10 +79,7 @@
       "en": "Gerbers"
     },
     "mother": "sofya.gerber",
-    "children": [
-      "agata.gerber",
-      "platon.gerber"
-    ],
+    "children": ["agata.gerber", "platon.gerber"],
     "password": "3fd72611b659dada38b45d102bc2c12cb3dd703af25a964399f9795b2b1e7a74",
     "avatar": "/families/gerbers.webp",
     "value": 0
@@ -106,12 +88,10 @@
     "id": "usarovs",
     "name": {
       "ru": "Усаровы",
-      "en": "Usarows"
+      "en": "Usarovs"
     },
     "mother": "maria.usarova",
-    "children": [
-      "emil.usarov"
-    ],
+    "children": ["emil.usarov"],
     "password": "26317f7bdc59aa3b9517d9f88bb53cab2c2ee5210b9d3cc9a84c65096a00627b",
     "avatar": "/families/usarovs.webp",
     "value": 0
@@ -125,10 +105,7 @@
     "mother": "nadezhda.fadeeva",
     "father": "gennady.fadeev",
     "password": "608bf10d4d879acf43d996e5d023551c5019941fc7eb4d0d37e978921529b0d2",
-    "children": [
-      "aurora.fadeeva",
-      "marusya.fadeeva"
-    ],
+    "children": ["aurora.fadeeva", "marusya.fadeeva"],
     "avatar": "/families/fadeevs.webp",
     "value": 0
   },
@@ -139,9 +116,7 @@
       "en": "Marshevs"
     },
     "mother": "anastasia.marsheva",
-    "children": [
-      "igor.marshev"
-    ],
+    "children": ["igor.marshev"],
     "password": "94ffeec199a954ee16244d44179ac2b0692533bee2aa49750c4835270b46c525",
     "avatar": "/families/anastasia.marsheva.webp",
     "value": 0
@@ -154,9 +129,7 @@
     },
     "mother": "ksenya.petrova",
     "father": "denis.petrov",
-    "children": [
-      "varya.petrova"
-    ],
+    "children": ["varya.petrova"],
     "password": "874a9672b6f20b431dcd2bf832de73359441867d1431a495b898d54298b3b821",
     "avatar": "/families/petrovs.webp",
     "value": 0
@@ -168,9 +141,7 @@
       "en": "Leonenko"
     },
     "mother": "polina.leonenko",
-    "children": [
-      "aellita.leonenko"
-    ],
+    "children": ["aellita.leonenko"],
     "password": "97fb8186eece9979fd4559ef91f13918efe4af54dd6a0b28e09a1303deddcac3",
     "avatar": "/families/leonenkos.webp",
     "value": 0
@@ -182,9 +153,7 @@
       "en": "Pimenovs"
     },
     "mother": "alexandra.pimenova",
-    "children": [
-      "emilia.pimenova"
-    ],
+    "children": ["emilia.pimenova"],
     "password": "7bdbe2eaf569840e170c9e97fbdc6b5b5c5d9eba7b453b9216417bc34537468a",
     "avatar": "/families/pimenovs.webp",
     "value": 0
@@ -196,9 +165,7 @@
       "en": "Kirillovs"
     },
     "mother": "olga.kirillova",
-    "children": [
-      "emma.kirillova"
-    ],
+    "children": ["emma.kirillova"],
     "password": "36a48e21c28d08a3915b9dfa71768cc838f6d8ba8fab630a478af4eacc22de37",
     "avatar": "/families/kirillovs.webp",
     "value": 0
