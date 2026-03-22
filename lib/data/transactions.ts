@@ -160,6 +160,113 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 // ]
 
 const rawTransactions: [string, RawTransaction][] = [
+  [
+    '20.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  // Переведи пожалуйста Веронике 800 рублей.
+  // И спиши с Вани, Вари, Эмика и Агаты по 200.
+  // Пособия по математике
+  [
+    '18.03.2026',
+    supermarkets({
+      value: -800,
+      name: 'Пособия по математике',
+      description: 'Пособия по математике для Вани, Вари, Эмика и Агаты по 200р',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: line<Eremeevs>('ivan.eremeev'),
+        fadeevs: none<Fadeevs>('aurora.fadeeva'),
+        gerbers: line<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: none<Legoshins>('mila.legoshina'),
+        leonenkos: none<Leonenkos>('aellita.leonenko'),
+        marshevs: none<Marshevs>('igor.marshev'),
+        novitskys: none<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
+        petrovs: line<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: none<Skvortsovs>('kirill.skvortsov'),
+        usarovs: line<Usarovs>('emil.usarov'),
+        yuzhakovs: none<Yuzhakovs>('meera.yuzhakova'),
+      },
+      timestamp: new Date('2026-03-18T11:28:00+03:00').getTime(),
+      time: '11:28', // msk
+    }),
+  ],
+  [
+    '18.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '16.03.2026',
+    transfers({
+      value: 3500,
+      name: 'Ольга Кириллова',
+      family: 'kirillovs',
+      timestamp: new Date('2026-03-16T12:10:00+03:00').getTime(),
+      time: '12:10', // msk
+      source: {
+        bank: 'sber',
+        name: 'Ольга К.',
+        message: 'Кириллова Эмма',
+      },
+    }),
+  ],
+  [
+    '13.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   // Верни мне пожалуйста 4500. Вероника покупала музыкальные ложки детям.
   // И спиши с каждого лично ребёнка по 300 рублей. С Миши получается 600 тк за Аню тоже. То есть всего 15 детей = ложек.
   // Мне можешь вернуть наверное сразу 3900 лучше, и не списывать с моих
@@ -186,7 +293,7 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Музыкальные ложки',
       description: 'Музыкальные ложки для занятий',
       families: {
-        chernys: line<Chernys>(), // left the group
+        chernys: none<Chernys>(), // left the group
         eremeevs: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
         fadeevs: line<Fadeevs>('aurora.fadeeva'),
         gerbers: line<Gerbers>('agata.gerber'),
