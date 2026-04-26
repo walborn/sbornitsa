@@ -161,6 +161,235 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '24.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '22.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '17.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '15.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '10.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    // Борис, привет, я заказала продукты для детей, вышло 3600, можешь пжл перекинуть мне на Сбер 89250481986
+    // Мира
+    // Агата
+    // Игорь
+    // Миша
+    // Варя
+    // Аэлита
+    // Эмма2
+    // Ваня + Вера
+    // Аврора
+    // Эмиль
+    '10.04.2026',
+    supermarkets({
+      value: -3600,
+      time: '12:05',
+      name: 'За продукты для детей',
+      families: {
+        chernys: none<Chernys>(), // ушла
+        eremeevs: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: line<Fadeevs>('aurora.fadeeva'),
+        gerbers: line<Gerbers>('agata.gerber'),
+        kirillovs: line<Kirillovs>('emma.kirillova'),
+        legoshins: none<Legoshins>('mila.legoshina'),
+        leonenkos: line<Leonenkos>('aellita.leonenko'),
+        marshevs: line<Marshevs>('igor.marshev'),
+        novitskys: line<Novitskys>('misha.novitskiy'),
+        petrovs: line<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: none<Skvortsovs>('kirill.skvortsov'),
+        usarovs: line<Usarovs>('emil.usarov'),
+        yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
+      },
+      description: 'За продукты для детей (Софья Г.)',
+      target: {
+        bank: 'Sber',
+        name: 'Софья Гербер',
+      },
+    }),
+  ],
+  [
+    '08.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '03.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '01.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '25.03.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
     '20.03.2026',
     english({
       families: {
