@@ -161,6 +161,20 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '28.04.2026',
+    transfers({
+      value: 10000,
+      name: 'Мария Исакова',
+      family: 'usarovs',
+      timestamp: 1777372500000,
+      time: '13:35', // msk
+      source: {
+        bank: 'tbank',
+        name: 'Мария И.',
+      },
+    }),
+  ],
+  [
     '24.04.2026',
     english({
       families: {
