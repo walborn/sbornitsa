@@ -113,30 +113,20 @@ const transfers = ({ family, ...trasaction }: TransferTransaction): RawTransacti
   category: 'transfers',
 })
 
-type GiftsTransaction = Omit<RawTransaction, 'families' | 'category'> & {
-  families?: Transaction['families']
+type GiftsTransaction = Omit<RawTransaction, 'value' | 'category'> & {
+  value?: Transaction['value']
 }
 
-const gifts = (trasaction: GiftsTransaction): RawTransaction => ({
-  families: {
-    chernys: none<Chernys>(), // ушла
-    eremeevs: cnst<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
-    fadeevs: cnst<Fadeevs>('aurora.fadeeva'),
-    gerbers: cnst<Gerbers>('agata.gerber', 'platon.gerber'),
-    kirillovs: cnst<Kirillovs>('emma.kirillova'),
-    legoshins: cnst<Legoshins>('mila.legoshina'),
-    leonenkos: cnst<Leonenkos>('aellita.leonenko'),
-    marshevs: cnst<Marshevs>('igor.marshev'),
-    novitskys: cnst<Novitskys>('anna.novitskaya'),
-    petrovs: cnst<Petrovs>('varya.petrova'),
-    pimenovs: cnst<Pimenovs>('emilia.pimenova'),
-    skvortsovs: cnst<Skvortsovs>('kirill.skvortsov'),
-    usarovs: cnst<Usarovs>('emil.usarov'),
-    yuzhakovs: cnst<Yuzhakovs>('meera.yuzhakova'),
-  },
-  ...trasaction,
-  category: 'gifts',
-})
+const gifts = (trasnaction: GiftsTransaction): RawTransaction => {
+  const value =
+    trasnaction.value ?? -[...Object.values(trasnaction.families)].reduce((r, i) => r + i, 0)
+
+  return {
+    value,
+    ...trasnaction,
+    category: 'gifts',
+  }
+}
 
 type SupermarketsTransaction = Omit<RawTransaction, 'category'>
 const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
@@ -144,55 +134,75 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
   category: 'supermarkets',
 })
 
-// const test: Test[] = [
-//   {
-//     timestamp: '08.03.2026 12:03',
-//     value: -234,
-//     name: 'За ложки',
-//     description: 'Музыкальные ложки для занятий',
-//     families: {
-//       eremeevs: [ 'ivan.eremeev', 'vera.eremeeva' ],
-//       fadeevs: [ 'aurora.fadeeva' ],
-//       // ...
-//     }
-//     // перевод из общака
-//   }
-// ]
-
 const rawTransactions: [string, RawTransaction][] = [
-  // [
-  //   '04.05.2026',
-  //   gifts({
-  //     value: -5000,
-  //     name: 'День Рождения Вероники',
-  //     description: 'Подарки на День Рожденья Вероники',
-  //     families: {
-  //       chernys: 0,
-  //       eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
-  //       fadeevs: fade<Fadeevs>('aurora.fadeeva'),
-  //       gerbers: fade<Gerbers>('agata.gerber'),
-  //       kirillovs: fade<Kirillovs>('emma.kirillova'), // Наташе тоже?
-  //       legoshins: fade<Legoshins>('mila.legoshina'),
-  //       leonenkos: fade<Leonenkos>('aellita.leonenko'),
-  //       marshevs: fade<Marshevs>('igor.marshev'),
-  //       novitskys: 3000,
-  //       petrovs: fade<Petrovs>('varya.petrova'),
-  //       pimenovs: fade<Pimenovs>('emilia.pimenova'), // Наташе тоже?
-  //       skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
-  //       usarovs: fade<Usarovs>('emil.usarov'),
-  //       yuzhakovs: 2000,
-  //     },
-  //     timestamp: 1777878000000, // new Date('2026-05-04T10:00:00+03:00').getTime(),
-  //     time: '10:00', // msk
-  //   }),
-  // ],
+  [
+    '04.05.2026',
+    gifts({
+      name: 'День Рождения Вероники',
+      description: 'Подарок на день рождения Вероники от всех семей',
+      families: {
+        chernys: 0, // left the group
+        eremeevs: 4000, // fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: 0, // fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: 0, // fade<Gerbers>('agata.gerber'),
+        kirillovs: 0, // fade<Kirillovs>('emma.kirillova'), // Наташе тоже?
+        legoshins: 0, // fade<Legoshins>('mila.legoshina'),
+        leonenkos: 0, // fade<Leonenkos>('aellita.leonenko'),
+        marshevs: 0, // fade<Marshevs>('igor.marshev'),
+        novitskys: 3000, // fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
+        petrovs: 0, // fade<Petrovs>('varya.petrova'),
+        pimenovs: 0, // fade<Pimenovs>('emilia.pimenova'), // Наташе тоже?
+        skvortsovs: 0, // fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: 0, // fade<Usarovs>('emil.usarov'),
+        // От Евгении Т. 1500р
+        yuzhakovs: 2000 + 1500,
+      },
+      timestamp: new Date('2026-05-04T10:00:00+03:00').getTime(),
+      time: '10:00', // msk
+    }),
+  ],
+  [
+    '29.04.2026',
+    transfers({
+      value: 8000,
+      name: 'Светлана Еремеева',
+      family: 'eremeevs',
+      timestamp: new Date('2026-04-29T18:58:00+03:00').getTime(),
+      time: '18:58', // msk
+      source: {
+        bank: 'sber',
+        name: 'Светлана Е.',
+      },
+    }),
+  ],
+  [
+    '29.04.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '28.04.2026',
     transfers({
       value: 6000,
       name: 'Наталья Новицкая',
       family: 'novitskys',
-      timestamp: 1777389120000,
+      timestamp: new Date('2026-04-28T18:12:00+03:00').getTime(),
       time: '18:12', // msk
       source: {
         bank: 'tbank',
