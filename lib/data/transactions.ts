@@ -141,24 +141,82 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'День Рождения Вероники',
       description: 'Подарок на день рождения Вероники от всех семей',
       families: {
-        chernys: 0, // left the group
+        chernys: 1500, // left the group
         eremeevs: 4000, // fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
-        fadeevs: 0, // fade<Fadeevs>('aurora.fadeeva'),
-        gerbers: 0, // fade<Gerbers>('agata.gerber'),
-        kirillovs: 0, // fade<Kirillovs>('emma.kirillova'), // Наташе тоже?
-        legoshins: 0, // fade<Legoshins>('mila.legoshina'),
-        leonenkos: 0, // fade<Leonenkos>('aellita.leonenko'),
-        marshevs: 0, // fade<Marshevs>('igor.marshev'),
+        fadeevs: 1500, // fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: 4000, // fade<Gerbers>('agata.gerber'),
+        kirillovs: 1500, // fade<Kirillovs>('emma.kirillova'), // Наташе тоже?
+        legoshins: 1500, // fade<Legoshins>('mila.legoshina'),
+        leonenkos: 2500, // fade<Leonenkos>('aellita.leonenko'),
+        marshevs: 2500, // fade<Marshevs>('igor.marshev'),
         novitskys: 3000, // fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
-        petrovs: 0, // fade<Petrovs>('varya.petrova'),
-        pimenovs: 0, // fade<Pimenovs>('emilia.pimenova'), // Наташе тоже?
-        skvortsovs: 0, // fade<Skvortsovs>('kirill.skvortsov'),
-        usarovs: 0, // fade<Usarovs>('emil.usarov'),
+        petrovs: 2000, // fade<Petrovs>('varya.petrova'),
+        pimenovs: 0, // не будет участвовать в подарке. fade<Pimenovs>('emilia.pimenova'), // Наташе тоже?
+        skvortsovs: 1000, // fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: 1500, // fade<Usarovs>('emil.usarov'),
         // От Евгении Т. 1500р
-        yuzhakovs: 2000 + 1500,
+        // От Натальи П. 4000
+        yuzhakovs: 2000 + 1500 + 4000,
       },
+      // 1500 + 4000 + 1500 + 4000 + 1500 + 1500 + 2500 + 2500 + 3000 + 2000 + 0 + 1000 + 1500 + 7500
       timestamp: new Date('2026-05-04T10:00:00+03:00').getTime(),
       time: '10:00', // msk
+    }),
+  ],
+  [
+    '04.05.2026',
+    transfers({
+      value: 5000,
+      name: 'Ольга Скворцова',
+      family: 'fadeevs',
+      timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
+      time: '09:00', // msk
+      source: {
+        bank: 'riffisen',
+        name: 'Ольга С.',
+      },
+    }),
+  ],
+  [
+    '04.05.2026',
+    transfers({
+      value: 7000,
+      name: 'Надежда Фадеева',
+      family: 'fadeevs',
+      timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
+      time: '09:00', // msk
+      source: {
+        bank: 'tbank',
+        name: 'Надежда Фадеева',
+      },
+    }),
+  ],
+  [
+    '04.05.2026',
+    transfers({
+      value: 4000,
+      name: 'Софья Г.',
+      family: 'fadeevs',
+      timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
+      time: '09:00', // msk
+      source: {
+        bank: 'sber',
+        name: 'Софья Г.',
+      },
+    }),
+  ],
+  [
+    '02.05.2026',
+    transfers({
+      value: 3000,
+      name: 'Мария Легошина',
+      family: 'legoshins',
+      timestamp: new Date('2026-05-02T11:18:00+03:00').getTime(),
+      time: '11:18', // msk
+      source: {
+        bank: 'tbank',
+        name: 'Дмитрий Л',
+      },
     }),
   ],
   [
