@@ -136,6 +136,62 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '12.05.2026',
+    transfers({
+      value: 5000,
+      name: 'Денис П.',
+      family: 'petrovs',
+      timestamp: new Date('2026-05-12T10:54:00+03:00').getTime(),
+      time: '10:54', // msk
+      source: {
+        bank: 'tbank',
+        name: 'Денис П.',
+      },
+    }),
+  ],
+  [
+    '08.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '06.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
     '04.05.2026',
     gifts({
       name: 'День Рождения Вероники',
