@@ -136,6 +136,425 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '05.06.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '03.06.2026',
+    transfers({
+      value: 5000,
+      name: 'Светлана Еремеева',
+      family: 'eremeevs',
+      timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
+      time: '15:40', // msk
+      source: {
+        bank: 'sber',
+        name: 'Светлана Е.',
+      },
+    }),
+  ],
+
+  // При делении расходов учитываем только детей (второй ребёнок старше 3 с коэффициентом 0.5).
+  // Старшие дети, участвовавшие в организации тоже не учитываются (приравниваются к помогающим родителям)
+
+  // Подарки брелоки 3774, Костюм лягушки 2672, Фартук и кокошник 698
+  [
+    '03.06.2026',
+    supermarkets({
+      value: -3774,
+      name: 'Расходы на выпускной (Еремеевы)',
+      description: '3774: Подарки брелоки',
+      families: {
+        chernys: line<Chernys>(), // left the group
+        eremeevs: line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: line<Fadeevs>('aurora.fadeeva', 'marusya.fadeeva'), //
+        gerbers: line<Gerbers>('agata.gerber', 'platon.gerber'), //
+        kirillovs: line<Kirillovs>('emma.kirillova'), //
+        legoshins: line<Legoshins>('mila.legoshina'), //
+        leonenkos: line<Leonenkos>('aellita.leonenko'), //
+        marshevs: line<Marshevs>('igor.marshev'), //
+        novitskys: line<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: line<Petrovs>('varya.petrova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: line<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: line<Usarovs>('emil.usarov'), //
+        yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'), //
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    supermarkets({
+      value: -3370,
+      name: 'Расходы на выпускной (Еремеевы)',
+      description: '3370: Костюм лягушки 2672, Фартук и кокошник 698',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'), // + marusya.fadeeva как взрослый
+        gerbers: fade<Gerbers>('agata.gerber'), // + platon.gerber как взрослый
+        kirillovs: fade<Kirillovs>('emma.kirillova'), //
+        legoshins: fade<Legoshins>('mila.legoshina'), //
+        leonenkos: fade<Leonenkos>('aellita.leonenko'), //
+        marshevs: fade<Marshevs>('igor.marshev'), //
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: fade<Petrovs>('varya.petrova'), //
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: fade<Usarovs>('emil.usarov'), //
+        yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    transfers({
+      value: 7144,
+      description: 'Подарки брелоки 3774, Костюм лягушки 2672, Фартук и кокошник 698',
+      name: 'Светлана Еремеева',
+      family: 'eremeevs',
+      timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
+      time: '15:40', // msk
+      source: {
+        bank: 'inner',
+        name: 'Eremeeva S.',
+      },
+    }),
+  ],
+  [
+    '03.06.2026',
+    supermarkets({
+      value: -6191,
+      name: 'Расходы на выпускной (Новицкие)',
+      description:
+        '6191: Флажки: 190*5=950, Посуда: 783, Земля: 100, Хлеб, сыр, колбаса, напитки: 4358',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'), // + marusya.fadeeva как взрослый
+        gerbers: fade<Gerbers>('agata.gerber'), // + platon.gerber как взрослый
+        kirillovs: fade<Kirillovs>('emma.kirillova'), //
+        legoshins: fade<Legoshins>('mila.legoshina'), //
+        leonenkos: fade<Leonenkos>('aellita.leonenko'), //
+        marshevs: fade<Marshevs>('igor.marshev'), //
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: fade<Petrovs>('varya.petrova'), //
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: fade<Usarovs>('emil.usarov'), //
+        yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    transfers({
+      value: 6191,
+      description: 'Флажки: 190*5=950, Посуда: 783, Земля: 100, Хлеб, сыр, колбаса, напитки: 4358',
+      name: 'Новицкая Наталья',
+      family: 'novitskys',
+      timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
+      time: '15:40', // msk
+      source: {
+        bank: 'inner',
+        name: 'Novitskaya N.',
+      },
+    }),
+  ],
+
+  [
+    // Фетр для костюма черепахи 729
+    // Лианы для костюма кикиморы 492
+    // Костюм царя батюшка 1302 (оставили Веронике)
+    '03.06.2026',
+    supermarkets({
+      value: -2523,
+      name: 'Расходы на выпускной (Фадеевы)',
+      description:
+        '2523: Фетр для костюма черепахи 729, Лианы для костюма кикиморы 492, Костюм царя батюшка 1302 (оставили Веронике)',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'), // + marusya.fadeeva как взрослый
+        gerbers: fade<Gerbers>('agata.gerber'), // + platon.gerber как взрослый
+        kirillovs: fade<Kirillovs>('emma.kirillova'), //
+        legoshins: fade<Legoshins>('mila.legoshina'), //
+        leonenkos: fade<Leonenkos>('aellita.leonenko'), //
+        marshevs: fade<Marshevs>('igor.marshev'), //
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: fade<Petrovs>('varya.petrova'), //
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: fade<Usarovs>('emil.usarov'), //
+        yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    transfers({
+      value: 2523,
+      description:
+        'Фетр для костюма черепахи 729, Лианы для костюма кикиморы 492, Костюм царя батюшка 1302 (оставили Веронике)',
+      name: 'Фадеева Надежда',
+      family: 'fadeevs',
+      timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
+      time: '15:40', // msk
+      source: {
+        bank: 'inner',
+        name: 'Fadeeva N.',
+      },
+    }),
+  ],
+  [
+    // TODO: Перевести Веронике на sber или наличкой
+    '03.06.2026',
+    supermarkets({
+      value: -7180,
+      name: 'Расходы на выпускной (Вероника)',
+      description: '7180: Пироги',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'), // + marusya.fadeeva как взрослый
+        gerbers: fade<Gerbers>('agata.gerber'), // + platon.gerber как взрослый
+        kirillovs: fade<Kirillovs>('emma.kirillova'), //
+        legoshins: fade<Legoshins>('mila.legoshina'), //
+        leonenkos: fade<Leonenkos>('aellita.leonenko'), //
+        marshevs: fade<Marshevs>('igor.marshev'), //
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: fade<Petrovs>('varya.petrova'), //
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: fade<Usarovs>('emil.usarov'), //
+        yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    transfers({
+      value: 32500, // 13000 + 1500 + 7000 + 5000 + 3000 + 3000,
+      description:
+        'Фрукты овощи на рынке 13000, Веронике 7000 на карту, Букет 5000, Наташа сертификат 3000, Костюм Буратино 3000',
+      name: 'Софья Гербер',
+      family: 'gerbers',
+      timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
+      time: '15:40', // msk
+      source: {
+        bank: 'inner',
+        name: 'Светлана Е.',
+      },
+    }),
+  ],
+  [
+    '03.06.2026',
+    supermarkets({
+      value: -32500,
+      name: 'Расходы на выпускной (Герберы)',
+      description:
+        '32500: Фрукты овощи на рынке 13000, Веронике 7000 на карту, Букет 5000, Наташа сертификат 3000, Костюм Буратино 3000',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'), // + marusya.fadeeva как взрослый
+        gerbers: fade<Gerbers>('agata.gerber'), // + platon.gerber как взрослый
+        kirillovs: fade<Kirillovs>('emma.kirillova'), //
+        legoshins: fade<Legoshins>('mila.legoshina'), //
+        leonenkos: fade<Leonenkos>('aellita.leonenko'), //
+        marshevs: fade<Marshevs>('igor.marshev'), //
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: fade<Petrovs>('varya.petrova'), //
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: fade<Usarovs>('emil.usarov'), //
+        yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    supermarkets({
+      value: -3034,
+      name: 'Расходы на выпускной (Петровы)',
+      description:
+        '3034: Фасоль 556, Бумага 213, Носки 984, Наклейки 164, Дипломы 1072, Шарики 45 ',
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'), //
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'), // + marusya.fadeeva как взрослый
+        gerbers: fade<Gerbers>('agata.gerber'), // + platon.gerber как взрослый
+        kirillovs: fade<Kirillovs>('emma.kirillova'), //
+        legoshins: fade<Legoshins>('mila.legoshina'), //
+        leonenkos: fade<Leonenkos>('aellita.leonenko'), //
+        marshevs: fade<Marshevs>('igor.marshev'), //
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: fade<Petrovs>('varya.petrova'), //
+        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
+        usarovs: fade<Usarovs>('emil.usarov'), //
+        yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
+      },
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      time: '12:00', // msk
+    }),
+  ],
+  [
+    '03.06.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '27.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '22.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '20.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '15.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
+    '13.05.2026',
+    english({
+      families: {
+        chernys: none<Chernys>(), // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber'),
+        kirillovs: none<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: none<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: fade<Usarovs>('emil.usarov'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
     '12.05.2026',
     transfers({
       value: 5000,

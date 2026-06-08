@@ -37,6 +37,7 @@ export const USER_IDS = [
   'misha.novitskiy',
   'anna.novitskaya',
   'kirill.skvortsov',
+  'fedya.skvortsov',
   'agata.gerber',
   'platon.gerber',
   'emil.usarov',
@@ -96,7 +97,10 @@ export type Fadeevs = Extract<
   'nadezhda.fadeeva' | 'gennady.fadeev' | 'aurora.fadeeva' | 'marusya.fadeeva'
 >[]
 export type Gerbers = Extract<UserId, 'sofya.gerber' | 'agata.gerber' | 'platon.gerber'>[]
-export type Skvortsovs = Extract<UserId, 'olga.skvortsova' | 'kirill.skvortsov'>[]
+export type Skvortsovs = Extract<
+  UserId,
+  'olga.skvortsova' | 'kirill.skvortsov' | 'fedya.skvortsov'
+>[]
 export type Kirillovs = Extract<UserId, 'olga.kirillova' | 'emma.kirillova'>[]
 export type Usarovs = Extract<UserId, 'maria.usarova' | 'emil.usarov'>[]
 export type Leonenkos = Extract<UserId, 'polina.leonenko' | 'aellita.leonenko'>[]
