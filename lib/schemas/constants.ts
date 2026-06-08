@@ -112,6 +112,7 @@ export const TRANSACTIONS_CATEGORY_IDS = [
   'transfers',
   'supermarkets',
   'gifts',
+  'events',
 ] as const
 
 // events

@@ -24,11 +24,11 @@ const none = <T extends User['id'][]>(...args: T) => 0
 type RawTransaction = {
   name: string
   description: string
-  timestamp?: number // для точного времени
+  timestamp: number // для точного времени
   value: number
   category: Transaction['category']
   teacher?: User['id']
-  time: string
+  time?: string
   families: Transaction['families']
   children?: string[][]
   target?: Transaction['target']
@@ -37,11 +37,11 @@ type RawTransaction = {
 
 type EnglishTransaction = Omit<
   RawTransaction,
-  'name' | 'description' | 'value' | 'category' | 'teacher' | 'time'
+  'name' | 'description' | 'value' | 'category' | 'teacher' | 'timestamp'
 > & {
   value?: number
 }
-const english = (transaction: EnglishTransaction): RawTransaction => ({
+const english = (date: string, transaction: EnglishTransaction): RawTransaction => ({
   value: -2000,
   target: {
     bank: 'Sber',
@@ -53,13 +53,13 @@ const english = (transaction: EnglishTransaction): RawTransaction => ({
   // эти свойства нельзя перезаписывать
   name: 'English',
   description: 'Оплата занятий по английскому',
-  time: '11:00',
+  timestamp: new Date(`${date}T11:00:00+03:00`).getTime(),
   category: 'english',
 })
 
 type MusicTransaction = Omit<
   RawTransaction,
-  'name' | 'description' | 'value' | 'category' | 'teacher' | 'time'
+  'name' | 'description' | 'value' | 'category' | 'teacher' | 'timestamp'
 > & {
   name?: string
   description?: string
@@ -68,13 +68,12 @@ type MusicTransaction = Omit<
   teacher?: User['id']
   time?: string
 }
-const music = (transaction: MusicTransaction): RawTransaction => ({
+const music = (date: string, transaction: MusicTransaction): RawTransaction => ({
   // эти свойства можно перезаписать
   value: -2000,
   name: 'Music',
   description: 'Оплата занятий по музыке',
   teacher: 'amira.h',
-  time: '11:00',
   target: {
     bank: 'Sber',
     name: 'Амира Х.',
@@ -82,6 +81,7 @@ const music = (transaction: MusicTransaction): RawTransaction => ({
   // перезаписываем и дополняем
   ...transaction,
   // эти свойства нельзя перезаписывать
+  timestamp: new Date(`${date}T11:00:00+03:00`).getTime(),
   category: 'music',
 })
 
@@ -136,8 +136,35 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '08.06.2026',
+    transfers({
+      value: 6000,
+      name: 'Перевод на карту',
+      family: 'legoshins',
+      timestamp: new Date('2026-06-08T18:41:10+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Мария Л.',
+      },
+    }),
+  ],
+  [
+    '08.06.2026',
+    transfers({
+      value: 4300,
+      name: 'Перевод на карту',
+      family: 'pimenovs',
+      timestamp: new Date('2026-06-08T17:52:40+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Мария К.',
+      },
+    }),
+  ],
+
+  [
     '05.06.2026',
-    english({
+    english('2026-06-05', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -163,7 +190,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Светлана Еремеева',
       family: 'eremeevs',
       timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
-      time: '15:40', // msk
       source: {
         bank: 'sber',
         name: 'Светлана Е.',
@@ -198,7 +224,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'), //
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
@@ -224,7 +249,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
@@ -235,7 +259,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Светлана Еремеева',
       family: 'eremeevs',
       timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
-      time: '15:40', // msk
       source: {
         bank: 'inner',
         name: 'Eremeeva S.',
@@ -266,7 +289,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
@@ -277,7 +299,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Новицкая Наталья',
       family: 'novitskys',
       timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
-      time: '15:40', // msk
       source: {
         bank: 'inner',
         name: 'Novitskaya N.',
@@ -312,7 +333,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
@@ -324,7 +344,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Фадеева Надежда',
       family: 'fadeevs',
       timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
-      time: '15:40', // msk
       source: {
         bank: 'inner',
         name: 'Fadeeva N.',
@@ -355,7 +374,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
@@ -367,7 +385,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Софья Гербер',
       family: 'gerbers',
       timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
-      time: '15:40', // msk
       source: {
         bank: 'inner',
         name: 'Светлана Е.',
@@ -398,7 +415,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
@@ -425,12 +441,11 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
       },
       timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
-      time: '12:00', // msk
     }),
   ],
   [
     '03.06.2026',
-    english({
+    english('2026-06-03', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -450,8 +465,70 @@ const rawTransactions: [string, RawTransaction][] = [
     }),
   ],
   [
+    '03.06.2026',
+    {
+      value: -7400,
+      target: {
+        bank: 'tbank',
+        name: 'Вероника З.',
+        user: 'veronika.zolotareva',
+      },
+      families: {
+        chernys: 0, // left the group
+        eremeevs: 450 + 850, // line<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: 0, // line<Fadeevs>('aurora.fadeeva'),
+        gerbers: 850 + 850, // line<Gerbers>('agata.gerber', 'platon.gerber'),
+        kirillovs: 450, // line<Kirillovs>('emma.kirillova'),
+        legoshins: 450, // line<Legoshins>('mila.legoshina'),
+        leonenkos: 450, // line<Leonenkos>('aellita.leonenko'),
+        marshevs: 0, // line<Marshevs>('igor.marshev'),
+        novitskys: 450 + 850, // line<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
+        petrovs: 850, // line<Petrovs>('varya.petrova'),
+        pimenovs: 0, // line<Pimenovs>('emilia.pimenova'),
+        skvortsovs: 450, // line<Skvortsovs>('kirill.skvortsov'),
+        usarovs: 0, // line<Usarovs>('emil.usarov'),
+        yuzhakovs: 450, // line<Yuzhakovs>('meera.yuzhakova'), //
+      },
+      name: 'Музей',
+      description: 'Поход в музей (билеты)',
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      category: 'events',
+    },
+  ],
+  [
+    '03.06.2026',
+    {
+      value: -2550,
+      target: {
+        bank: 'tbank',
+        name: 'Вероника З.',
+        user: 'veronika.zolotareva',
+      },
+      families: {
+        chernys: 0, // left the group
+        eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
+        fadeevs: 0, // line<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('agata.gerber', 'platon.gerber'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
+        petrovs: fade<Petrovs>('varya.petrova'),
+        pimenovs: 0, // line<Pimenovs>('emilia.pimenova'),
+        skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
+        usarovs: 0, // line<Usarovs>('emil.usarov'),
+        yuzhakovs: 0, // line<Yuzhakovs>('meera.yuzhakova'),
+      },
+      name: 'Музей',
+      description: 'Поход в музей (сопутствующие расходы)',
+      timestamp: new Date('2026-06-03T12:00:00+03:00').getTime(),
+      category: 'events',
+    },
+  ],
+  [
     '27.05.2026',
-    english({
+    english('2026-05-27', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -472,7 +549,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '22.05.2026',
-    english({
+    english('2026-05-22', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -493,7 +570,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '20.05.2026',
-    english({
+    english('2026-05-20', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -514,7 +591,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '15.05.2026',
-    english({
+    english('2026-05-15', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -535,7 +612,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '13.05.2026',
-    english({
+    english('2026-05-13', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -561,7 +638,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Денис П.',
       family: 'petrovs',
       timestamp: new Date('2026-05-12T10:54:00+03:00').getTime(),
-      time: '10:54', // msk
       source: {
         bank: 'tbank',
         name: 'Денис П.',
@@ -570,7 +646,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '08.05.2026',
-    english({
+    english('2026-05-08', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -591,7 +667,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '06.05.2026',
-    english({
+    english('2026-05-06', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -635,7 +711,6 @@ const rawTransactions: [string, RawTransaction][] = [
       },
       // 1500 + 4000 + 1500 + 4000 + 1500 + 1500 + 2500 + 2500 + 3000 + 2000 + 0 + 1000 + 1500 + 7500
       timestamp: new Date('2026-05-04T10:00:00+03:00').getTime(),
-      time: '10:00', // msk
     }),
   ],
   [
@@ -645,7 +720,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Ольга Скворцова',
       family: 'fadeevs',
       timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
-      time: '09:00', // msk
       source: {
         bank: 'riffisen',
         name: 'Ольга С.',
@@ -659,7 +733,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Надежда Фадеева',
       family: 'fadeevs',
       timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
-      time: '09:00', // msk
       source: {
         bank: 'tbank',
         name: 'Надежда Фадеева',
@@ -673,7 +746,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Софья Г.',
       family: 'fadeevs',
       timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
-      time: '09:00', // msk
       source: {
         bank: 'sber',
         name: 'Софья Г.',
@@ -687,7 +759,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Мария Легошина',
       family: 'legoshins',
       timestamp: new Date('2026-05-02T11:18:00+03:00').getTime(),
-      time: '11:18', // msk
       source: {
         bank: 'tbank',
         name: 'Дмитрий Л',
@@ -701,7 +772,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Светлана Еремеева',
       family: 'eremeevs',
       timestamp: new Date('2026-04-29T18:58:00+03:00').getTime(),
-      time: '18:58', // msk
       source: {
         bank: 'sber',
         name: 'Светлана Е.',
@@ -710,7 +780,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '29.04.2026',
-    english({
+    english('2026-04-29', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -736,7 +806,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Наталья Новицкая',
       family: 'novitskys',
       timestamp: new Date('2026-04-28T18:12:00+03:00').getTime(),
-      time: '18:12', // msk
       source: {
         bank: 'tbank',
         name: 'Наталья Н.',
@@ -750,7 +819,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Мария Исакова',
       family: 'usarovs',
       timestamp: 1777372500000,
-      time: '13:35', // msk
       source: {
         bank: 'tbank',
         name: 'Мария И.',
@@ -759,7 +827,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '24.04.2026',
-    english({
+    english('2026-04-24', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -780,7 +848,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '22.04.2026',
-    english({
+    english('2026-04-22', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -801,7 +869,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '17.04.2026',
-    english({
+    english('2026-04-17', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -822,7 +890,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '15.04.2026',
-    english({
+    english('2026-04-15', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -843,7 +911,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '10.04.2026',
-    english({
+    english('2026-04-10', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -877,7 +945,7 @@ const rawTransactions: [string, RawTransaction][] = [
     '10.04.2026',
     supermarkets({
       value: -3600,
-      time: '12:05',
+      timestamp: new Date('2026-04-10T12:05:00+03:00').getTime(),
       name: 'За продукты для детей',
       families: {
         chernys: none<Chernys>(), // ушла
@@ -904,7 +972,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '08.04.2026',
-    english({
+    english('2026-04-08', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -925,7 +993,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '03.04.2026',
-    english({
+    english('2026-04-03', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -946,7 +1014,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '01.04.2026',
-    english({
+    english('2026-04-01', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -967,7 +1035,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '25.03.2026',
-    english({
+    english('2026-03-25', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -988,7 +1056,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '20.03.2026',
-    english({
+    english('2026-03-20', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1033,12 +1101,11 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>('meera.yuzhakova'),
       },
       timestamp: new Date('2026-03-18T11:28:00+03:00').getTime(),
-      time: '11:28', // msk
     }),
   ],
   [
     '18.03.2026',
-    english({
+    english('2026-03-18', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1064,7 +1131,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Ольга Кириллова',
       family: 'kirillovs',
       timestamp: new Date('2026-03-16T12:10:00+03:00').getTime(),
-      time: '12:10', // msk
       source: {
         bank: 'sber',
         name: 'Ольга К.',
@@ -1074,7 +1140,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '13.03.2026',
-    english({
+    english('2026-03-13', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1104,7 +1170,6 @@ const rawTransactions: [string, RawTransaction][] = [
       description: 'Это часть от 4500. Оставшиеся 3900 переведены на карту',
       family: 'eremeevs',
       timestamp: new Date('2026-03-11T11:28:00+03:00').getTime(),
-      time: '11:28', // msk
       source: {
         bank: 'sbornitsa',
         name: 'Общак',
@@ -1135,12 +1200,11 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
       },
       timestamp: new Date('2026-03-11T11:28:00+03:00').getTime(),
-      time: '11:28', // msk
     }),
   ],
   [
     '11.03.2026',
-    english({
+    english('2026-03-11', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1171,7 +1235,6 @@ const rawTransactions: [string, RawTransaction][] = [
       // '10094 (итоговая за мальчиков и девочек) - 3984 (добавлял 23 фев) - 3к (на карту tbank)',
       family: 'eremeevs',
       timestamp: new Date('2026-03-08T01:26:00+03:00').getTime(),
-      time: '01:26', // msk
       source: {
         bank: 'sbornitsa',
         name: 'Общак',
@@ -1209,12 +1272,11 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
       },
       timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
-      time: '10:00', // msk
     }),
   ],
   [
     '06.03.2026',
-    english({
+    english('2026-03-06', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1235,7 +1297,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '04.03.2026',
-    english({
+    english('2026-03-04', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1256,7 +1318,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '27.02.2026',
-    english({
+    english('2026-02-27', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1282,7 +1344,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Ольга Скворцова',
       family: 'skvortsovs',
       timestamp: new Date('2026-02-25T14:05:00+03:00').getTime(),
-      time: '14:05', // msk
       source: {
         bank: 'tbank',
         name: 'Ольга С.',
@@ -1292,7 +1353,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '25.02.2026',
-    english({
+    english('2026-02-25', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1318,7 +1379,6 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'За счёт трат на масленницу',
       family: 'gerbers',
       timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
-      time: '10:00', // msk
     }),
   ],
   [
@@ -1344,7 +1404,6 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: none<Yuzhakovs>('meera.yuzhakova'),
       },
       timestamp: new Date('2026-02-24T10:00:00+03:00').getTime(),
-      time: '10:00', // msk
     }),
   ],
   // потом еще добавить, так как будут подарки на 8 марта
@@ -1356,7 +1415,6 @@ const rawTransactions: [string, RawTransaction][] = [
       description: 'За счёт трат на подарки 23 февраля',
       family: 'eremeevs',
       timestamp: new Date('2026-02-23T10:00:00+03:00').getTime(),
-      time: '10:00', // msk
       source: {
         name: 'Общак',
         bank: 'sbornitsa',
@@ -1391,12 +1449,11 @@ const rawTransactions: [string, RawTransaction][] = [
         yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
       },
       timestamp: new Date('2026-02-23T10:00:00+03:00').getTime(),
-      time: '10:00', // msk
     }),
   ],
   [
     '20.02.2026',
-    english({
+    english('2026-02-20', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1417,7 +1474,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '18.02.2026',
-    english({
+    english('2026-02-18', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1466,7 +1523,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '13.02.2026',
-    english({
+    english('2026-02-13', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1487,7 +1544,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '11.02.2026',
-    english({
+    english('2026-02-11', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1512,7 +1569,7 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Софья Г.',
       value: 5000,
       family: 'gerbers',
-      time: '21:34',
+      timestamp: new Date('2026-02-04T21:34:00+03:00').getTime(),
       source: {
         bank: 'Sber',
         name: 'Софья Г.',
@@ -1521,7 +1578,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '30.01.2026',
-    english({
+    english('2026-01-30', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1542,7 +1599,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '28.01.2026',
-    english({
+    english('2026-01-28', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1567,7 +1624,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 8000,
       name: 'Светлана Е.',
       family: 'eremeevs',
-      time: '11:45',
+      timestamp: new Date('2026-01-27T11:45:00+03:00').getTime(),
       source: {
         bank: 'Alfa',
         name: 'Светлана Е.',
@@ -1580,7 +1637,7 @@ const rawTransactions: [string, RawTransaction][] = [
       name: 'Надежда Ф.',
       value: 5000,
       family: 'fadeevs',
-      time: '14:05',
+      timestamp: new Date('2026-01-26T14:05:00+03:00').getTime(),
       source: {
         bank: 'Sber',
         name: 'Надежда Ф.',
@@ -1590,7 +1647,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '23.01.2026',
-    english({
+    english('2026-01-23', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1611,7 +1668,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '21.01.2026',
-    english({
+    english('2026-01-21', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1632,7 +1689,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '16.01.2026',
-    english({
+    english('2026-01-16', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1657,7 +1714,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Ксения Д.',
       family: 'petrovs',
-      time: '13:06',
+      timestamp: new Date('2026-01-16T13:06:00+03:00').getTime(),
       source: {
         bank: 'VTB',
         name: 'Ксения Д.',
@@ -1666,7 +1723,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '14.01.2026',
-    english({
+    english('2026-01-14', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1687,7 +1744,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '26.12.2025',
-    english({
+    english('2025-12-26', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1716,7 +1773,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -4500,
       name: 'Подарки: Английский',
-      time: '21:51',
+      timestamp: new Date('2025-12-26T21:51:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1745,7 +1802,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -4500,
       name: 'Подарки: Музыка',
-      time: '21:51',
+      timestamp: new Date('2025-12-26T21:51:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1771,7 +1828,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '23.12.2025',
-    music({
+    music('2025-12-23', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1810,7 +1867,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -3521,
       name: 'Новогодние расходы',
-      time: '6:17',
+      timestamp: new Date('2025-12-23T06:17:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // ушла
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1841,7 +1898,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Дмитрий Л.',
       family: 'legoshins',
-      time: '23:03',
+      timestamp: new Date('2025-12-22T23:03:00+03:00').getTime(),
       source: {
         bank: 'Tbank',
         name: 'Дмитрий Л.',
@@ -1853,7 +1910,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -2800,
       name: 'Новогодние расходы',
-      time: '21:00',
+      timestamp: new Date('2025-12-22T21:00:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // ушла
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1883,7 +1940,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -7000,
       name: 'Новогодние расходы',
-      time: '20:53',
+      timestamp: new Date('2025-12-22T20:53:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // ушла
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1913,7 +1970,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -7268,
       name: 'Новогодние расходы',
-      time: '17:51',
+      timestamp: new Date('2025-12-20T17:51:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // ушла
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1942,7 +1999,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -1700,
       name: 'Новогодние расходы',
-      time: '17:57',
+      timestamp: new Date('2026-12-20T17:57:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(), // ушла
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -1972,7 +2029,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Софья Г.',
       family: 'gerbers',
-      time: '17:57',
+      timestamp: new Date('2026-12-20T17:57:00+03:00').getTime(),
       source: {
         bank: 'Tbank',
         name: 'Софья Г.',
@@ -1981,7 +2038,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '19.12.2025',
-    english({
+    english('2025-12-19', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2005,7 +2062,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -13000,
       name: 'Подарок Веронике',
-      time: '16:15',
+      timestamp: new Date('2026-12-18T16:15:00+03:00').getTime(),
       description: '1к с семьи',
       families: {
         chernys: none<Chernys>(), // left the group
@@ -2031,7 +2088,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '17.12.2025',
-    english({
+    english('2025-12-17', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2052,7 +2109,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '15.12.2025',
-    music({
+    music('2025-12-15', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2077,7 +2134,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Ольга С.',
       family: 'skvortsovs',
-      time: '14:57',
+      timestamp: new Date('2026-12-14T14:57:00+03:00').getTime(),
       source: {
         bank: 'Raiffeisen',
         name: 'Ольга С.',
@@ -2086,7 +2143,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '12.12.2025',
-    english({
+    english('2025-12-12', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2107,7 +2164,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '11.12.2025',
-    music({
+    music('2025-12-11', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2128,7 +2185,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '10.12.2025',
-    english({
+    english('2025-12-10', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2151,7 +2208,7 @@ const rawTransactions: [string, RawTransaction][] = [
     '08.12.2025',
     supermarkets({
       value: -1400,
-      time: '13:47',
+      timestamp: new Date('2026-12-08T13:47:00+03:00').getTime(),
       name: 'Расходники',
       families: {
         chernys: none<Chernys>(), // ушла
@@ -2182,7 +2239,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Надежда Ф.',
       family: 'fadeevs',
-      time: '10:30',
+      timestamp: new Date('2025-12-08T10:30:00+03:00').getTime(),
       source: {
         bank: 'Tbank',
         name: 'Надежда Ф.',
@@ -2195,7 +2252,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Наталья Н.',
       family: 'novitskys',
-      time: '13:35',
+      timestamp: new Date('2025-12-06T13:35:00+03:00').getTime(),
       source: {
         bank: 'Tbank',
         name: 'Наталья Н.',
@@ -2208,7 +2265,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Анастасия М.',
       family: 'marshevs',
-      time: '13:33',
+      timestamp: new Date('2025-12-06T13:33:00+03:00').getTime(),
       source: {
         bank: 'Tbank',
         name: 'Анастасия М.',
@@ -2221,7 +2278,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Ольга К.',
       family: 'kirillovs',
-      time: '16:02',
+      timestamp: new Date('2025-12-05T16:02:00+03:00').getTime(),
       source: {
         bank: 'Sber',
         name: 'Ольга К.',
@@ -2234,7 +2291,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Денис П.',
       family: 'petrovs',
-      time: '15:28',
+      timestamp: new Date('2025-12-05T15:28:00+03:00').getTime(),
       source: {
         bank: 'Tbank',
         name: 'Денис П.',
@@ -2247,7 +2304,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 8000,
       name: 'Светлана Е.',
       family: 'eremeevs',
-      time: '11:55',
+      timestamp: new Date('2025-12-05T11:55:00+03:00').getTime(),
       source: {
         bank: 'Sber',
         name: 'Светлана Е.',
@@ -2261,7 +2318,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Мария И.',
       family: 'usarovs',
-      time: '10:31',
+      timestamp: new Date('2025-12-04T10:31:00+03:00').getTime(),
       source: {
         bank: 'Sber',
         name: 'Мария И.',
@@ -2270,7 +2327,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '04.12.2025',
-    music({
+    music('2025-12-04', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2291,7 +2348,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '03.12.2025',
-    english({
+    english('2025-12-03', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2312,7 +2369,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '02.12.2025',
-    music({
+    music('2025-12-02', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2333,7 +2390,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '28.11.2025',
-    english({
+    english('2025-11-28', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2354,7 +2411,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '26.11.2025',
-    english({
+    english('2025-11-26', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2375,7 +2432,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '25.11.2025',
-    music({
+    music('2025-11-25', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2415,7 +2472,7 @@ const rawTransactions: [string, RawTransaction][] = [
         usarovs: line<Usarovs>('emil.usarov'),
         yuzhakovs: line<Yuzhakovs>('meera.yuzhakova'),
       },
-      time: '18:30',
+      timestamp: new Date('2025-11-21T18:30:00+03:00').getTime(),
       description: 'Еда для праздника гномиков (Софья Гербер)',
       target: {
         bank: 'Sber',
@@ -2426,7 +2483,7 @@ const rawTransactions: [string, RawTransaction][] = [
   // Привет. Вчера было занятие с Амирой. И сегодня она тоже будет на празднике, как занятие
   [
     '21.11.2025',
-    music({
+    music('2025-11-21', {
       description: 'Участие Амиры в празднике гномиков (музыкальное сопровождение)',
       families: {
         chernys: none<Chernys>(), // left the group
@@ -2448,7 +2505,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '21.11.2025',
-    english({
+    english('2025-11-21', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2469,7 +2526,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '20.11.2025',
-    music({
+    music('2025-11-20', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2490,7 +2547,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '19.11.2025',
-    english({
+    english('2025-11-19', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2518,7 +2575,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -3635,
       name: 'Праздник гномиков',
-      time: '02:45',
+      timestamp: new Date('2025-11-18T02:45:00+03:00').getTime(),
       description: 'Праздник гномиков (Светлана Еремеева)',
       families: {
         chernys: none<Chernys>(), // left the group
@@ -2547,7 +2604,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -1600,
       name: 'Праздник гномиков',
-      time: '02:44',
+      timestamp: new Date('2025-11-18T02:44:00+03:00').getTime(),
       description: 'Праздник гномиков (Вероника Золотарёва)',
       families: {
         chernys: none<Chernys>(), // left the group
@@ -2573,7 +2630,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '14.11.2025',
-    english({
+    english('2025-11-14', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2594,7 +2651,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '12.11.2025',
-    english({
+    english('2025-11-12', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2615,7 +2672,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '11.11.2025',
-    music({
+    music('2025-11-11', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2636,7 +2693,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '10.11.2025',
-    music({
+    music('2025-11-10', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2657,7 +2714,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '07.11.2025',
-    english({
+    english('2025-11-07', {
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2678,7 +2735,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '06.11.2025',
-    music({
+    music('2025-11-06', {
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2699,7 +2756,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '05.11.2025',
-    english({
+    english('2025-11-05', {
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2726,7 +2783,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: -5795,
       name: 'Анастасия Ч.',
       family: 'chernys',
-      time: '19:23',
+      timestamp: new Date('2025-10-25T19:23:00+03:00').getTime(),
       description: 'Возврат остатка Анастасии Черной',
     }),
   ],
@@ -2736,7 +2793,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 1555,
       name: 'Дмитрий Л.',
       family: 'legoshins',
-      time: '18:54',
+      timestamp: new Date('2025-10-23T18:54:00+03:00').getTime(),
       description: 'Пополнение кошелька Марии Легошиной',
       source: {
         bank: 'Tbank',
@@ -2749,7 +2806,7 @@ const rawTransactions: [string, RawTransaction][] = [
     supermarkets({
       value: -2929,
       name: 'Расходники',
-      time: '20:33',
+      timestamp: new Date('2025-10-17T20:33:00+03:00').getTime(),
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2775,7 +2832,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '17.10.2025',
-    english({
+    english('2025-10-17', {
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2796,7 +2853,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '15.10.2025',
-    english({
+    english('2025-10-15', {
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2817,7 +2874,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '09.10.2025',
-    english({
+    english('2025-10-09', {
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2838,7 +2895,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '07.10.2025',
-    music({
+    music('2025-10-07', {
       families: {
         chernys: none<Chernys>(),
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2863,7 +2920,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -5300,
       name: 'День учителя',
-      time: '20:28',
+      timestamp: new Date('2025-10-06T20:28:00+03:00').getTime(),
       description: 'Амире М. ко Дню учителя',
       families: {
         chernys: fade<Chernys>('nina.chernaya', 'vitya.cherny'), // Ходила только Нина
@@ -2892,7 +2949,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -5300,
       name: 'День учителя',
-      time: '20:28',
+      timestamp: new Date('2025-10-06T20:28:00+03:00').getTime(),
       description: 'Наташе М. ко Дню учителя',
       families: {
         chernys: fade<Chernys>('nina.chernaya', 'vitya.cherny'), // Ходила только Нина
@@ -2921,7 +2978,7 @@ const rawTransactions: [string, RawTransaction][] = [
     supermarkets({
       value: -2500,
       name: 'Еда',
-      time: '14:33',
+      timestamp: new Date('2025-10-03T14:33:00+03:00').getTime(),
       description: 'Овощи и стаканы',
       families: {
         chernys: line<Chernys>('nina.chernaya', 'vitya.cherny'),
@@ -2947,7 +3004,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '01.10.2025',
-    english({
+    english('2025-10-01', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2968,7 +3025,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '30.09.2025',
-    music({
+    music('2025-09-30', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -2992,7 +3049,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       value: -15000,
       name: 'День воспитателя',
-      time: '12:21',
+      timestamp: new Date('2025-09-27T12:21:00+03:00').getTime(),
       description: 'Поздравление Вероники с днем воспитателя',
       families: {
         chernys: 500, // fade<Chernys>('vitya.cherny', 'nina.chernaya'), // Ходила только Нина
@@ -3022,7 +3079,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Софья Г.',
       family: 'gerbers',
-      time: '14:34',
+      timestamp: new Date('2025-09-26T14:34:00+03:00').getTime(),
       target: {
         bank: 'Sovcombank',
         name: 'Софья Г.',
@@ -3033,7 +3090,7 @@ const rawTransactions: [string, RawTransaction][] = [
     '25.09.2025',
     supermarkets({
       value: -425,
-      time: '12:21',
+      timestamp: new Date('2025-09-25T12:21:00+03:00').getTime(),
       name: 'Расходники',
       families: {
         chernys: line<Chernys>('vitya.cherny', 'nina.chernaya'),
@@ -3060,7 +3117,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '24.09.2025',
-    english({
+    english('2025-09-24', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3081,7 +3138,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '22.09.2025',
-    music({
+    music('2025-09-22', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3102,7 +3159,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '19.09.2025',
-    english({
+    english('2025-09-19', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3127,7 +3184,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 2000,
       name: 'Светлана Е.',
       family: 'eremeevs',
-      time: '16:55',
+      timestamp: new Date('2025-09-18T16:55:00+03:00').getTime(),
       source: {
         bank: 'Alfa',
         name: 'Светлана Е.',
@@ -3142,7 +3199,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 1000,
       name: 'Ольга С.',
       family: 'skvortsovs',
-      time: '14:57',
+      timestamp: new Date('2025-09-18T14:57:00+03:00').getTime(),
       source: {
         bank: 'Alfa',
         name: 'Ольга С.',
@@ -3152,7 +3209,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '18.09.2025',
-    english({
+    english('2025-09-18', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3182,7 +3239,7 @@ const rawTransactions: [string, RawTransaction][] = [
     '18.09.2025',
     supermarkets({
       value: -7000,
-      time: '13:26',
+      timestamp: new Date('2025-09-18T13:26:00+03:00').getTime(),
       name: 'Расходники',
       // 1. 'eremeev' -> Ваня
       // 2. 'skvortsov' -> Федя
@@ -3243,7 +3300,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 5000,
       name: 'Ольга К.',
       family: 'kirillovs',
-      time: '21:10',
+      timestamp: new Date('2025-09-17T21:10:00+03:00').getTime(),
       description: 'Пополнение кошелька Ольги Кирилловой',
       source: {
         bank: 'Sber',
@@ -3254,7 +3311,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '15.09.2025',
-    music({
+    music('2025-09-15', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3275,7 +3332,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '12.09.2025',
-    english({
+    english('2025-09-12', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3296,7 +3353,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '10.09.2025',
-    english({
+    english('2025-09-10', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3321,7 +3378,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Анастасия М.',
       family: 'marshevs',
-      time: '22:28',
+      timestamp: new Date('2025-09-09T22:28:00+03:00').getTime(),
       description: 'Пополнение кошелька Анастасии Маршевой',
       source: {
         bank: 'Tbank',
@@ -3331,7 +3388,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '10.09.2025',
-    english({
+    english('2025-09-10', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3356,7 +3413,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Анастасия М.',
       family: 'marshevs',
-      time: '22:28',
+      timestamp: new Date('2025-09-09T22:28:00+03:00').getTime(),
       description: 'Пополнение кошелька Анастасии Маршевой',
       source: {
         bank: 'Tbank',
@@ -3366,7 +3423,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '05.09.2025',
-    english({
+    english('2025-09-05', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3387,7 +3444,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '04.09.2025',
-    music({
+    music('2025-09-04', {
       // Должно получиться 182
       families: {
         chernys: none<Chernys>(),
@@ -3409,7 +3466,7 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
   [
     '03.09.2025',
-    english({
+    english('2025-09-03', {
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // Ходила только Нина
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
@@ -3463,7 +3520,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 6000,
       name: 'Светлана Е.',
       family: 'eremeevs',
-      time: '16:40',
+      timestamp: new Date('2025-09-03T16:40:00+03:00').getTime(),
       description: 'Пополнение кошелька Светланы Еремеевой',
       source: {
         bank: 'Alfa',
@@ -3477,7 +3534,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Дмитрий Л.',
       family: 'legoshins',
-      time: '15:00',
+      timestamp: new Date('2025-09-01T15:00:00+03:00').getTime(),
       description: 'Пополнение кошелька Марии Легошиной',
       source: {
         bank: 'Tbank',
@@ -3491,7 +3548,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Ольга С.',
       family: 'skvortsovs',
-      time: '15:47',
+      timestamp: new Date('2025-08-31T15:47:00+03:00').getTime(),
       description: 'Пополнение кошелька Ольги Скворцовой',
       source: {
         bank: 'Raiffeisen',
@@ -3506,7 +3563,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 15000,
       name: 'Наталия Н.',
       family: 'novitskys',
-      time: '13:59',
+      timestamp: new Date('2025-08-31T13:59:00+03:00').getTime(),
       description: 'Пополнение кошелька Наташи Новицкой',
       source: {
         bank: 'Tbank',
@@ -3520,7 +3577,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 3000,
       name: 'Надежда Ф.',
       family: 'fadeevs',
-      time: '12:30',
+      timestamp: new Date('2025-08-31T12:30:00+03:00').getTime(),
       description: 'Пополнение кошелька Надежды Фадеевой',
       source: {
         bank: 'Tbank',
@@ -3534,7 +3591,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Дмитрий П.',
       family: 'petrovs',
-      time: '14:57',
+      timestamp: new Date('2025-08-31T14:57:00+03:00').getTime(),
       description: 'Пополнение кошелька Ксении Петровой',
       source: {
         bank: 'Gazprombank',
@@ -3548,7 +3605,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 10000,
       name: 'Анастасия Ч.',
       family: 'chernys',
-      time: '15:00',
+      timestamp: new Date('2025-08-31T15:00:00+03:00').getTime(),
       description: 'Пополнение кошелька Анастасии Черной',
       source: {
         bank: 'Sber',
@@ -3561,7 +3618,7 @@ const rawTransactions: [string, RawTransaction][] = [
   // Должно получиться 104 (1300 / 12.5) - сумма за одного ребенка
   [
     '28.08.2025',
-    music({
+    music('2025-08-28', {
       value: -(1300 - 208), // еще были Евгения Т, Влада Р
       families: {
         chernys: fade<Chernys>('nina.chernaya'), // 104, ходила только Нина
@@ -3583,17 +3640,13 @@ const rawTransactions: [string, RawTransaction][] = [
   ],
 ]
 
-export const transactions: Transaction[] = rawTransactions.map(([date, transaction]) => {
-  const [day, month, year] = date.split('.').map(Number)
-  const [hours, minutes] = transaction.time.split(':').map(Number)
-  const timestamp = new Date(year, month - 1, day, hours ?? 12, minutes ?? 0).getTime()
-
+export const transactions: Transaction[] = rawTransactions.map(([, transaction]) => {
   return {
     id: crypto.randomUUID(),
     name: transaction.name,
     description: transaction.description,
     value: transaction.value,
-    timestamp: transaction.timestamp ?? timestamp,
+    timestamp: transaction.timestamp,
     category: transaction.category,
     families: transaction.families,
     teacher: transaction.teacher,
