@@ -138,6 +138,19 @@ const rawTransactions: [string, RawTransaction][] = [
   [
     '10.06.2026',
     transfers({
+      value: -12000,
+      name: 'Возврат за выпускной',
+      family: 'gerbers',
+      timestamp: new Date('2026-06-10T09:12:07+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Yuzhakov B.',
+      },
+    }),
+  ],
+  [
+    '10.06.2026',
+    transfers({
       value: 1500,
       name: 'Перевод на карту',
       family: 'petrovs',
