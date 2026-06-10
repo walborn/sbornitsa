@@ -136,6 +136,47 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '10.06.2026',
+    transfers({
+      value: 1500,
+      name: 'Перевод на карту',
+      family: 'petrovs',
+      timestamp: new Date('2026-06-10T09:13:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Денис П.',
+      },
+    }),
+  ],
+
+  [
+    '09.06.2026',
+    transfers({
+      value: 5000,
+      name: 'Перевод на карту',
+      family: 'skvortsovs',
+      timestamp: new Date('2026-06-09T23:32:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Ольга С.',
+      },
+    }),
+  ],
+
+  [
+    '09.06.2026',
+    transfers({
+      value: 5000,
+      name: 'Перевод на карту',
+      family: 'kirillovs',
+      timestamp: new Date('2026-06-09T22:43:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Ольга К.',
+      },
+    }),
+  ],
+  [
     '09.06.2026',
     transfers({
       value: 3000,
@@ -157,7 +198,7 @@ const rawTransactions: [string, RawTransaction][] = [
       timestamp: new Date('2026-06-08T18:41:10+03:00').getTime(),
       source: {
         bank: 'tbank',
-        name: 'Мария Л.',
+        name: 'Дмитрий Л.',
       },
     }),
   ],
@@ -203,7 +244,7 @@ const rawTransactions: [string, RawTransaction][] = [
         petrovs: fade<Petrovs>('varya.petrova'),
         pimenovs: none<Pimenovs>('emilia.pimenova'),
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
-        usarovs: fade<Usarovs>('emil.usarov'),
+        usarovs: none<Usarovs>('emil.usarov'), // выпустился
         yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
       },
     }),
@@ -484,7 +525,7 @@ const rawTransactions: [string, RawTransaction][] = [
         petrovs: fade<Petrovs>('varya.petrova'),
         pimenovs: none<Pimenovs>('emilia.pimenova'),
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov'),
-        usarovs: fade<Usarovs>('emil.usarov'),
+        usarovs: none<Usarovs>('emil.usarov'), // выпустился
         yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
       },
     }),
