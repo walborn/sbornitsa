@@ -138,6 +138,19 @@ const rawTransactions: [string, RawTransaction][] = [
   [
     '10.06.2026',
     transfers({
+      value: 5000,
+      name: 'Надежда Ф.',
+      family: 'fadeevs',
+      timestamp: new Date('2026-06-10T15:00:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Надежда Фадеева',
+      },
+    }),
+  ],
+  [
+    '10.06.2026',
+    transfers({
       value: -12000,
       name: 'Возврат за выпускной',
       family: 'gerbers',
@@ -420,7 +433,7 @@ const rawTransactions: [string, RawTransaction][] = [
       value: 2523,
       description:
         'Фетр для костюма черепахи 729, Лианы для костюма кикиморы 492, Костюм царя батюшка 1302 (оставили Веронике)',
-      name: 'Фадеева Надежда',
+      name: 'Надежда Ф.',
       family: 'fadeevs',
       timestamp: new Date('2026-06-03T15:40:00+03:00').getTime(),
       source: {
@@ -797,7 +810,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 5000,
       name: 'Ольга Скворцова',
-      family: 'fadeevs',
+      family: 'skvortsovs',
       timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
       source: {
         bank: 'riffisen',
@@ -809,7 +822,7 @@ const rawTransactions: [string, RawTransaction][] = [
     '04.05.2026',
     transfers({
       value: 7000,
-      name: 'Надежда Фадеева',
+      name: 'Надежда Ф.',
       family: 'fadeevs',
       timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
       source: {
@@ -823,7 +836,7 @@ const rawTransactions: [string, RawTransaction][] = [
     transfers({
       value: 4000,
       name: 'Софья Г.',
-      family: 'fadeevs',
+      family: 'gerbers',
       timestamp: new Date('2026-05-04T09:00:00+03:00').getTime(),
       source: {
         bank: 'sber',
@@ -1576,10 +1589,9 @@ const rawTransactions: [string, RawTransaction][] = [
     '15.02.2026',
     transfers({
       value: 3000,
-      name: 'Надежда Фадеева',
+      name: 'Надежда Ф.',
       family: 'fadeevs',
       timestamp: 1739605397000,
-      time: '10:43:17', // msk
       source: {
         bank: 'tbank',
         name: 'Надежда Фадеева',
