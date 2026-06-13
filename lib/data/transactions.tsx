@@ -136,6 +136,19 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '12.06.2026',
+    transfers({
+      value: 7575,
+      name: 'Мария И.',
+      family: 'usarovs',
+      timestamp: new Date('2026-06-12T19:18:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Мария И.',
+      },
+    }),
+  ],
+  [
     '10.06.2026',
     transfers({
       value: 5000,
@@ -145,6 +158,20 @@ const rawTransactions: [string, RawTransaction][] = [
       source: {
         bank: 'tbank',
         name: 'Надежда Фадеева',
+      },
+    }),
+  ],
+
+  [
+    '10.06.2026',
+    transfers({
+      value: 15000,
+      name: 'Полина С.',
+      family: 'leonenkos',
+      timestamp: new Date('2026-06-10T13:29:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Полина С.',
       },
     }),
   ],
