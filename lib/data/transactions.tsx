@@ -162,7 +162,7 @@ const rawTransactions: [string, RawTransaction][] = [
     gifts({
       name: 'День Рождения Наташи',
       description: 'Подарок на день рождения Вероники от всех семей',
-      value: 5000,
+      value: -5000,
       families: {
         chernys: none<Chernys>(), // left the group
         eremeevs: fade<Eremeevs>('ivan.eremeev', 'vera.eremeeva'),
