@@ -82,7 +82,7 @@ export default async function FamiliesPage({
                   <div>
                     <p className="text-sm font-medium whitespace-nowrap">{family.name[locale]}</p>
                     <p className="text-sm font-medium whitespace-nowrap text-gray-400">
-                      <Balance value={balance.get(family.id) || 0} />
+                      {balance.get(family.id) || '🎃'}
                     </p>
                   </div>
                 </div>
