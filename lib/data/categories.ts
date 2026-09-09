@@ -14,6 +14,12 @@ export const categories: TransactionCategory[] = [
     icon: '/categories/music.svg',
   },
   {
+    id: 'events',
+    name: 'events',
+    description: 'outdoor and indoor events',
+    icon: '/categories/events.svg',
+  },
+  {
     id: 'transfers',
     name: 'transfers',
     description: 'direct income/expenses',

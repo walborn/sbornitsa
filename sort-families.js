@@ -5,20 +5,20 @@ const content = fs.readFileSync(filePath, 'utf8')
 
 // Define the correct alphabetical order
 const familyOrder = [
-  'cherny',
-  'eremeev',
-  'fadeev',
-  'gerber',
-  'kirillov',
-  'legoshin',
-  'leonenko',
-  'marshev',
-  'novitskiy',
-  'petrov',
-  'pimenov',
-  'skvortsov',
-  'usarov',
-  'yuzhakov',
+  'chernys',
+  'eremeevs',
+  'fadeevs',
+  'gerbers',
+  'kirillovs',
+  'legoshins',
+  'leonenkos',
+  'marshevs',
+  'novitskiys',
+  'petrovs',
+  'pimenovs',
+  'skvortsovs',
+  'usarovs',
+  'yuzhakovs',
 ]
 
 // Function to sort families object properties

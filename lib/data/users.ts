@@ -326,6 +326,15 @@ const children: User[] = [
     tags: new Set(['children', 'sons']),
   },
   {
+    id: 'fedya.skvortsov',
+    name: 'Кирилл Скворцов', // Скворцов Федя Алексеевич
+    family: 'skvortsovs',
+    avatar: '/users/fedya.skvortsov.webp',
+    birthdate: new Date(2000, 1, 1),
+    role: 'user',
+    tags: new Set(['children', 'sons']),
+  },
+  {
     id: 'agata.gerber',
     name: 'Агата Гербер', // Гербер Агата Денисовна
     family: 'gerbers',

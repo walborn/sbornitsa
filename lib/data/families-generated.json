@@ -67,7 +67,7 @@
       "en": "Skvortsovs"
     },
     "mother": "olga.skvortsova",
-    "children": ["kirill.skvortsov"],
+    "children": ["kirill.skvortsov", "fedya.skvortsov"],
     "password": "3a814b22839847f9ad26678c4e81ecce8cd54fb8e7ed62fecea5300148afb040",
     "avatar": "/families/skvortsovs.webp",
     "value": 0
