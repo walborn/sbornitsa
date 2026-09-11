@@ -136,6 +136,19 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
   [
+    '11.09.2026',
+    transfers({
+      value: 16000,
+      name: 'Полина С.',
+      family: 'leonenkos',
+      timestamp: new Date('2026-09-11T11:47:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Полина С.',
+      },
+    }),
+  ],
+  [
     '19.06.2026',
     english('2026-06-19', {
       families: {
@@ -161,7 +174,7 @@ const rawTransactions: [string, RawTransaction][] = [
     '17.06.2026',
     gifts({
       name: 'День Рождения Наташи',
-      description: 'Подарок на день рождения Вероники от всех семей',
+      description: 'Подарок на день рождения Наташе от всех семей',
       value: -5000,
       families: {
         chernys: none<Chernys>(), // left the group
@@ -179,8 +192,7 @@ const rawTransactions: [string, RawTransaction][] = [
         usarovs: fade<Usarovs>('emil.usarov'),
         yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
       },
-      // 1500 + 4000 + 1500 + 4000 + 1500 + 1500 + 2500 + 2500 + 3000 + 2000 + 0 + 1000 + 1500 + 7500
-      timestamp: new Date('2026-05-04T10:00:00+03:00').getTime(),
+      timestamp: new Date('2026-06-17T10:00:00+03:00').getTime(),
     }),
   ],
   [
@@ -230,7 +242,6 @@ const rawTransactions: [string, RawTransaction][] = [
       },
     }),
   ],
-
   [
     '10.06.2026',
     transfers({
