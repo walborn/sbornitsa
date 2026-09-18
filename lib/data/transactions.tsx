@@ -139,6 +139,19 @@ const rawTransactions: [string, RawTransaction][] = [
     '18.09.2026',
     transfers({
       value: +5_000,
+      name: 'Надежда Ф.',
+      family: 'fadeevs',
+      timestamp: new Date('2026-09-18T18:13:00+03:00').getTime(),
+      source: {
+        bank: 'tbank',
+        name: 'Надежда Ф.',
+      },
+    }),
+  ],
+  [
+    '18.09.2026',
+    transfers({
+      value: +5_000,
       name: 'Ольга К.',
       family: 'kirillovs',
       timestamp: new Date('2026-09-18T13:40:00+03:00').getTime(),
