@@ -488,7 +488,7 @@ const rawTransactions: [string, RawTransaction][] = [
         marshevs: fade<Marshevs>('igor.marshev'), //
         novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
         petrovs: fade<Petrovs>('varya.petrova'), //
-        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
         usarovs: fade<Usarovs>('emil.usarov'), //
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
@@ -528,7 +528,7 @@ const rawTransactions: [string, RawTransaction][] = [
         marshevs: fade<Marshevs>('igor.marshev'), //
         novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
         petrovs: fade<Petrovs>('varya.petrova'), //
-        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
         usarovs: fade<Usarovs>('emil.usarov'), //
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
@@ -572,7 +572,7 @@ const rawTransactions: [string, RawTransaction][] = [
         marshevs: fade<Marshevs>('igor.marshev'), //
         novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
         petrovs: fade<Petrovs>('varya.petrova'), //
-        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
         usarovs: fade<Usarovs>('emil.usarov'), //
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
@@ -613,7 +613,7 @@ const rawTransactions: [string, RawTransaction][] = [
         marshevs: fade<Marshevs>('igor.marshev'), //
         novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
         petrovs: fade<Petrovs>('varya.petrova'), //
-        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
         usarovs: fade<Usarovs>('emil.usarov'), //
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
@@ -653,8 +653,8 @@ const rawTransactions: [string, RawTransaction][] = [
         leonenkos: fade<Leonenkos>('aellita.leonenko'), //
         marshevs: fade<Marshevs>('igor.marshev'), //
         novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
-        petrovs: fade<Petrovs>('varya.petrova'), //
-        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        petrovs: none<Petrovs>('varya.petrova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
         usarovs: fade<Usarovs>('emil.usarov'), //
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
@@ -680,7 +680,7 @@ const rawTransactions: [string, RawTransaction][] = [
         marshevs: fade<Marshevs>('igor.marshev'), //
         novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'), //
         petrovs: fade<Petrovs>('varya.petrova'), //
-        pimenovs: fade<Pimenovs>('emilia.pimenova'), //
+        pimenovs: none<Pimenovs>('emilia.pimenova'), //
         skvortsovs: fade<Skvortsovs>('kirill.skvortsov', 'fedya.skvortsov'), //
         usarovs: fade<Usarovs>('emil.usarov'), //
         yuzhakovs: none<Yuzhakovs>(), // meera.yuzhakova болела
