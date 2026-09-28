@@ -17,6 +17,8 @@ const familyOrder = [
   'petrovs',
   'pimenovs',
   'skvortsovs',
+  'trans',
+  'tumanyans',
   'usarovs',
   'yuzhakovs',
 ]

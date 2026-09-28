@@ -19,10 +19,13 @@ export const USER_IDS = [
   'anastasia.chernaya',
   'ornella.zubkova',
   'polina.leonenko',
+  'sang.kim',
+  'jenya.tumanyan',
   // Fathers
   'denis.petrov',
   'gennady.fadeev',
   'boris.yuzhakov',
+  'tuan.anh.tran',
   // Teachers
   'veronika.zolotareva',
   'amira.h',
@@ -48,6 +51,9 @@ export const USER_IDS = [
   'emilia.pimenova',
   'emma.kirillova',
   'aellita.leonenko',
+  'quoc.anh.tran',
+  'levon.tumanyan',
+  'grisha.tumanyan',
 ] as const
 
 export const USER_ROLES = ['user', 'manager', 'admin'] as const
@@ -76,6 +82,8 @@ export const FAMILY_IDS = [
   'kirillovs',
   'usarovs',
   'chernys',
+  'trans',
+  'tumanyans',
   'yuzhakovs',
   'leonenkos',
 ] as const
@@ -92,6 +100,8 @@ export type Legoshins = Extract<UserId, 'maria.legoshina' | 'mila.legoshina'>[]
 export type Marshevs = Extract<UserId, 'anastasia.marsheva' | 'igor.marshev'>[]
 export type Petrovs = Extract<UserId, 'ksenya.petrova' | 'denis.petrov' | 'varya.petrova'>[]
 export type Yuzhakovs = Extract<UserId, 'ornella.zubkova' | 'boris.yuzhakov' | 'meera.yuzhakova'>[]
+export type Trans = Extract<UserId, 'quoc.anh.tran' | 'sang.kim'>[]
+export type Tumanyans = Extract<UserId, 'jenya.tumanyan' | 'levon.tumanyan' | 'grisha.tumanyan'>[]
 export type Fadeevs = Extract<
   UserId,
   'nadezhda.fadeeva' | 'gennady.fadeev' | 'aurora.fadeeva' | 'marusya.fadeeva'

@@ -34,6 +34,8 @@ export type {
   Petrovs,
   Pimenovs,
   Skvortsovs,
+  Trans,
+  Tumanyans,
   Usarovs,
   Yuzhakovs,
 } from './constants'

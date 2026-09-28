@@ -12,9 +12,12 @@ import type {
   Petrovs,
   Pimenovs,
   Skvortsovs,
+  Trans,
+  Tumanyans,
   Usarovs,
   Yuzhakovs,
 } from '@/lib/schemas/families'
+import { ReactNode } from 'react'
 
 const cnst = <T extends User['id'][]>(...args: T) => 2 // 2, 2, 2, 2
 const fade = <T extends User['id'][]>(...args: T) => args.length + 1 // 2, 3, 4, 5
@@ -23,13 +26,13 @@ const none = <T extends User['id'][]>(...args: T) => 0
 
 type RawTransaction = {
   name: string
-  description: string
+  description: string | ReactNode
   timestamp: number // для точного времени
   value: number
   category: Transaction['category']
   teacher?: User['id']
   time?: string
-  families: Transaction['families']
+  families: Partial<Transaction['families']>
   children?: string[][]
   target?: Transaction['target']
   source?: Transaction['source']
@@ -106,6 +109,7 @@ const transfers = ({ family, ...trasaction }: TransferTransaction): RawTransacti
     pimenovs: 0,
     skvortsovs: 0,
     usarovs: 0,
+    trans: 0,
     yuzhakovs: 0,
     [family]: 1,
   },
@@ -134,7 +138,96 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
   category: 'supermarkets',
 })
 
+
 const rawTransactions: [string, RawTransaction][] = [
+    [
+    '28.09.2026',
+    gifts({
+      name: 'День Воспитателя',
+      description: 'Подарок на день Воспитателя по 1к',
+      value: -11000,
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva', 'ivan.eremeev'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy', 'anna.novitskaya'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+        tumanyans: fade<Tumanyans>('grisha.tumanyan'),
+      },
+      timestamp: new Date('2026-06-17T10:00:00+03:00').getTime(),
+    }),
+  ],
+  [
+    '27.09.2026',
+    supermarkets({
+      value: -843.5,
+      name: 'Канцелярия',
+      description: (
+        <ul>
+          <li>Бумага А4 500л. S — 339.00 руб. (1 шт.)</li>
+          <li>Пакет майка мале — 5.00 руб. (1 шт.)</li>
+          <li>Цвет.карандаши К — 99.00 руб. (1 шт.)</li>
+          <li>Набор линеек (3ш) — 41.50 руб. (1 шт.)</li>
+          <li>Набор цв.акр.гел — 99.00 руб. (1 шт.)</li>
+          <li>Клей-карандаш Be — 62.00 руб. (1 шт.)</li>
+          <li>Клей-карандаш Er — 198.00 руб. (2 шт. по 99.00 руб.)</li>
+        </ul>
+      ),
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+      timestamp: new Date('2026-09-27T12:35:29+03:00').getTime(),
+    }),
+  ],
+  // Английский: начинаиная с сентября 
+  // вт + чт: Вера, Аврора, Аэлита, Игорь, Миша, Эмма, Бин
+  // вт: Мила, Мира
+  // было предложено по 250р - но это неудобно, потому что иногда кто-то может прийти в чт
+  // или заглянуть на занятия старички
+  [
+    '24.09.2026',
+    english('2026-09-24', {
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        // legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'), // потому что не было day-off
+      },
+    }),
+  ],
+  [
+    '23.09.2026',
+    english('2026-09-23', {
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '20.09.2026',
     transfers({

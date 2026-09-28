@@ -37,6 +37,31 @@
     "value": 0
   },
   {
+    "id": "trans",
+    "name": {
+      "ru": "Чаны",
+      "en": "Trans"
+    },
+    "mother": "sang.kim",
+    "father": "tuan.anh.tran",
+    "children": ["quoc.anh.tran"],
+    "password": "3cc849279ba298b587a34cabaeffc5ecb3a044bbf97c516fab7ede9d1af77cfa",
+    "avatar": "/families/trans.webp",
+    "value": 0
+  },
+    {
+    "id": "tumanyans",
+    "name": {
+      "ru": "Туманян",
+      "en": "Tumanyans"
+    },
+    "mother": "jenya.tumanyan",
+    "children": ["levon.tumanyan", "grisha.tumanyan"],
+    "password": "3cc849279ba298b587a34cabaeffc5ecb3a044bbf97c516fab7ede9d1af77cfa",
+    "avatar": "/families/tumanyans.webp",
+    "value": 0
+  },
+  {
     "id": "legoshins",
     "name": {
       "ru": "Легошины",
