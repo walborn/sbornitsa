@@ -1,15 +1,14 @@
+import { events, families, familyTransactions, transactions, users } from '@/lib/data'
+
 import { EventsRepository } from './events.repository'
 import { FamiliesRepository } from './families.repository'
 import { FamilyTransactionsRepository, TransactionsRepository } from './transactions.repository'
-import { UsersRepository } from './users.repository'
-
 /**
  * Initialized Repository Instances
  *
  * Singleton instances репозиториев с данными из lib/data
  */
-
-import { events, families, familyTransactions, transactions, users } from '@/lib/data'
+import { UsersRepository } from './users.repository'
 
 /**
  * Singleton instances репозиториев

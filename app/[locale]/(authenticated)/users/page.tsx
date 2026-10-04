@@ -53,11 +53,11 @@ export default async function UsersPage({ params }: { params: Promise<{ locale: 
         {users.map(user => (
           <li key={user.id}>
             <Link href={`/${locale}/users/${user.id}`}>
-              <div className="flex items-center justify-between cursor-pointer">
+              <div className="flex cursor-pointer items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Avatar
                     size="lg"
-                    className="mb-2 mx-auto"
+                    className="mx-auto mb-2"
                   >
                     <AvatarImage
                       src={user.avatar}

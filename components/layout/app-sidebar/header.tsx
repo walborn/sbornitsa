@@ -24,7 +24,7 @@ export function AppSidebarHeader() {
             asChild
           >
             <Link href={`/${locale}/profile`}>
-              <div className="bg-sidebar-accent flex aspect-square size-8 items-center justify-center rounded-md p-2 border">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-md border bg-sidebar-accent p-2">
                 <Image
                   // className="invert"
                   src="/metadata/favicon.svg"

@@ -46,12 +46,12 @@ export default function LoginForm() {
       onSubmit={handleSubmit}
       className="space-y-3"
     >
-      <div className="flex-1 rounded-lg bg-zinc-50 px-6 pb-4 pt-8 dark:bg-zinc-800">
+      <div className="flex-1 rounded-lg bg-zinc-50 px-6 pt-8 pb-4 dark:bg-zinc-800">
         <h1 className="mb-3 text-2xl dark:text-white">Please log in to continue.</h1>
         <div className="w-full">
           <div>
             <label
-              className="mb-3 mt-5 block text-xs font-medium text-zinc-900 dark:text-zinc-50"
+              className="mt-5 mb-3 block text-xs font-medium text-zinc-900 dark:text-zinc-50"
               htmlFor="username"
             >
               Username
@@ -65,12 +65,12 @@ export default function LoginForm() {
                 placeholder="Enter your username"
                 required
               />
-              <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-zinc-500 peer-focus:text-zinc-900 dark:text-zinc-400 dark:peer-focus:text-zinc-50" />
+              <AtSymbolIcon className="pointer-events-none absolute top-1/2 left-3 h-[18px] w-[18px] -translate-y-1/2 text-zinc-500 peer-focus:text-zinc-900 dark:text-zinc-400 dark:peer-focus:text-zinc-50" />
             </div>
           </div>
           <div className="mt-4">
             <label
-              className="mb-3 mt-5 block text-xs font-medium text-zinc-900 dark:text-zinc-50"
+              className="mt-5 mb-3 block text-xs font-medium text-zinc-900 dark:text-zinc-50"
               htmlFor="password"
             >
               Password
@@ -85,7 +85,7 @@ export default function LoginForm() {
                 required
                 minLength={6}
               />
-              <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-zinc-500 peer-focus:text-zinc-900 dark:text-zinc-400 dark:peer-focus:text-zinc-50" />
+              <KeyIcon className="pointer-events-none absolute top-1/2 left-3 h-[18px] w-[18px] -translate-y-1/2 text-zinc-500 peer-focus:text-zinc-900 dark:text-zinc-400 dark:peer-focus:text-zinc-50" />
             </div>
           </div>
         </div>

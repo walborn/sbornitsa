@@ -36,7 +36,7 @@ export default function FamilyCard({ locale, familyPromise }: Props) {
           <Link href={`/${locale}/users/${mother.id}`}>
             <Avatar
               size="lg"
-              className="mb-2 mx-auto"
+              className="mx-auto mb-2"
             >
               <AvatarImage
                 src={mother.avatar}
@@ -64,7 +64,7 @@ export default function FamilyCard({ locale, familyPromise }: Props) {
           <Link href={`/${locale}/users/${father.id}`}>
             <Avatar
               size="lg"
-              className="mb-2 mx-auto"
+              className="mx-auto mb-2"
             >
               <AvatarImage
                 src={father.avatar}
@@ -87,7 +87,7 @@ export default function FamilyCard({ locale, familyPromise }: Props) {
         <div className="mb-4 block text-center text-xl font-medium text-foreground capitalize">
           {t('children')}
         </div>
-        <div className="mb-2 mx-auto flex items-center justify-center">
+        <div className="mx-auto mb-2 flex items-center justify-center">
           <AvatarGroup className="grayscale-25">
             {children.map(child => {
               return (

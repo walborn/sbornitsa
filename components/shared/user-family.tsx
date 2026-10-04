@@ -21,14 +21,14 @@ export default async function UserFamily({ familyId, locale }: Props) {
   if (!(family && t)) return null
 
   return (
-    <div className="mb-2 block text-center text-sm font-medium text-foreground mx-auto">
+    <div className="mx-auto mb-2 block text-center text-sm font-medium text-foreground">
       <div className="mb-2 block text-center text-xl font-medium text-foreground capitalize">
         {t.shared('family')}
       </div>
 
       <Link href={`/${locale}/families/${family.id}`}>
-        <div className="flex items-center justify-between cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 p-2 rounded-lg transition-colors">
-          <div className="flex items-center gap-2 mx-auto">
+        <div className="flex cursor-pointer items-center justify-between rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800">
+          <div className="mx-auto flex items-center gap-2">
             <Avatar
               size="lg"
               className="mb-2"

@@ -137,9 +137,8 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
   category: 'supermarkets',
 })
 
-
 const rawTransactions: [string, RawTransaction][] = [
-    [
+  [
     '1.10.2026',
     english('2026-10-01', {
       families: {
@@ -213,7 +212,7 @@ const rawTransactions: [string, RawTransaction][] = [
       timestamp: new Date('2026-09-27T12:35:29+03:00').getTime(),
     }),
   ],
-  // Английский: начинаиная с сентября 
+  // Английский: начинаиная с сентября
   // вт + чт: Вера, Аврора, Аэлита, Игорь, Миша, Эмма, Бин
   // вт: Мила, Мира
   // было предложено по 250р - но это неудобно, потому что иногда кто-то может прийти в чт

@@ -7,7 +7,7 @@ import LoginForm from '@/components/ui/forms/login-form'
 export default function LoginPage() {
   return (
     <main className="flex items-center justify-center md:h-screen">
-      <div className="absolute flex top-4 right-4 gap-2">
+      <div className="absolute top-4 right-4 flex gap-2">
         <LocaleToggle />
         <ThemeToggle />
       </div>

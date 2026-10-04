@@ -84,8 +84,8 @@ export default async function FamilyPage({ params }: Props) {
       <Suspense
         fallback={
           <div className="animate-pulse space-y-4">
-            <div className="h-40 bg-gray-200 rounded-lg" />
-            <div className="h-40 bg-gray-200 rounded-lg" />
+            <div className="h-40 rounded-lg bg-gray-200" />
+            <div className="h-40 rounded-lg bg-gray-200" />
           </div>
         }
       >

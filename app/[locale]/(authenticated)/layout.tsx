@@ -43,19 +43,19 @@ export default async function RootLayout({ children, params }: Props) {
         <SidebarProvider>
           <AppSidebar />
           <SidebarInset>
-            <header className="flex h-16 shrink-0 items-center gap-2 border-b pl-4 pr-[10px] transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+            <header className="flex h-16 shrink-0 items-center gap-2 border-b pr-[10px] pl-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
               <SidebarTrigger className="-ml-1" />
               <Separator
                 orientation="vertical"
                 className="mr-2 h-4"
               />
               <AppHeader />
-              <div className="flex ml-auto gap-2">
+              <div className="ml-auto flex gap-2">
                 <LocaleToggle />
                 <ThemeToggle />
               </div>
             </header>
-            <div className="flex flex-1 flex-col gap-4 p-4 w-full max-w-240 m-auto">{children}</div>
+            <div className="m-auto flex w-full max-w-240 flex-1 flex-col gap-4 p-4">{children}</div>
           </SidebarInset>
         </SidebarProvider>
       </AppHeaderProvider>

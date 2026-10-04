@@ -18,7 +18,7 @@ export const TypographyTable = ({ keys, values }: { keys: string[]; values: Valu
           {values.map(value => (
             <tr
               key={value.id}
-              className="even:bg-muted m-0 border-t p-0"
+              className="m-0 border-t p-0 even:bg-muted"
             >
               {keys.map(key => (
                 <td

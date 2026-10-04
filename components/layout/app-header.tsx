@@ -11,7 +11,7 @@ export function AppHeader() {
 
   return (
     <div className="flex items-center gap-2 px-4">
-      <span className="text-foreground truncate">{value}</span>
+      <span className="truncate text-foreground">{value}</span>
     </div>
   )
 }

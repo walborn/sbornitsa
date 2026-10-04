@@ -55,7 +55,7 @@ export default async function TransactionsPage({ params }: Props) {
         <Balance familyTransactionsPromise={familyTransactionsPromise} />
       </Suspense>
 
-      <section className="flex flex-col gap-4 mt-4">
+      <section className="mt-4 flex flex-col gap-4">
         <Suspense fallback={<TransactionsSkeleton />}>
           <TransactionsList
             transactionsPromise={transactionsPromise}

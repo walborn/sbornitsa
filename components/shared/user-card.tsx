@@ -35,7 +35,7 @@ export default async function UserCard({
       <Card className="gap-2 p-4">
         <Avatar
           size="lg"
-          className="mx-auto select-none pointer-events-none"
+          className="pointer-events-none mx-auto select-none"
         >
           <AvatarImage
             src={user.avatar}
@@ -57,7 +57,7 @@ export default async function UserCard({
       </Card>
 
       {user.family && (
-        <Suspense fallback={<Skeleton className="h-16 w-full rounded-lg my-2" />}>
+        <Suspense fallback={<Skeleton className="my-2 h-16 w-full rounded-lg" />}>
           <UserFamily
             familyId={user.family}
             locale={locale}

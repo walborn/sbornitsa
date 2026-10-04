@@ -21,7 +21,7 @@ export default async function UserContacts({ value }: { value: Partial<User['con
             href={`tel:${value.phone}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline cursor-pointer"
+            className="cursor-pointer text-blue-500 hover:underline"
           >
             {value.phone}
           </Link>
@@ -42,7 +42,7 @@ export default async function UserContacts({ value }: { value: Partial<User['con
             href={`tg://resolve?domain=${value.telegram}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-500 hover:underline cursor-pointer"
+            className="cursor-pointer text-blue-500 hover:underline"
           >
             {value.telegram}
           </Link>

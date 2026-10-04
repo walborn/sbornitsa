@@ -5,18 +5,18 @@ const shimmer =
   'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent'
 
 export const EventSkeleton = () => (
-  <Card className={`relative overflow-hidden ${shimmer} p-6 border-none shadow-none`}>
+  <Card className={`relative overflow-hidden ${shimmer} border-none p-6 shadow-none`}>
     <div className="flex gap-4">
       <Avatar>
-        <AvatarFallback className="h-8 w-8 rounded-full bg-gray-200 dark:bg-gray-800 animate-pulse" />
+        <AvatarFallback className="h-8 w-8 animate-pulse rounded-full bg-gray-200 dark:bg-gray-800" />
       </Avatar>
       <div className="flex-1">
-        <div className="rounded mb-2 h-4 w-1/4 bg-gray-200 dark:bg-gray-800 animate-pulse" />
-        <div className="rounded mb-2 h-2 w-2/3 bg-gray-200 dark:bg-gray-800 animate-pulse" />
-        <div className="rounded mb-4 h-2 w-20 bg-gray-200 dark:bg-gray-800 animate-pulse" />
-        <div className="rounded h-1.5 w-25 bg-gray-200 dark:bg-gray-800 animate-pulse" />
+        <div className="mb-2 h-4 w-1/4 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+        <div className="mb-2 h-2 w-2/3 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+        <div className="mb-4 h-2 w-20 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
+        <div className="h-1.5 w-25 animate-pulse rounded bg-gray-200 dark:bg-gray-800" />
       </div>
-      <div className="rounded h-5 w-15 font-normal whitespace-nowrap bg-gray-200 dark:bg-gray-800 animate-pulse" />
+      <div className="h-5 w-15 animate-pulse rounded bg-gray-200 font-normal whitespace-nowrap dark:bg-gray-800" />
     </div>
   </Card>
 )

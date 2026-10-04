@@ -8,9 +8,9 @@ import { AppHeader } from '@/components/utils/app-header'
 import { fetchTranslations } from '@/components/utils/fetch-translations'
 import { fetchFamilies, fetchTransactions } from '@/lib/api'
 import { fetchFamilyTransactions } from '@/lib/api/transactions'
+import type { Family } from '@/lib/schemas'
 import { absoluteUrl } from '@/lib/seo/config'
 import { createMetadata } from '@/lib/seo/metadata'
-import type { Family } from '@/lib/schemas'
 
 interface Props {
   params: Promise<{ locale: string }>
@@ -65,11 +65,11 @@ export default async function FamiliesPage({
         {families.map(family => (
           <li key={family.id}>
             <Link href={`/${locale}/families/${family.id}`}>
-              <div className="flex items-center justify-between cursor-pointer">
+              <div className="flex cursor-pointer items-center justify-between">
                 <div className="flex items-center gap-2">
                   <Avatar
                     size="lg"
-                    className="mb-2 mx-auto"
+                    className="mx-auto mb-2"
                   >
                     <AvatarImage
                       src={family.avatar}

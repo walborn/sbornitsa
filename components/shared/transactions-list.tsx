@@ -70,7 +70,7 @@ export default function TransactionsList({
         {Object.values(categories).map(category => (
           <Button
             key={category.id}
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex cursor-pointer items-center gap-2"
             variant={selectedCategoriesSet.has(category.id) ? 'secondary' : 'ghost'}
             size="sm"
             onClick={() => handleToggleCategory(category.id)}

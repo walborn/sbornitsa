@@ -24,17 +24,17 @@ export const EventCard = ({ name, description, categories, start, end, icon }: P
       <div className="flex gap-4">
         <Image
           src={icon.src}
-          className="rounded-full bg-gray-200 w-8 h-8 flex-none"
+          className="h-8 w-8 flex-none rounded-full bg-gray-200"
           alt={icon.alt}
           width={32}
           height={32}
         />
         <div className="flex-1">
           <div className="text-sm">{name}</div>
-          <div className="text-gray-500 text-xs">{description}</div>
-          <div className="text-gray-500 text-xs pb-2">{[...categories].join(', ')}</div>
-          <div className="text-gray-500 text-xs">{format(start)}</div>
-          <div className="text-gray-500 text-xs">{days} дн.</div>
+          <div className="text-xs text-gray-500">{description}</div>
+          <div className="pb-2 text-xs text-gray-500">{[...categories].join(', ')}</div>
+          <div className="text-xs text-gray-500">{format(start)}</div>
+          <div className="text-xs text-gray-500">{days} дн.</div>
         </div>
       </div>
     )
@@ -44,17 +44,17 @@ export const EventCard = ({ name, description, categories, start, end, icon }: P
       <div className="flex gap-4">
         <Image
           src={icon.src}
-          className="rounded-full bg-gray-200 w-8 h-8 flex-none"
+          className="h-8 w-8 flex-none rounded-full bg-gray-200"
           alt={icon.alt}
           width={32}
           height={32}
         />
         <div className="flex-1">
           <div className="text-sm">{name}</div>
-          <div className="text-gray-500 text-xs">{description}</div>
-          <div className="text-gray-500 text-xs pb-2">{[...categories].join(', ')}</div>
-          <div className="text-gray-500 text-xs">{formatTime(start)}</div>
-          <div className="text-gray-500 text-xs">{formatTimeDuration(end - start)}</div>
+          <div className="text-xs text-gray-500">{description}</div>
+          <div className="pb-2 text-xs text-gray-500">{[...categories].join(', ')}</div>
+          <div className="text-xs text-gray-500">{formatTime(start)}</div>
+          <div className="text-xs text-gray-500">{formatTimeDuration(end - start)}</div>
         </div>
       </div>
     )
@@ -63,17 +63,17 @@ export const EventCard = ({ name, description, categories, start, end, icon }: P
     <div className="flex gap-4">
       <Image
         src={icon.src}
-        className="rounded-full bg-gray-200 w-8 h-8 flex-none"
+        className="h-8 w-8 flex-none rounded-full bg-gray-200"
         alt={icon.alt}
         width={32}
         height={32}
       />
       <div className="flex-1">
         <div className="text-sm">{name}</div>
-        <div className="text-gray-500 text-xs">{description}</div>
-        <div className="text-gray-500 text-xs pb-2">{[...categories].join(', ')}</div>
-        <div className="text-gray-500 text-xs">{formatTime(start)}</div>
-        <div className="text-gray-500 text-xs">{formatTime(end)}</div>
+        <div className="text-xs text-gray-500">{description}</div>
+        <div className="pb-2 text-xs text-gray-500">{[...categories].join(', ')}</div>
+        <div className="text-xs text-gray-500">{formatTime(start)}</div>
+        <div className="text-xs text-gray-500">{formatTime(end)}</div>
       </div>
     </div>
   )

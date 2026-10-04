@@ -47,7 +47,7 @@ export default async function EventsPage({ params }: Props) {
     <>
       <AppHeader>{t.navigation('events')}</AppHeader>
 
-      <section className="flex flex-col gap-4 mt-4">
+      <section className="mt-4 flex flex-col gap-4">
         <Suspense fallback={<EventsSkeleton />}>
           <EventsList eventsPromise={eventsPromise} />
         </Suspense>

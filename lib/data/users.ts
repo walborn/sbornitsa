@@ -332,7 +332,7 @@ const children: User[] = [
     role: 'user',
     tags: new Set(['children', 'sons']),
   },
-    {
+  {
     id: 'levon.tumanyan',
     name: 'Левон',
     family: 'tumanyans',

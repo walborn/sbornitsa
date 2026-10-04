@@ -1,6 +1,7 @@
-import CryptoJS from 'crypto-js'
 import fs from 'fs'
 import path from 'path'
+
+import CryptoJS from 'crypto-js'
 
 const DATA_ENCRYPTION_KEY = process.env.DATA_ENCRYPTION_KEY
 
