@@ -10,9 +10,7 @@ import { fetchFamilies, fetchTransactions } from '@/lib/api'
 import { fetchFamilyTransactions } from '@/lib/api/transactions'
 import { absoluteUrl } from '@/lib/seo/config'
 import { createMetadata } from '@/lib/seo/metadata'
-import Balance from './balance'
-import { Families } from '@/lib/data'
-import { Family } from '@/lib/schemas'
+import type { Family } from '@/lib/schemas'
 
 interface Props {
   params: Promise<{ locale: string }>

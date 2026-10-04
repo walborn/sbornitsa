@@ -18,7 +18,7 @@ const TransactionIdSchema = z.uuid({
   message: 'Wrong TransactionId format (must be UUID)',
 })
 
-const FamiliesIncomesSchema = z.record(FamilyIdSchema, z.number())
+const FamiliesIncomesSchema = z.partialRecord(FamilyIdSchema, z.number())
 
 const TargetSchema = z.object({
   bank: z.string().optional(), // tbank, sber, ...

@@ -17,7 +17,6 @@ import type {
   Usarovs,
   Yuzhakovs,
 } from '@/lib/schemas/families'
-import { ReactNode } from 'react'
 
 const cnst = <T extends User['id'][]>(...args: T) => 2 // 2, 2, 2, 2
 const fade = <T extends User['id'][]>(...args: T) => args.length + 1 // 2, 3, 4, 5
@@ -26,7 +25,7 @@ const none = <T extends User['id'][]>(...args: T) => 0
 
 type RawTransaction = {
   name: string
-  description: string | ReactNode
+  description: string
   timestamp: number // для точного времени
   value: number
   category: Transaction['category']
@@ -198,17 +197,8 @@ const rawTransactions: [string, RawTransaction][] = [
     supermarkets({
       value: -843.5,
       name: 'Канцелярия',
-      description: (
-        <ul>
-          <li>Бумага А4 500л. S — 339.00 руб. (1 шт.)</li>
-          <li>Пакет майка мале — 5.00 руб. (1 шт.)</li>
-          <li>Цвет.карандаши К — 99.00 руб. (1 шт.)</li>
-          <li>Набор линеек (3ш) — 41.50 руб. (1 шт.)</li>
-          <li>Набор цв.акр.гел — 99.00 руб. (1 шт.)</li>
-          <li>Клей-карандаш Be — 62.00 руб. (1 шт.)</li>
-          <li>Клей-карандаш Er — 198.00 руб. (2 шт. по 99.00 руб.)</li>
-        </ul>
-      ),
+      description:
+        'Бумага А4 500л. S 339, Пакет майка мале 5, Цвет.карандаши К 99, Набор линеек (3ш) 41.50, Набор цв.акр.гел 99, Клей-карандаш Be 62, Клей-карандаш Er 198 (2 шт. по 99)',
       families: {
         eremeevs: fade<Eremeevs>('vera.eremeeva'),
         fadeevs: fade<Fadeevs>('aurora.fadeeva'),
