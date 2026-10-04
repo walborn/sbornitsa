@@ -1,0 +1,210 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+
+  // Plugins enabled on top of oxlint's defaults (typescript, unicorn, oxc are on by default).
+  // react / jsx-a11y / nextjs mirror Biome's `domains: { react, next }` + a11y rules.
+  // import: FSD cycle/duplicate detection. vitest: test-suite hygiene (scoped via overrides).
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jsx-a11y", "nextjs", "import", "vitest"],
+
+  // The `correctness` category is oxlint's bug-catching safety net — the analogue of
+  // Biome's `recommended: true`. Specific rules below layer on top of it.
+  "categories": {
+    "correctness": "error"
+  },
+
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "next-env.d.ts",
+    ".design-sync",
+    ".ds-sync",
+    "ds-bundle",
+    ".obsidian"
+  ],
+
+  "rules": {
+    // 🛡️ Качество и безопасность кода
+    "no-console": ["warn", { "allow": ["assert", "error", "info", "warn"] }],
+    "no-shadow-restricted-names": "warn",
+    "no-explicit-any": "warn",
+    "eqeqeq": ["error", "always"],
+
+    // 🎨 Современный JavaScript
+    // noBannedTypes was split upstream into these three:
+    "no-empty-object-type": "error",
+    "no-unsafe-function-type": "error",
+    "no-wrapper-object-types": "error",
+    "no-this-alias": "error",
+    "prefer-optional-chain": "error",
+    "no-array-for-each": "warn",
+
+    // 🧹 Чистота кода
+    "no-else-return": "error",
+    "yoda": "error",
+    "prefer-const": "error",
+    "prefer-exponentiation-operator": "error",
+    "prefer-template": "error",
+    "self-closing-comp": "error",
+    "default-param-last": "error",
+    // disallowTypeAnnotations:false keeps inline `import()` type annotations allowed,
+    // matching Biome's useImportType (which only rewrites top-level imports).
+    "consistent-type-imports": ["error", { "disallowTypeAnnotations": false }],
+
+    // 📦 Правила для импортов / неиспользуемый код
+    "no-unused-vars": "error",
+    "no-unused-labels": "error",
+    "no-unused-private-class-members": "error",
+
+    // ⚛️ React / a11y (the four Biome enabled explicitly)
+    "alt-text": "warn",
+    "button-has-type": "warn",
+    "html-has-lang": "warn",
+    "iframe-has-title": "warn",
+
+    // ⭐ high-value correctness / perf / security
+    "import/no-cycle": "error",
+    "import/no-duplicates": "error",
+    "import/no-self-import": "error",
+    "oxc/no-accumulating-spread": "error",
+    "no-non-null-asserted-optional-chain": "error",
+    "react/no-unstable-nested-components": "error",
+    "jsx-no-target-blank": "error",
+    "react/no-danger": "warn",
+    "unicorn/prefer-node-protocol": "error",
+
+    // 🧬 TypeScript consistency
+    "consistent-type-definitions": ["warn", "interface"],
+    "array-type": ["warn", { "default": "array" }],
+    "no-import-type-side-effects": "warn",
+    "prefer-as-const": "error",
+    "no-confusing-non-null-assertion": "warn",
+    "no-non-null-assertion": "warn",
+
+    // ✨ modernization & readability
+    "unicorn/throw-new-error": "error",
+    "unicorn/error-message": "error",
+    "unicorn/no-useless-undefined": "warn",
+    "unicorn/prefer-string-starts-ends-with": "warn",
+    "unicorn/prefer-array-some": "warn",
+    "unicorn/prefer-date-now": "warn",
+    "unicorn/prefer-logical-operator-over-ternary": "warn",
+    "no-nested-ternary": "warn",
+    "no-unneeded-ternary": "warn",
+    "no-lonely-if": "warn",
+    "no-param-reassign": "warn",
+    "prefer-object-spread": "warn",
+    "require-await": "warn",
+
+    // ♿ accessibility hardening
+    "jsx-a11y/anchor-is-valid": "warn",
+    "jsx-a11y/anchor-has-content": "warn",
+    "jsx-a11y/aria-props": "warn",
+    "jsx-a11y/role-has-required-aria-props": "warn",
+    "jsx-a11y/no-redundant-roles": "warn",
+    "jsx-a11y/tabindex-no-positive": "warn",
+
+    // 🏗️ FSD bonus — enforce kebab-case filenames (shadcn/FSD convention)
+    "unicorn/filename-case": ["warn", { "case": "kebabCase" }],
+
+    // 🚫 oxlint-only rules that are stricter than Biome's configured surface.
+    // Biome never flagged these, so they stay off to preserve the existing lint behavior.
+    "jsx-a11y/no-autofocus": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "jsx-a11y/media-has-caption": "off",
+    "jsx-a11y/heading-has-content": "off",
+    "nextjs/no-html-link-for-pages": "off",
+    "unicorn/no-useless-fallback-in-spread": "off",
+
+    // 🏗️ FSD public-API enforcement for the sliced layers. Steiger's
+    // no-public-api-sidestep is off globally (so `shared` can keep its idiomatic
+    // per-file imports), so oxlint is the real guard here: cross-slice imports into
+    // views/widgets/features/entities must go through the slice's public barrel
+    // (@/<layer>/<slice>), never a deep segment path. `shared` is intentionally
+    // excluded. Intra-slice imports use relative paths and are unaffected.
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": [
+          {
+            "group": ["@/views/*/*"],
+            "message": "FSD: import the view's public barrel (@/views/<slice>) instead of a deep internal path."
+          },
+          {
+            "group": ["@/widgets/*/*"],
+            "message": "FSD: import the widget's public barrel (@/widgets/<slice>) instead of a deep internal path."
+          },
+          {
+            "group": ["@/features/*/*"],
+            "message": "FSD: import the feature's public barrel (@/features/<slice>) instead of a deep internal path."
+          },
+          {
+            "group": ["@/entities/*/*"],
+            "message": "FSD: import the entity's public barrel (@/entities/<slice>) instead of a deep internal path."
+          }
+        ]
+      }
+    ]
+  },
+
+  "overrides": [
+    {
+      // 🧪 test-suite hygiene, scoped to test files only.
+      "files": ["**/*.test.{ts,tsx}", "tests/**"],
+      "rules": {
+        "vitest/no-focused-tests": "error",
+        "vitest/no-identical-title": "error",
+        "vitest/valid-expect": "error",
+        "vitest/no-disabled-tests": "warn",
+        "vitest/expect-expect": "warn",
+        "vitest/prefer-to-be": "warn",
+        // Not part of the adopted tiers — came in with the vitest plugin's correctness
+        // set. Requiring an explicit type param on every vi.fn() mock is too noisy here.
+        "vitest/require-mock-type-parameters": "off",
+        // Test mocks legitimately mirror async APIs (e.g. `json: async () => …` mocking
+        // Response.json(), which must return a Promise), so an awaitless async is correct.
+        "require-await": "off"
+      }
+    },
+    {
+      // edit-profile ↔ delete-profile compose one another by design (the profile UI lets
+      // you edit and delete from the same surface). This mutual import is reviewed and
+      // intentional — the same exemption Steiger carries in steiger.config.ts. import/no-cycle
+      // stays ON everywhere else to catch *unintended* cycles.
+      "files": ["src/features/edit-profile/**", "src/features/delete-profile/**"],
+      "rules": {
+        "import/no-cycle": "off"
+      }
+    },
+    {
+      // no-unstable-nested-components fires only on non-issues here:
+      //  - calendar.tsx: the shadcn react-day-picker `components={{ Root, Chevron, ... }}`
+      //    render-override pattern (vendored, that's how DayPicker is configured);
+      //  - the two booking forms: the rule false-positives on the toast() onSubmit handler
+      //    that builds inline JSX (a handler, not a component).
+      "files": [
+        "src/shared/ui/calendar.tsx",
+        "src/features/book-catering/ui/book-catering-form.tsx",
+        "src/features/book-event/ui/book-event-form.tsx"
+      ],
+      "rules": {
+        "react/no-unstable-nested-components": "off"
+      }
+    },
+    {
+      // Intentional shadcn UI primitives that use ARIA role attributes (role="group"/"region")
+      // per the component pattern. oxlint anchors prefer-tag-over-role to the attribute inside
+      // multiline JSX, so a per-line suppression cannot be placed; scope it to these vendored
+      // files instead. Mirrors the former biome-ignore lint/a11y/useSemanticElements suppressions.
+      "files": [
+        "src/shared/ui/input-group.tsx",
+        "src/shared/ui/field.tsx",
+        "components/ui/carousel.tsx"
+      ],
+      "rules": {
+        "jsx-a11y/prefer-tag-over-role": "off"
+      }
+    }
+  ]
+}

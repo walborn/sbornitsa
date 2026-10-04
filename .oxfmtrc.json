@@ -1,0 +1,56 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 100,
+  "singleQuote": true,
+  "jsxSingleQuote": false,
+  "quoteProps": "as-needed",
+  "trailingComma": "es5",
+  "semi": false,
+  "arrowParens": "avoid",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "singleAttributePerLine": true,
+
+  // 📦 Сортировка импортов
+  // Порядок групп с пустой строкой между ними:
+  //   node builtins → react → next → прочие пакеты → @/ алиасы → относительные пути.
+  "sortImports": {
+    "newlinesBetween": true,
+    "customGroups": [
+      { "groupName": "react", "selector": "external", "elementNamePattern": ["react", "react/**"] },
+      { "groupName": "next", "selector": "external", "elementNamePattern": ["next", "next/**"] }
+    ],
+    "groups": ["builtin", "react", "next", "external", "internal", ["parent", "sibling", "index"]]
+  },
+
+  // 🎨 Сортировка Tailwind-классов (v4) в className и в cn()/cva(). Также удаляет дубли.
+  "sortTailwindcss": {
+    "stylesheet": "app/globals.css",
+    "functions": ["cn", "cva"]
+  },
+
+  // 🧹 Сортировка ключей package.json.
+  "sortPackageJson": true,
+
+  "ignorePatterns": [
+    "node_modules",
+    ".next",
+    "dist",
+    "build",
+    "next-env.d.ts",
+    ".design-sync",
+    ".ds-sync",
+    "ds-bundle",
+    ".obsidian",
+
+    // Biome форматировал только JS/TS/JSON/CSS.
+    // Markdown/YAML исключены, чтобы не переформатировать доки.
+    // Убери эти строки, если хочешь, чтобы oxfmt форматировал и их.
+    "**/*.md",
+    "**/*.yml",
+    "**/*.yaml"
+  ]
+}

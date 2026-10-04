@@ -244,7 +244,7 @@ import { users } from '@/lib/data/users'
 import { Button } from '../../../components/ui/button'
 ```
 
-**Организация импортов** (Biome делает автоматически):
+**Организация импортов** (oxfmt делает автоматически):
 
 ```ts
 import { useState } from 'react'

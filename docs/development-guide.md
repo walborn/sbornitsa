@@ -38,7 +38,8 @@
 
 ### Инструменты разработки
 
-- **Biome** - линтер и форматтер кода (замена ESLint + Prettier)
+- **oxlint** - линтер кода
+- **oxfmt** - форматтер кода (импорты, Tailwind-классы, package.json)
 - **git-cz** (Commitizen) - структурированные коммиты
 - **React Compiler** - оптимизация React компонентов
 
@@ -246,7 +247,7 @@ import { cn } from '@/lib/utils'
 
 ### Организация импортов
 
-Biome автоматически организует импорты в следующем порядке:
+oxfmt автоматически организует импорты в следующем порядке:
 
 1. React импорты
 2. Пустая строка
@@ -394,8 +395,8 @@ bun run scripts/build-data.ts  # Генерация данных
 bun run build              # Сборка статического сайта
 
 # Линтинг и форматирование
-bun run lint               # Проверка с Biome
-bun run format             # Форматирование кода
+bun run lint               # Проверка с oxlint
+bun run format             # Форматирование с oxfmt
 
 # Утилиты
 bun run webpify            # Конвертация изображений в WebP
@@ -405,14 +406,14 @@ bun run webpify            # Конвертация изображений в We
 
 ## 📝 Форматирование кода
 
-### Настройки Biome
+### Настройки oxfmt
 
 - **Отступы**: 2 пробела
 - **Ширина строки**: 100 символов
 - **Кавычки**: одинарные (`'`) для JS/TS, двойные (`"`) для JSX атрибутов
-- **Точки с запятой**: только когда необходимо (`asNeeded`)
+- **Точки с запятой**: нет
 - **Trailing commas**: ES5
-- **Arrow парентезы**: только когда необходимо (`asNeeded`)
+- **Arrow парентезы**: только когда необходимо (`avoid`)
 
 ### Примеры форматирования
 
@@ -467,7 +468,7 @@ useEffect(() => {
 
 ```typescript
 // ❌ ПЛОХО
-const unused = 'value' // Biome выдаст ошибку
+const unused = 'value' // oxlint выдаст ошибку
 
 // ✅ ХОРОШО: удалите неиспользуемые переменные
 ```
@@ -554,7 +555,7 @@ const nextConfig = {
 ## ✅ Чеклист перед коммитом
 
 - [ ] Код проходит `bun run lint` без ошибок
-- [ ] Все импорты организованы (Biome сделает автоматически)
+- [ ] Все импорты организованы (oxfmt сделает автоматически)
 - [ ] Нет `console.log` в коде
 - [ ] Типы определены для всех функций и компонентов
 - [ ] Добавлены переводы для новых строк (en + ru)
@@ -570,5 +571,5 @@ const nextConfig = {
 - [Tailwind CSS](https://tailwindcss.com/docs)
 - [Radix UI](https://www.radix-ui.com/)
 - [Shadcn UI](https://ui.shadcn.com/)
-- [Biome](https://biomejs.dev/)
+- [oxlint & oxfmt](https://oxc.rs/)
 - [next-intl](https://next-intl-docs.vercel.app/)

@@ -10,7 +10,7 @@ export const SchemaScript = ({ id, schema }: Props) => (
     id={id}
     type="application/ld+json"
     strategy="afterInteractive"
-    // biome-ignore lint/security/noDangerouslySetInnerHtml: schema is safe
+    // oxlint-disable-next-line react/no-danger -- schema is safe
     dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
   />
 )

@@ -1,6 +1,6 @@
 # Sbornitsa
 
-[![Linted with Biome](https://img.shields.io/badge/Linted_with-Biome-60a5fa?style=flat&logo=biome)](https://biomejs.dev)
+[![Linted with oxlint](https://img.shields.io/badge/Linted_with-oxlint-32f3ff?style=flat)](https://oxc.rs)
 [![Next.js](https://img.shields.io/badge/Next.js-16.1.2-black?style=flat&logo=next.js&logoColor=white)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4.0-38B2AC?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
@@ -18,7 +18,7 @@ This project is built with a modern stack focusing on performance and developer 
 -   **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
 -   **UI Components**: [Radix UI](https://www.radix-ui.com/) & [Lucide React](https://lucide.dev/)
 -   **Internationalization**: [next-intl](https://next-intl-docs.vercel.app/)
--   **Linting & Formatting**: [Biome](https://biomejs.dev/)
+-   **Linting & Formatting**: [oxlint & oxfmt](https://oxc.rs/)
 -   **Maps**: Yandex Maps API
 -   **Carousel**: Embla Carousel
 
