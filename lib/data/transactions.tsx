@@ -141,6 +141,38 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 
 const rawTransactions: [string, RawTransaction][] = [
     [
+    '1.10.2026',
+    english('2026-10-01', {
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        // legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'), // потому что не было day-off
+      },
+    }),
+  ],
+  [
+    '29.09.2026',
+    english('2026-09-29', {
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
+  [
     '28.09.2026',
     gifts({
       name: 'День Воспитателя',
