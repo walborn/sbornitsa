@@ -104,7 +104,7 @@
       "en": "Gerbers"
     },
     "mother": "sofya.gerber",
-    "children": ["agata.gerber", "platon.gerber"],
+    "children": ["agata.gerber", "platon.gerber", "miroslava.gerber"],
     "password": "3fd72611b659dada38b45d102bc2c12cb3dd703af25a964399f9795b2b1e7a74",
     "avatar": "/families/gerbers.webp",
     "value": 0

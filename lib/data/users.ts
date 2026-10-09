@@ -405,6 +405,15 @@ const children: User[] = [
     tags: new Set(['children', 'sons']),
   },
   {
+    id: 'miroslava.gerber',
+    name: 'Мирослава', // Мирослава (племянница Сони)
+    family: 'gerbers',
+    avatar: '/users/miroslava.gerber.webp',
+    birthdate: new Date(201, 11, 2),
+    role: 'user',
+    tags: new Set(['children', 'sons']),
+  },
+  {
     id: 'emil.usarov',
     name: 'Эмиль Усаров', // Усаров Эмиль Джамалович
     family: 'usarovs',

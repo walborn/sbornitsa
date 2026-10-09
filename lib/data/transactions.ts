@@ -138,6 +138,42 @@ const supermarkets = (trasaction: SupermarketsTransaction): RawTransaction => ({
 })
 
 const rawTransactions: [string, RawTransaction][] = [
+  // теперь Мила ходит два раза в неделю
+  // на этой неделе еще ходит племянница Сони - Мирослава
+  [
+    '8.10.2026',
+    english('2026-10-08', {
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        gerbers: fade<Gerbers>('miroslava.gerber'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'), // потому что не было day-off
+      },
+    }),
+  ],
+  [
+    '6.10.2026',
+    english('2026-10-06', {
+      families: {
+        eremeevs: fade<Eremeevs>('vera.eremeeva'),
+        fadeevs: fade<Fadeevs>('aurora.fadeeva'),
+        leonenkos: fade<Leonenkos>('aellita.leonenko'),
+        gerbers: fade<Gerbers>('miroslava.gerber'),
+        marshevs: fade<Marshevs>('igor.marshev'),
+        novitskys: fade<Novitskys>('misha.novitskiy'),
+        kirillovs: fade<Kirillovs>('emma.kirillova'),
+        trans: fade<Trans>('quoc.anh.tran'),
+        legoshins: fade<Legoshins>('mila.legoshina'),
+        yuzhakovs: fade<Yuzhakovs>('meera.yuzhakova'),
+      },
+    }),
+  ],
   [
     '1.10.2026',
     english('2026-10-01', {
