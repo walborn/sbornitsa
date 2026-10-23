@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js'
+
 import type { Family, FamilyTransaction, Transaction, User } from '@/lib/schemas'
 
 import familiesData from './families-generated.json'
@@ -3817,10 +3819,28 @@ const entries: Entry[] = [
   },
 ]
 
+// id из хеша, а не случайный: одинаковый в каждой сборке, иначе ссылки на транзакции ломаются
+const uuid = (key: string) => {
+  const hex = CryptoJS.SHA1(key).toString()
+  return [
+    hex.slice(0, 8),
+    hex.slice(8, 12),
+    `5${hex.slice(13, 16)}`,
+    `8${hex.slice(17, 20)}`,
+    hex.slice(20, 32),
+  ].join('-')
+}
+
+// у некоторых транзакций совпадают дата, тип и название — различаем по порядку
+const occurrences = new Map<string, number>()
+
 export const transactions: Transaction[] = entries.map(entry => {
   const transaction = expand(entry)
+  const key = `${entry.date}|${entry.type}|${transaction.name}`
+  const occurrence = (occurrences.get(key) ?? 0) + 1
+  occurrences.set(key, occurrence)
   return {
-    id: crypto.randomUUID(),
+    id: uuid(`${key}|${occurrence}`),
     name: transaction.name,
     description: transaction.description,
     value: transaction.value,
@@ -3829,6 +3849,10 @@ export const transactions: Transaction[] = entries.map(entry => {
     category: entry.type,
     families: transaction.families,
     teacher: transaction.teacher,
+    kids:
+      entry.type === 'transfers'
+        ? undefined
+        : [...new Set([...(entry.kids ?? []), ...(entry.half ?? [])])],
     target: transaction.target,
     source: transaction.source,
   }

@@ -36,6 +36,14 @@
       "title": "Транзакции",
       "description": "Мои транзакции"
     },
+    "transaction": {
+      "category": "категория",
+      "date": "дата",
+      "target": "получатель",
+      "source": "отправитель",
+      "distribution": "распределение",
+      "weight": "вес"
+    },
     "users": {
       "title": "Пользователи",
       "description": "Мои пользователи"

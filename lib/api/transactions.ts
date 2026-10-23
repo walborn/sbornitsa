@@ -1,9 +1,13 @@
 import { categories } from '@/lib/data'
 import { familyTransactionsRepo, transactionsRepo } from '@/lib/repositories'
-import type { TransactionCategory } from '@/lib/schemas'
+import type { Transaction, TransactionCategory } from '@/lib/schemas'
 
 export async function fetchTransactions() {
   return transactionsRepo.findAll()
+}
+
+export async function fetchTransactionById(id: Transaction['id']) {
+  return transactionsRepo.findById(id)
 }
 
 export async function fetchFamilyTransactions() {

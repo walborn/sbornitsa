@@ -23,6 +23,11 @@ test('транзакции и доли семей', () => {
   expect(snapshot).toMatchSnapshot()
 })
 
+// по id строятся страницы транзакций
+test('id транзакций уникальны', () => {
+  expect(new Set(transactions.map(({ id }) => id)).size).toBe(transactions.length)
+})
+
 test('балансы семей', () => {
   const balances: Record<string, number> = {}
   for (const { family, value } of familyTransactions) {

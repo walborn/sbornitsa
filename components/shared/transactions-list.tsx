@@ -3,6 +3,9 @@
 import { use, useMemo } from 'react'
 
 import Image from 'next/image'
+import Link from 'next/link'
+
+import { useLocale } from 'next-intl'
 
 import { TransactionCard } from '@/components/shared/transaction-card'
 import { Button } from '@/components/ui/button'
@@ -25,6 +28,7 @@ export default function TransactionsList({
   familyTransactionsPromise,
   transactionCategoriesPromise,
 }: Props) {
+  const locale = useLocale()
   const family = useFamily()
   const transactions = use(transactionsPromise)
   const familyTransactions = use(familyTransactionsPromise)
@@ -89,15 +93,20 @@ export default function TransactionsList({
       {values.map(({ id, name, category: categoryId, description, timestamp, value }) => {
         const category = categories[categoryId]
         return (
-          <TransactionCard
+          <Link
             key={id}
-            icon={{ src: category.icon, alt: category.name }}
-            name={name}
-            description={description}
-            category={category.name}
-            timestamp={timestamp}
-            value={value}
-          />
+            href={`/${locale}/transactions/${id}`}
+            className="-m-2 rounded-lg p-2 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800"
+          >
+            <TransactionCard
+              icon={{ src: category.icon, alt: category.name }}
+              name={name}
+              description={description}
+              category={category.name}
+              timestamp={timestamp}
+              value={value}
+            />
+          </Link>
         )
       })}
     </div>

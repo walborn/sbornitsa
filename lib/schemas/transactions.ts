@@ -43,6 +43,7 @@ export const TransactionSchema = z.object({
   families: FamiliesIncomesSchema,
   timestamp: TimestampSchema,
   teacher: UserIdSchema.optional(),
+  kids: z.array(UserIdSchema).optional(), // кто участвовал
   target: TargetSchema.optional(),
   source: SourceSchema.optional(),
 })

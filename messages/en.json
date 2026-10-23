@@ -36,6 +36,14 @@
       "title": "Transactions",
       "description": "My Transactions"
     },
+    "transaction": {
+      "category": "category",
+      "date": "date",
+      "target": "recipient",
+      "source": "sender",
+      "distribution": "distribution",
+      "weight": "weight"
+    },
     "users": {
       "title": "Users",
       "description": "My Users"
