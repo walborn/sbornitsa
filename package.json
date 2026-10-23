@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "bun --bun next dev",
-    "build": "bun run scripts/build-data.ts && bun --bun next build",
+    "build": "bun --bun next build",
     "start": "bun --bun next start",
     "lint": "oxlint",
     "format": "oxfmt",
-    "webpify": "bun --bun run lib/tools/webpify.ts"
+    "webpify": "bun --bun run lib/tools/webpify.ts",
+    "password": "bun run scripts/password.ts"
   },
   "dependencies": {
     "@formatjs/intl-localematcher": "^0.9.0",

@@ -4,12 +4,12 @@
  * Реактивная аутентификация с автоматической персистацией в localStorage
  */
 
-import CryptoJS from 'crypto-js'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { familiesRepo } from '@/lib/repositories'
 import type { Family } from '@/lib/schemas'
+import { hashPassword } from '@/lib/tools/password'
 
 const FAMILY_KEY = 'sbornitsa-family'
 
@@ -19,7 +19,7 @@ const FAMILY_KEY = 'sbornitsa-family'
 interface AuthState {
   family: Family | null
   isAuthenticated: boolean
-  login: (username: Family['id'], password: string) => boolean
+  login: (username: Family['id'], password: string) => Promise<boolean>
   logout: () => void
   hydrated: boolean
   setHydrated: (state: boolean) => void
@@ -31,7 +31,7 @@ interface AuthState {
  * Features:
  * - ✨ Реактивность - компоненты автоматически обновляются при изменении
  * - 💾 Автоматическая персистация в localStorage
- * - 🔐 Проверка пароля через SHA256
+ * - 🔐 Проверка пароля через PBKDF2 (lib/tools/password.ts)
  * - 🎯 Type-safe с TypeScript
  *
  * @example
@@ -52,7 +52,7 @@ export const useAuthStore = create<AuthState>()(
        * Вход в систему
        * @returns true если вход успешный, false если неверные credentials
        */
-      login: (username: Family['id'], password: string): boolean => {
+      login: async (username: Family['id'], password: string): Promise<boolean> => {
         const family = familiesRepo.findById(username)
 
         if (!family) {
@@ -60,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
           return false
         }
 
-        const hashedPassword = CryptoJS.SHA256(password).toString()
+        const hashedPassword = await hashPassword(family.id, password)
 
         if (family.password !== hashedPassword) {
           console.warn('Invalid password')

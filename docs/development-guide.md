@@ -391,8 +391,10 @@ export const generatePageMetadata = (title: string, description: string) => {
 bun dev                    # Запуск dev сервера
 
 # Сборка
-bun run scripts/build-data.ts  # Генерация данных
 bun run build              # Сборка статического сайта
+
+# Пароли семей
+bun run password <id>      # Новый пароль семье (--all — всем), печатается один раз
 
 # Линтинг и форматирование
 bun run lint               # Проверка с oxlint

@@ -7,7 +7,7 @@
 **Where bugs are most likely:**
 1. Zustand hydration timing (`hydrated` flag) — blank render before localStorage is read
 2. Auth redirect loop — `AuthProvider` is mounted twice, both layouts guard routes
-3. Build data pipeline — missing/wrong `DATA_ENCRYPTION_KEY` breaks the entire build
+3. Password hashing — `crypto.subtle` exists only in secure contexts (HTTPS or `localhost`); opening the dev server by LAN IP over plain HTTP breaks login
 4. Client/Server component boundary — `use(promise)` in Client components suspended by Suspense
 5. Translation namespace mismatches — `fetchTranslations` swallows errors silently and returns `undefined`, causing `notFound()`
 6. Static params generation — `generateStaticParams` must return all valid IDs for dynamic routes
@@ -19,7 +19,7 @@
 When something is broken, check in this order:
 
 - [ ] **Is it a blank page?** → Zustand not yet hydrated or `AuthProvider` redirecting. Open DevTools → Application → Local Storage → `sbornitsa-family`. If missing, user is unauthenticated.
-- [ ] **Is it a build failure?** → Check `DATA_ENCRYPTION_KEY` env var. Run `bun run scripts/build-data.ts` in isolation first.
+- [ ] **Is it a build failure?** → Read the first error of `bun run build`.
 - [ ] **Is it a 404 page?** → Either `fetchTranslations` returned `undefined` (translation namespace typo) or the data entity doesn't exist.
 - [ ] **Is data missing/undefined?** → Trace the promise chain: API → Repo → Data file. Check if the entity ID exists in `lib/schemas/constants.ts` enums.
 - [ ] **Is UI not updating?** → Check if the component is a Client Component (`'use client'`). Server Components don't react to Zustand. Check `hydrated` flag in both stores.
@@ -47,18 +47,15 @@ lib/api/[entity].ts                ← which repo method is called?
 ### Auth Issue (login fails / redirects)
 ```
 components/providers/auth-provider.tsx   ← routing logic
-lib/store/auth.store.ts                  ← login() method, SHA256 check
+lib/store/auth.store.ts                  ← login() method, PBKDF2 check
 lib/repositories/families.repository.ts ← findById() lookup
 lib/data/families-generated.json        ← is the family entry present?
-scripts/build-data.ts                   ← was password hashed correctly at build?
+lib/tools/password.ts                   ← hashPassword(): PBKDF2, salt from family id
 ```
 
 ### Build Error
 ```
-scripts/build-data.ts              ← decrypt step
-data/families.enc                  ← encrypted source
-lib/data/families-generated.json   ← output (should exist post-build)
-.env.local / CI env vars           ← DATA_ENCRYPTION_KEY
+lib/data/families-generated.json   ← committed, must be valid JSON
 ```
 
 ### i18n / Translation Issue
@@ -101,9 +98,9 @@ components/providers/auth-provider.tsx    ← redirect logic
 1. `components/ui/forms/login-form.tsx` → `login(username, password)` called
 2. `lib/store/auth.store.ts:login()` → `familiesRepo.findById(username)` → check family exists
 3. `lib/repositories/families.repository.ts:findById()` → Map lookup
-4. SHA256 check: `CryptoJS.SHA256(password).toString() === family.password`
-5. `family.password` in `lib/data/families-generated.json` must be the SHA256 hash of the plaintext password
-6. **If build was run with wrong `DATA_ENCRYPTION_KEY`**, the generated JSON will be garbled → passwords will not match
+4. PBKDF2 check: `await hashPassword(family.id, password) === family.password` (`lib/tools/password.ts`)
+5. `family.password` in `lib/data/families-generated.json` must be the hash written by `bun run password <family-id>`
+6. **Outside a secure context** (plain HTTP, not `localhost`) `crypto.subtle` is undefined → login throws
 - `console.warn` in `auth.store.ts` will log either `"Family not found"` or `"Invalid password"`
 
 ### "Data is undefined / component shows nothing"
@@ -137,19 +134,15 @@ components/providers/auth-provider.tsx    ← redirect logic
 
 ### "New user/family not showing up"
 **This project has no database.** Adding data requires:
-1. Add entry to `lib/data/users.ts` or `lib/data/families.ts` (for families: edit plaintext source, re-encrypt, rebuild)
+1. Add entry to `lib/data/users.ts` or `lib/data/families-generated.json` (for families: then `bun run password <family-id>`)
 2. Add ID to `lib/schemas/constants.ts` enum (`USER_IDS` or `FAMILY_IDS`)
 3. Rebuild: `bun run build`
 - If ID not in enum: Zod parse will throw at build time or runtime
-- For families specifically: edit `data/families.secret.json` (local) or re-encrypt `data/families.enc`
 
 ### "Build fails"
 **Check in order:**
-1. `DATA_ENCRYPTION_KEY` env var is set
-2. `data/families.enc` exists (or `data/families.secret.json` for local dev)
-3. Run `bun run scripts/build-data.ts` alone — read the error output
-4. Check `lib/data/families-generated.json` was created and is valid JSON
-5. Zod schema validation errors: a data entry with an ID not in the enum will throw
+1. Check `lib/data/families-generated.json` is valid JSON
+2. Zod schema validation errors: a data entry with an ID not in the enum will throw
 
 ### "Hydration error (React)"
 **Cause:** Server-rendered HTML doesn't match client render. In this static site, common sources:
@@ -214,15 +207,11 @@ lib/store/auth.store.ts:login()
 components/providers/auth-provider.tsx
 // Log: isMounted, hydrated, isAuthenticated, pathname on every effect run
 
-// 3. Build script — data pipeline
-scripts/build-data.ts
-// Already has console.log/error. Add JSON.stringify(processedFamilies[0]) to verify shape.
-
-// 4. fetchTranslations — silent error swallower
+// 3. fetchTranslations — silent error swallower
 components/utils/fetch-translations.tsx
 // The catch block only logs error. Add: console.error('Failed namespace:', Object.values(translations))
 
-// 5. Repository constructors — verify data loaded
+// 4. Repository constructors — verify data loaded
 lib/repositories/index.ts
 // Add: console.log('Loaded', users.length, 'users,', families.length, 'families')
 ```
@@ -234,10 +223,9 @@ lib/repositories/index.ts
 | File | Risk | Why |
 |------|------|-----|
 | `components/providers/auth-provider.tsx` | High | Mounted twice, timing-sensitive, controls all access |
-| `scripts/build-data.ts` | High | Build fails entirely if env var wrong or file missing |
 | `components/utils/fetch-translations.tsx` | High | Silently returns `undefined`, causes `notFound()` on all pages |
-| `lib/store/auth.store.ts` | Medium | SHA256 comparison, localStorage persistence, hydration flag |
-| `lib/data/families-generated.json` | Medium | Generated file; must exist and be valid JSON for app to work |
+| `lib/store/auth.store.ts` | Medium | PBKDF2 comparison, localStorage persistence, hydration flag |
+| `lib/data/families-generated.json` | Medium | Families and password hashes; must be valid JSON for app to work |
 | `lib/schemas/constants.ts` | Medium | Adding a user/family without updating this enum breaks Zod parsing |
 | `components/shared/transactions-list.tsx` | Medium | 3 async promises + 2 Zustand stores + filter logic in one component |
 | `app/[locale]/(authenticated)/families/page.tsx` | Low | Inline balance calc, dead import of `Families` class |
@@ -262,14 +250,11 @@ Find the actual key path and fix the `fetchTranslations()` call in the page.
 - Open React DevTools → find `AuthProvider` → inspect `isMounted` and `hydrated` state
 - Or: DevTools Console → `JSON.parse(localStorage.getItem('sbornitsa-family'))`
 
-**Pattern: password not matching → check build**
+**Pattern: password not matching → issue a new one**
 ```bash
-# Regenerate families-generated.json
-DATA_ENCRYPTION_KEY=your-key bun run scripts/build-data.ts
-# Then check the hash
-node -e "const c=require('crypto-js'); console.log(c.SHA256('yourpassword').toString())"
+bun run password <family-id>   # prints the new password once, writes its hash
 ```
-Compare against `lib/data/families-generated.json`.
+Plaintext passwords are not stored, so there is nothing to compare against.
 
 **Pattern: static param missing (dynamic 404 in prod)**
 - `generateStaticParams()` must cover all valid IDs
@@ -296,7 +281,7 @@ Compare against `lib/data/families-generated.json`.
 | Login failure | `login-form.tsx`, `auth.store.ts`, `families.repository.ts`, `families-generated.json` |
 | Missing data | `constants.ts`, `lib/data/[entity].ts`, `lib/repositories/[entity].repository.ts` |
 | Wrong balance | `transactions-list.tsx`, `balance.tsx`, `lib/data/transactions.ts` |
-| Build failure | `scripts/build-data.ts`, `.env.local`, `data/families.enc` |
+| Build failure | the error output, `next.config.ts` |
 | 404 on valid route | `fetch-translations.tsx`, `messages/ru.json`, relevant `page.tsx` |
 | Static route missing in prod | `[entity]/[id]/page.tsx:generateStaticParams`, `lib/api/[entity].ts` |
 | Filter broken | `filter.store.ts`, `transactions-list.tsx` |
@@ -312,7 +297,7 @@ When asking AI about a bug in this project, include:
 2. **Attach these files** based on issue type:
    - Auth/blank: `auth-provider.tsx` + `auth.store.ts`
    - Data: the relevant `lib/api/*.ts` + `lib/repositories/*.ts` + `lib/data/*.ts`
-   - Build: `scripts/build-data.ts` + the error output
+   - Build: the error output + `next.config.ts`
    - Translation/404: `fetch-translations.tsx` + `messages/ru.json`
 3. **State the data shape** — paste a sample entry from `lib/data/` or `families-generated.json`
 4. **Note: no API routes exist** — if asked about API endpoints, clarify this is a static site

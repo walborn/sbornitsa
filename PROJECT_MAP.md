@@ -5,7 +5,7 @@
 **Type:** Next.js App Router, **fully static export** (`output: 'export'`)  
 **Runtime:** Bun  
 **No API routes. No SSR at request time.** Everything is built statically; data is baked into the JS bundle at build time.  
-**Auth:** Client-side only — Zustand store persisted to `localStorage`, SHA256 password check against hashed family passwords.  
+**Auth:** Client-side only — Zustand store persisted to `localStorage`, PBKDF2 password check (`lib/tools/password.ts`) against hashes in `families-generated.json`.  
 **i18n:** next-intl, locales `['ru', 'en']`, default `ru`. Locale is the first path segment.
 
 ---
@@ -13,9 +13,7 @@
 ## Architecture Layers
 
 ```
-data/families.enc          ← encrypted source of truth (git-tracked)
-        ↓ [scripts/build-data.ts, requires DATA_ENCRYPTION_KEY env]
-lib/data/families-generated.json   ← output, passwords SHA256-hashed
+lib/data/families-generated.json   ← families (git-tracked), passwords PBKDF2-hashed
 lib/data/*.ts              ← static data arrays (events, transactions, users, categories)
         ↓
 lib/repositories/*.ts      ← singletons, Map-indexed, O(1) lookups
@@ -92,12 +90,13 @@ RootLayout
 
 ## Data Flow
 
-### Build-time data pipeline
+### Family passwords
 ```
-data/families.enc
-  → scripts/build-data.ts (AES decrypt with DATA_ENCRYPTION_KEY, SHA256 hash passwords)
-  → lib/data/families-generated.json
+bun run password <family-id...> | --all
+  → scripts/password.ts (random 12 chars, printed once)
+  → lib/data/families-generated.json (only the PBKDF2 hash is stored)
 ```
+Plaintext passwords are not stored anywhere; a forgotten password is replaced with a new one.
 All other data (`users`, `transactions`, `events`, `categories`) lives as hardcoded TypeScript arrays in `lib/data/`.
 
 ### Request lifecycle (static site)
@@ -174,7 +173,6 @@ lib/store/*.ts               ← Zustand (auth, filter)
 
 | Var | Required | Purpose |
 |-----|----------|---------|
-| `DATA_ENCRYPTION_KEY` | **Build-time required** | Decrypt `data/families.enc` |
 | `NEXT_PUBLIC_YANDEX_MAPS_API_KEY` | Optional | Yandex Maps (not wired to any current page) |
 | `NEXT_PUBLIC_SITE_URL` | Optional | SEO base URL |
 | `GOOGLE_VERIFICATION_CODE` | Optional | SEO |
@@ -185,6 +183,5 @@ lib/store/*.ts               ← Zustand (auth, filter)
 ## Build Command
 
 ```bash
-bun run scripts/build-data.ts   # decrypt → families-generated.json
 bun next build                  # static export to /out
 ```

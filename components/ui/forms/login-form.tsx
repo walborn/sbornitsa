@@ -31,9 +31,9 @@ export default function LoginForm() {
     const username = formData.get('username') as Family['id']
     const password = formData.get('password') as string
 
-    startTransition(() => {
+    startTransition(async () => {
       // Используем реактивный метод login из store
-      if (login(username, password)) {
+      if (await login(username, password)) {
         router.push(callbackUrl)
       } else {
         setErrorMessage('Invalid username or password.')
