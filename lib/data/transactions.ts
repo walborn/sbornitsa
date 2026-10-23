@@ -115,7 +115,7 @@ const entries: Entry[] = [
     kids: [
       'vera.eremeeva',
       'aurora.fadeeva',
-      'miroslava.gerber',
+      // 'miroslava.gerber',
       'aellita.leonenko',
       'igor.marshev',
       'misha.novitskiy',
@@ -133,7 +133,7 @@ const entries: Entry[] = [
       'vera.eremeeva',
       'aurora.fadeeva',
       'aellita.leonenko',
-      'miroslava.gerber',
+      // 'miroslava.gerber',
       'igor.marshev',
       'misha.novitskiy',
       'emma.kirillova',
