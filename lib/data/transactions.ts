@@ -99,6 +99,17 @@ const expand = (entry: Entry): Omit<Transaction, 'id' | 'timestamp' | 'category'
 
 const entries: Entry[] = [
   {
+    type: 'transfers',
+    date: '2026-10-22T19:19:44',
+    value: +10_000,
+    name: 'Елена Гурская',
+    family: 'gurskys',
+    source: {
+      bank: 'sber',
+      name: 'Елена Г.',
+    },
+  },
+  {
     type: 'english',
     date: '2026-10-22',
     kids: [
@@ -112,6 +123,7 @@ const entries: Entry[] = [
       'quoc.anh.tran',
       'mila.legoshina',
       'meera.yuzhakova', // вместо вторника
+      'boris.gurskiy',
     ],
   },
   {
@@ -130,10 +142,6 @@ const entries: Entry[] = [
       // 'meera.yuzhakova', - поменяли на вторник няню
     ],
   },
-  /**
-   * НАСТОЯЩЕЕ
-   */
-
   {
     type: 'english',
     date: '2026-10-15',
@@ -191,7 +199,7 @@ const entries: Entry[] = [
   {
     type: 'supermarkets',
     date: '2026-10-12T10:00:00',
-    value: -776 - 1788, // это остаток от второй части
+    value: -2564, // -776 -1788, // это остаток от второй части
     name: 'Канцелярия',
     description: 'Света Еремеева заказала карандаши, краски и листы бумаги',
     kids: [
@@ -205,7 +213,7 @@ const entries: Entry[] = [
       'meera.yuzhakova',
       'grisha.tumanyan',
       'quoc.anh.tran',
-      // Борис Гурский
+      'boris.gurskiy',
     ],
   },
   // теперь Мила ходит два раза в неделю
@@ -311,6 +319,17 @@ const entries: Entry[] = [
       'mila.legoshina',
       'meera.yuzhakova',
     ],
+  },
+  {
+    type: 'transfers',
+    date: '2026-09-24T11:26:37',
+    value: +10_000,
+    name: 'Тхи Шанг Л.',
+    family: 'trans',
+    source: {
+      bank: 'alfabank',
+      name: 'Тхи Шанг Л.',
+    },
   },
   // Английский: начинаиная с сентября
   // вт + чт: Вера, Аврора, Аэлита, Игорь, Миша, Эмма, Бин
