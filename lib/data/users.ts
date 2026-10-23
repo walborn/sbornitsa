@@ -88,6 +88,18 @@ export const users: User[] = [
     },
   },
   {
+    id: 'elena.gurskaya',
+    name: 'Елена Гурская',
+    family: 'gurskys',
+    avatar: '/users/elena.gurskaya.webp',
+    birthdate: new Date(1900, 0, 1),
+    role: 'user',
+    tags: new Set(['parents', 'mothers']),
+    contacts: {
+      telegram: '@elenasgurskaya',
+    },
+  },
+  {
     id: 'ornella.zubkova',
     name: 'Орнелла Зубкова',
     family: 'yuzhakovs',
@@ -484,6 +496,15 @@ const children: User[] = [
     birthdate: new Date(2021, 11, 31),
     role: 'user',
     tags: new Set(['children', 'daughters']),
+  },
+  {
+    id: 'boris.gurskiy',
+    name: 'Борис Гурский',
+    family: 'gurskys',
+    avatar: '/users/boris.gurskiy.webp',
+    birthdate: new Date(1900, 0, 1),
+    role: 'user',
+    tags: new Set(['children', 'sons']),
   },
 ]
 

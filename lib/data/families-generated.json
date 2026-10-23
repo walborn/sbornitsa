@@ -194,5 +194,17 @@
     "password": "36a48e21c28d08a3915b9dfa71768cc838f6d8ba8fab630a478af4eacc22de37",
     "avatar": "/families/kirillovs.webp",
     "value": 0
+  },
+  {
+    "id": "gurskys",
+    "name": {
+      "ru": "Гурские",
+      "en": "Gurskys"
+    },
+    "mother": "elena.gurskaya",
+    "children": ["boris.gurskiy"],
+    "password": "6d1faecc1a27e3eddd488552d9ef85a638e2589604c604b3f0a9cac260ce85c0",
+    "avatar": "/families/gurskys.webp",
+    "value": 0
   }
 ]

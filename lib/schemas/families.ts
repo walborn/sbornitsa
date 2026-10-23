@@ -26,6 +26,7 @@ export type {
   Eremeevs,
   Fadeevs,
   Gerbers,
+  Gurskys,
   Kirillovs,
   Legoshins,
   Leonenkos,

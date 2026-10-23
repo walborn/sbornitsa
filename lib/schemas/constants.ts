@@ -21,6 +21,7 @@ export const USER_IDS = [
   'polina.leonenko',
   'sang.kim',
   'jenya.tumanyan',
+  'elena.gurskaya',
   // Fathers
   'denis.petrov',
   'gennady.fadeev',
@@ -55,6 +56,7 @@ export const USER_IDS = [
   'quoc.anh.tran',
   'levon.tumanyan',
   'grisha.tumanyan',
+  'boris.gurskiy',
 ] as const
 
 export const USER_ROLES = ['user', 'manager', 'admin'] as const
@@ -87,6 +89,7 @@ export const FAMILY_IDS = [
   'tumanyans',
   'yuzhakovs',
   'leonenkos',
+  'gurskys',
 ] as const
 
 // users by families
@@ -118,6 +121,7 @@ export type Skvortsovs = Extract<
 export type Kirillovs = Extract<UserId, 'olga.kirillova' | 'emma.kirillova'>[]
 export type Usarovs = Extract<UserId, 'maria.usarova' | 'emil.usarov'>[]
 export type Leonenkos = Extract<UserId, 'polina.leonenko' | 'aellita.leonenko'>[]
+export type Gurskys = Extract<UserId, 'elena.gurskaya' | 'boris.gurskiy'>[]
 
 // transactions
 export const TRANSACTIONS_CATEGORY_IDS = [
